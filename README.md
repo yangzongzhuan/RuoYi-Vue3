@@ -6,6 +6,26 @@
 * 阿里云折扣场：[点我进入](http://aly.ruoyi.vip)，腾讯云秒杀场：[点我进入](http://txy.ruoyi.vip)&nbsp;&nbsp;
 * 阿里云优惠券：[点我领取](https://www.aliyun.com/minisite/goods?userCode=brki8iof&share_source=copy_link)，腾讯云优惠券：[点我领取](https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console)&nbsp;&nbsp;
 
+## 前端运行
+
+```bash
+# 克隆项目
+git clone https://github.com/yangzongzhuan/RuoYi-Vue3.git
+
+# 进入项目目录
+cd RuoYi-Vue3
+
+# 安装依赖
+yarn --registry=https://registry.npm.taobao.org
+
+# 启动服务
+yarn dev
+
+# 构建测试环境 yarn build:stage
+# 构建生产环境 yarn build:prod
+# 前端访问地址 http://localhost:80
+```
+
 ## 内置功能
 
 1.  用户管理：用户是系统操作者，该功能主要完成系统用户配置。
