@@ -166,7 +166,7 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="key"
         >
-        <pre><code class="hljs" v-html="value"></code></pre>
+		<pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
     </el-dialog>
