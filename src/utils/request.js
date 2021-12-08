@@ -108,12 +108,12 @@ export function download(url, params, filename) {
       const blob = new Blob([data])
       saveAs(blob, filename)
     } else {
-      ELMessage.error('无效的会话，或者会话已过期，请重新登录。');
+      ElMessage.error('无效的会话，或者会话已过期，请重新登录。');
     }
     downloadLoadingInstance.close();
   }).catch((r) => {
     console.error(r)
-    ELMessage.error('下载文件出现错误，请联系管理员！')
+    ElMessage.error('下载文件出现错误，请联系管理员！')
     downloadLoadingInstance.close();
   })
 }
