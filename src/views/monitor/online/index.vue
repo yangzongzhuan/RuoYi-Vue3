@@ -99,7 +99,6 @@ function resetQuery() {
 }
 /** 强退按钮操作 */
 function handleForceLogout(row) {
-  const operIds = row.operId || ids.value;
     proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
   return forceLogout(row.tokenId);
   }).then(() => {
