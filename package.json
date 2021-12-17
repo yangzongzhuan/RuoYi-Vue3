@@ -15,7 +15,7 @@
     "url": "https://gitee.com/y_project/RuoYi-Vue.git"
   },
   "dependencies": {
-    "@element-plus/icons": "0.0.11",
+    "@element-plus/icons-vue": "0.2.4",
     "@vueuse/core": "6.4.1",
     "axios": "0.24.0",
     "echarts": "5.2.1",
