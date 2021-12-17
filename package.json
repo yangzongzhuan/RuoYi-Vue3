@@ -19,7 +19,7 @@
     "@vueuse/core": "6.4.1",
     "axios": "0.24.0",
     "echarts": "5.2.1",
-    "element-plus": "1.2.0-beta.3",
+    "element-plus": "1.2.0-beta.6",
     "file-saver": "2.0.5",
     "fuse.js": "6.4.6",
     "js-cookie": "3.0.1",
