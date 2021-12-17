@@ -127,7 +127,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24" v-if="form.menuType != 'F'">
-                  <el-form-item label="菜单图标">
+                  <el-form-item label="菜单图标" prop="icon">
                      <el-popover
                         placement="bottom-start"
                         :width="540"
