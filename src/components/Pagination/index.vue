@@ -77,6 +77,7 @@ const pageSize = computed({
   }
 })
 function handleSizeChange(val) {
+  pageSize.value = val
   emit('pagination', { page: currentPage.value, limit: val })
   if (props.autoScroll) {
     scrollTo(0, 800)
