@@ -12,6 +12,8 @@
 
 <script setup>
 let store = useStore()
+const route = useRoute()
+store.dispatch('tagsView/addCachedView', route)
 const cachedViews = computed(() => {
     return store.state.tagsView.cachedViews
 })
