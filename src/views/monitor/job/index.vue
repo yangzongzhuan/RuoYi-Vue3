@@ -210,7 +210,7 @@
                   </el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="错误策略" prop="misfirePolicy">
+                  <el-form-item label="执行策略" prop="misfirePolicy">
                      <el-radio-group v-model="form.misfirePolicy" size="small">
                         <el-radio-button label="1">立即执行</el-radio-button>
                         <el-radio-button label="2">执行一次</el-radio-button>
