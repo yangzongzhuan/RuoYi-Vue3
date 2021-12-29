@@ -451,7 +451,7 @@ function getList() {
 /** 节点单击事件 */
 function handleNodeClick(data) {
   queryParams.value.deptId = data.id;
-  getList();
+  handleQuery();
 };
 /** 搜索按钮操作 */
 function handleQuery() {
