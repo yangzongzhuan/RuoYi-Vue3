@@ -31,6 +31,8 @@ import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel } from 
 import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
+// 图片上传组件
+import ImageUpload from "@/components/ImageUpload"
 // 自定义树选择组件
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
@@ -51,6 +53,7 @@ app.config.globalProperties.selectDictLabel = selectDictLabel
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
+app.component('ImageUpload', ImageUpload)
 app.component('RightToolbar', RightToolbar)
 
 app.use(router)
