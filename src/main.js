@@ -33,6 +33,8 @@ import Pagination from '@/components/Pagination'
 import RightToolbar from '@/components/RightToolbar'
 // 图片上传组件
 import ImageUpload from "@/components/ImageUpload"
+// 图片预览组件
+import ImagePreview from "@/components/ImagePreview"
 // 自定义树选择组件
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
@@ -54,6 +56,7 @@ app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
 app.component('ImageUpload', ImageUpload)
+app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 
 app.use(router)
