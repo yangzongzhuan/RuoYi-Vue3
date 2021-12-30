@@ -348,7 +348,7 @@ function getList() {
 }
 /** 任务组名字典翻译 */
 function jobGroupFormat(row, column) {
-  return proxy.selectDictLabel(sys_job_group, row.jobGroup);
+  return proxy.selectDictLabel(sys_job_group.value, row.jobGroup);
 }
 /** 取消按钮 */
 function cancel() {

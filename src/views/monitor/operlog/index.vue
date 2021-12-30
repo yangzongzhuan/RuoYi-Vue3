@@ -238,7 +238,7 @@ function getList() {
 }
 /** 操作日志类型字典翻译 */
 function typeFormat(row, column) {
-  return selectDictLabel(sys_oper_type, row.businessType);
+  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
 }
 /** 搜索按钮操作 */
 function handleQuery() {
