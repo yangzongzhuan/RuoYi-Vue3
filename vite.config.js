@@ -32,5 +32,22 @@ export default defineConfig(({ mode, command }) => {
         }
       },
     },
+     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
+    css: {
+      postcss: {
+        plugins: [
+          {
+            postcssPlugin: 'internal:charset-removal',
+            AtRule: {
+              charset: (atRule) => {
+                if (atRule.name === 'charset') {
+                  atRule.remove();
+                }
+              }
+            }
+          }
+        ],
+      },
+    },
   }
 })
