@@ -7,6 +7,8 @@ import { tansParams, blobValidate } from '@/utils/ruoyi'
 import { saveAs } from 'file-saver'
 
 let downloadLoadingInstance;
+// 是否显示重新登录
+let isReloginShow;
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -48,16 +50,25 @@ service.interceptors.response.use(res => {
       return res.data
     }
     if (code === 401) {
-      ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
+      if (!isReloginShow) {
+        isReloginShow = true;
+        ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
         }
       ).then(() => {
+        isReloginShow = false;
         store.dispatch('LogOut').then(() => {
-          location.href = '/index';
+          // 如果是登录页面不需要重新加载
+          if (window.location.hash.indexOf("#/login") != 0) {
+            location.href = '/index';
+          }
         })
-      }).catch(() => {});
+      }).catch(() => {
+        isReloginShow = false;
+      });
+    }
       return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
     } else if (code === 500) {
       ElMessage({
