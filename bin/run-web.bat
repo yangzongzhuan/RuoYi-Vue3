@@ -1,6 +1,6 @@
 @echo off
 echo.
-echo [信息] 使用 Vue CLI 命令运行 Web 工程。
+echo [信息] 使用 Vite 命令运行 Web 工程。
 echo.
 
 %~d0
