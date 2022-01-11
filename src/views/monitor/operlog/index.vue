@@ -6,7 +6,6 @@
                v-model="queryParams.title"
                placeholder="请输入系统模块"
                clearable
-               size="small"
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
@@ -16,7 +15,6 @@
                v-model="queryParams.operName"
                placeholder="请输入操作人员"
                clearable
-               size="small"
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
@@ -26,7 +24,6 @@
                v-model="queryParams.businessType"
                placeholder="操作类型"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -42,7 +39,6 @@
                v-model="queryParams.status"
                placeholder="操作状态"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -53,11 +49,9 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="操作时间">
+         <el-form-item label="操作时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               size="small"
-               style="width: 240px"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
@@ -66,8 +60,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -77,7 +71,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:operlog:remove']"
@@ -88,7 +81,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                @click="handleClean"
                v-hasPermi="['system:operlog:remove']"
             >清空</el-button>
@@ -98,7 +90,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['system:operlog:export']"
             >导出</el-button>
@@ -131,7 +122,6 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="View"
                   @click="handleView(scope.row, scope.index)"
@@ -151,7 +141,7 @@
 
       <!-- 操作日志详细 -->
       <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
-         <el-form :model="form" label-width="100px" size="mini">
+         <el-form :model="form" label-width="100px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="操作模块：">{{ form.title }} / {{ typeFormat(form) }}</el-form-item>

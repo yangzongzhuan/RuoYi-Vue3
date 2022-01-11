@@ -6,7 +6,6 @@
                v-model="queryParams.configName"
                placeholder="请输入参数名称"
                clearable
-               size="small"
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
@@ -16,13 +15,12 @@
                v-model="queryParams.configKey"
                placeholder="请输入参数键名"
                clearable
-               size="small"
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="系统内置" prop="configType">
-            <el-select v-model="queryParams.configType" placeholder="系统内置" clearable size="small">
+            <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
                <el-option
                   v-for="dict in sys_yes_no"
                   :key="dict.value"
@@ -31,11 +29,9 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="创建时间">
+         <el-form-item label="创建时间" style="width: 308px;">
             <el-date-picker
                v-model="dateRange"
-               size="small"
-               style="width: 240px"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
@@ -44,8 +40,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -55,7 +51,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:config:add']"
             >新增</el-button>
@@ -65,7 +60,6 @@
                type="success"
                plain
                icon="Edit"
-               size="mini"
                :disabled="single"
                @click="handleUpdate"
                v-hasPermi="['system:config:edit']"
@@ -76,7 +70,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:config:remove']"
@@ -87,7 +80,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['system:config:export']"
             >导出</el-button>
@@ -97,7 +89,6 @@
                type="danger"
                plain
                icon="Refresh"
-               size="mini"
                @click="handleRefreshCache"
                v-hasPermi="['system:config:remove']"
             >刷新缓存</el-button>
@@ -125,14 +116,12 @@
          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:config:edit']"
                >修改</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"

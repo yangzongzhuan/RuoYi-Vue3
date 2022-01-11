@@ -6,12 +6,11 @@
                v-model="queryParams.menuName"
                placeholder="请输入菜单名称"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="菜单状态" clearable size="small">
+            <el-select v-model="queryParams.status" placeholder="菜单状态" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -21,8 +20,8 @@
             </el-select>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -32,7 +31,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:menu:add']"
             >新增</el-button>
@@ -42,7 +40,6 @@
                type="info"
                plain
                icon="Sort"
-               size="mini"
                @click="toggleExpandAll"
             >展开/折叠</el-button>
          </el-col>
@@ -79,21 +76,18 @@
          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:menu:edit']"
                >修改</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Plus"
                   @click="handleAdd(scope.row)"
                   v-hasPermi="['system:menu:add']"
                >新增</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
@@ -135,9 +129,8 @@
                         trigger="click"
                         @show="showSelectIcon"
                      >
-                        <icon-select ref="iconSelectRef" @selected="selected" />
                         <template #reference>
-                           <el-input v-model="form.icon" placeholder="点击选择图标" readonly>
+                           <el-input v-model="form.icon" placeholder="点击选择图标" @click="showSelectIcon" readonly>
                               <template #prefix>
                                  <svg-icon
                                     v-if="form.icon"
@@ -145,10 +138,11 @@
                                     class="el-input__icon"
                                     style="height: 32px;width: 16px;"
                                  />
-                                 <i v-else class="el-icon-search el-input__icon" />
+                                 <el-icon v-else style="height: 32px;width: 16px;"><search /></el-icon>
                               </template>
                            </el-input>
                         </template>
+                        <icon-select ref="iconSelectRef" @selected="selected" />
                      </el-popover>
                   </el-form-item>
                </el-col>

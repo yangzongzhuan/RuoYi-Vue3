@@ -6,7 +6,6 @@
           v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
-          size="small"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -15,15 +14,12 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
-          size="small"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="创建时间">
+      <el-form-item label="创建时间" style="width: 308px">
         <el-date-picker
           v-model="dateRange"
-          size="small"
-          style="width: 240px"
           value-format="YYYY-MM-DD"
           type="daterange"
           range-separator="-"
@@ -32,8 +28,8 @@
         ></el-date-picker>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
     </el-form>
 
@@ -43,7 +39,6 @@
           type="primary"
           plain
           icon="Download"
-          size="mini"
           @click="handleGenTable"
           v-hasPermi="['tool:gen:code']"
         >生成</el-button>
@@ -53,7 +48,6 @@
           type="info"
           plain
           icon="Upload"
-          size="mini"
           @click="openImportTable"
           v-hasPermi="['tool:gen:import']"
         >导入</el-button>
@@ -63,7 +57,6 @@
           type="success"
           plain
           icon="Edit"
-          size="mini"
           :disabled="single"
           @click="handleEditTable"
           v-hasPermi="['tool:gen:edit']"
@@ -74,7 +67,6 @@
           type="danger"
           plain
           icon="Delete"
-          size="mini"
           :disabled="multiple"
           @click="handleDelete"
           v-hasPermi="['tool:gen:remove']"
@@ -108,45 +100,50 @@
         prop="className"
         :show-overflow-tooltip="true"
       />
-      <el-table-column label="创建时间" align="center" prop="createTime" width="150" />
-      <el-table-column label="更新时间" align="center" prop="updateTime" width="150" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="160" />
+      <el-table-column label="更新时间" align="center" prop="updateTime" width="160" />
       <el-table-column label="操作" align="center" width="330" class-name="small-padding fixed-width">
         <template #default="scope">
-          <el-button
-            type="text"
-            size="small"
-            icon="View"
-            @click="handlePreview(scope.row)"
-            v-hasPermi="['tool:gen:preview']"
-          >预览</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="Edit"
-            @click="handleEditTable(scope.row)"
-            v-hasPermi="['tool:gen:edit']"
-          >编辑</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="Delete"
-            @click="handleDelete(scope.row)"
-            v-hasPermi="['tool:gen:remove']"
-          >删除</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="Refresh"
-            @click="handleSynchDb(scope.row)"
-            v-hasPermi="['tool:gen:edit']"
-          >同步</el-button>
-          <el-button
-            type="text"
-            size="small"
-            icon="Download"
-            @click="handleGenTable(scope.row)"
-            v-hasPermi="['tool:gen:code']"
-          >生成代码</el-button>
+          <el-tooltip content="预览" placement="top">
+            <el-button
+              type="text"
+              icon="View"
+              @click="handlePreview(scope.row)"
+              v-hasPermi="['tool:gen:preview']"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip content="编辑" placement="top">
+            <el-button
+              type="text"
+              icon="Edit"
+              @click="handleEditTable(scope.row)"
+              v-hasPermi="['tool:gen:edit']"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip content="删除" placement="top">
+            <el-button
+              type="text"
+              icon="Delete"
+              @click="handleDelete(scope.row)"
+              v-hasPermi="['tool:gen:remove']"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip content="同步" placement="top">
+            <el-button
+              type="text"
+              icon="Refresh"
+              @click="handleSynchDb(scope.row)"
+              v-hasPermi="['tool:gen:edit']"
+            ></el-button>
+          </el-tooltip>
+          <el-tooltip content="生成代码" placement="top">
+            <el-button
+              type="text"
+              icon="Download"
+              @click="handleGenTable(scope.row)"
+              v-hasPermi="['tool:gen:code']"
+            ></el-button>
+          </el-tooltip>
         </template>
       </el-table-column>
     </el-table>
@@ -179,7 +176,6 @@ import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/
 import router from "@/router";
 import importTable from "./importTable";
 
-const route = useRoute();
 const { proxy } = getCurrentInstance();
 
 const tableList = ref([]);

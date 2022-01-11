@@ -6,7 +6,6 @@
                v-model="queryParams.ipaddr"
                placeholder="请输入登录地址"
                clearable
-               size="small"
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
@@ -16,7 +15,6 @@
                v-model="queryParams.userName"
                placeholder="请输入用户名称"
                clearable
-               size="small"
                style="width: 240px;"
                @keyup.enter="handleQuery"
             />
@@ -26,7 +24,6 @@
                v-model="queryParams.status"
                placeholder="登录状态"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -37,11 +34,9 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="登录时间">
+         <el-form-item label="登录时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               size="small"
-               style="width: 240px"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
@@ -50,8 +45,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -61,7 +56,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:logininfor:remove']"
@@ -72,7 +66,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                @click="handleClean"
                v-hasPermi="['system:logininfor:remove']"
             >清空</el-button>
@@ -82,7 +75,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['system:logininfor:export']"
             >导出</el-button>

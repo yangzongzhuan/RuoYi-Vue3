@@ -14,7 +14,7 @@
       ref="upload"
     >
       <!-- 上传按钮 -->
-      <el-button size="mini" type="primary">选取文件</el-button>
+      <el-button type="primary">选取文件</el-button>
       <!-- 上传提示 -->
       <div class="el-upload__tip" v-if="showTip">
         请上传

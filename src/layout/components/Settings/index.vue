@@ -28,7 +28,7 @@
     <div class="drawer-item">
       <span>主题颜色</span>
       <span class="comp-style">
-        <el-color-picker size="small" v-model="theme" :predefine="predefineColors" @change="themeChange"/>
+        <el-color-picker v-model="theme" :predefine="predefineColors" @change="themeChange"/>
       </span>
     </div>
     <el-divider />
@@ -72,8 +72,8 @@
 
     <el-divider />
 
-    <el-button size="small" type="primary" plain icon="DocumentAdd" @click="saveSetting">保存配置</el-button>
-    <el-button size="small" plain icon="Refresh" @click="resetSetting">重置配置</el-button>
+    <el-button type="primary" plain icon="DocumentAdd" @click="saveSetting">保存配置</el-button>
+    <el-button plain icon="Refresh" @click="resetSetting">重置配置</el-button>
   </el-drawer>
 
 </template>

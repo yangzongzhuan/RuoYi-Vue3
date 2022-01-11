@@ -18,7 +18,7 @@
 
       <h4 class="form-header h4">角色信息</h4>
       <el-table v-loading="loading" :row-key="getRowKey" @row-click="clickRow" ref="roleRef" @selection-change="handleSelectionChange" :data="roles.slice((pageNum - 1) * pageSize, pageNum * pageSize)">
-         <el-table-column label="序号" type="index" align="center">
+         <el-table-column label="序号" width="55" type="index" align="center">
             <template #default="scope">
                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
             </template>
@@ -37,10 +37,10 @@
       <pagination v-show="total > 0" :total="total" v-model:page="pageNum" v-model:limit="pageSize" />
 
       <el-form label-width="100px">
-         <el-form-item style="text-align: center;margin-left:-120px;margin-top:30px;">
+         <div style="text-align: center;margin-left:-120px;margin-top:30px;">
             <el-button type="primary" @click="submitForm()">提交</el-button>
             <el-button @click="close()">返回</el-button>
-         </el-form-item>
+         </div>
       </el-form>
    </div>
 </template>

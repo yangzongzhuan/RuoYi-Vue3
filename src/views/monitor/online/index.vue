@@ -6,7 +6,6 @@
                v-model="queryParams.ipaddr"
                placeholder="请输入登录地址"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -19,8 +18,8 @@
             />
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
       <el-table
@@ -28,7 +27,7 @@
          :data="onlineList.slice((pageNum - 1) * pageSize, pageNum * pageSize)"
          style="width: 100%;"
       >
-         <el-table-column label="序号" type="index" align="center">
+         <el-table-column label="序号" width="50" type="index" align="center">
             <template #default="scope">
                <span>{{ (pageNum - 1) * pageSize + scope.$index + 1 }}</span>
             </template>
@@ -48,7 +47,6 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleForceLogout(scope.row)"

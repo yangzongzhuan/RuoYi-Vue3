@@ -73,7 +73,8 @@ directive(app)
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {
   locale: locale,
-  size: Cookies.get('size') || 'medium'
+  // 支持 large、default、small
+  size: Cookies.get('size') || 'default'
 })
 
 app.mount('#app')
