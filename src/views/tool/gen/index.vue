@@ -163,6 +163,12 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="key"
         >
+
+            <el-button icon="DocumentCopy" class="copyBtn" v-on:click="toClipboard(value);ElMessage({
+            message:'复制成功',
+            type:'success'
+            })" > copy </el-button>
+
           <pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
@@ -175,7 +181,10 @@
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
 import router from "@/router";
 import importTable from "./importTable";
+import useClipboard from 'vue-clipboard3'
+import { ElMessage } from 'element-plus'
 
+const { toClipboard } = useClipboard();
 const { proxy } = getCurrentInstance();
 
 const tableList = ref([]);
@@ -286,3 +295,11 @@ function handleDelete(row) {
 
 getList();
 </script>
+
+<style lang='scss' scoped>
+.copyBtn{
+  position: fixed;
+  left: calc(90% - 120px) ;
+  top: 20%;
+}
+</style>
