@@ -59,7 +59,6 @@ import RuoYiGit from '@/components/RuoYi/Git'
 import RuoYiDoc from '@/components/RuoYi/Doc'
 
 const store = useStore();
-const router = useRouter();
 const getters = computed(() => store.getters);
 
 function toggleSideBar() {
