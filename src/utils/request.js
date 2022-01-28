@@ -6,6 +6,7 @@ import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
+import { Base64 } from "js-base64";
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -39,7 +40,7 @@ service.interceptors.request.use(config => {
   if (!isRepeatSubmit && (config.method === 'post' || config.method === 'put')) {
     const requestObj = {
       url: config.url,
-      data: typeof config.data === 'object' ? JSON.stringify(config.data) : config.data,
+      data: typeof config.data === 'object' ? Base64.encode(JSON.stringify(config.data)) : Base64.encode(config.data),
       time: new Date().getTime()
     }
     const sessionObj = cache.session.getJSON('sessionObj')
