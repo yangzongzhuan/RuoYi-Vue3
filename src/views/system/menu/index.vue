@@ -98,7 +98,7 @@
       </el-table>
 
       <!-- 添加或修改菜单对话框 -->
-      <el-dialog :title="title" v-model="open" width="680px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="680px" :before-close="handleClose" append-to-body>
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
             <el-row>
                <el-col :span="24">
@@ -370,6 +370,11 @@ function showSelectIcon() {
 function selected(name) {
   form.value.icon = name;
   showChooseIcon.value = false;
+}
+/** 关闭弹窗隐藏图标选择 */
+function handleClose() {
+ cancel();
+ showChooseIcon.value = false;
 }
 /** 搜索按钮操作 */
 function handleQuery() {
