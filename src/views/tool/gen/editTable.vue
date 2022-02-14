@@ -33,6 +33,7 @@
                 <el-option label="Double" value="Double" />
                 <el-option label="BigDecimal" value="BigDecimal" />
                 <el-option label="Date" value="Date" />
+                <el-option label="Boolean" value="Boolean" />
               </el-select>
             </template>
           </el-table-column>
@@ -117,10 +118,10 @@
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
-      <el-form-item style="text-align: center;margin-left:-100px;margin-top:10px;">
+      <div style="text-align: center;margin-left:-100px;margin-top:10px;">
         <el-button type="primary" @click="submitForm()">提交</el-button>
         <el-button @click="close()">返回</el-button>
-      </el-form-item>
+      </div>
     </el-form>
   </el-card>
 </template>
@@ -180,7 +181,7 @@ function close() {
 }
 
 (() => {
-  const tableId = route.query && route.query.tableId;
+  const tableId = route.params && route.params.tableId;
   if (tableId) {
     // 获取表详细信息
     getGenTable(tableId).then(res => {

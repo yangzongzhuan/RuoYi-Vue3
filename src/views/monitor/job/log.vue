@@ -6,7 +6,6 @@
                v-model="queryParams.jobName"
                placeholder="请输入任务名称"
                clearable
-               size="small"
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
@@ -16,7 +15,6 @@
                v-model="queryParams.jobGroup"
                placeholder="请任务组名"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -32,7 +30,6 @@
                v-model="queryParams.status"
                placeholder="请选择执行状态"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -43,11 +40,9 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="执行时间">
+         <el-form-item label="执行时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               size="small"
-               style="width: 240px"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
@@ -56,8 +51,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -67,7 +62,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['monitor:job:remove']"
@@ -78,7 +72,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                @click="handleClean"
                v-hasPermi="['monitor:job:remove']"
             >清空</el-button>
@@ -88,7 +81,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['monitor:job:export']"
             >导出</el-button>
@@ -98,7 +90,6 @@
                type="warning" 
                plain 
                icon="Close"
-               size="mini"
                @click="handleClose"
             >关闭</el-button>
          </el-col>
@@ -129,7 +120,6 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="View"
                   @click="handleView(scope.row)"
@@ -149,7 +139,7 @@
 
       <!-- 调度日志详细 -->
       <el-dialog title="调度日志详细" v-model="open" width="700px" append-to-body>
-         <el-form :model="form" label-width="100px" size="mini">
+         <el-form :model="form" label-width="100px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="日志序号：">{{ form.jobLogId }}</el-form-item>

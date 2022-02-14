@@ -31,6 +31,12 @@ import { parseTime, resetForm, addDateRange, handleTree, selectDictLabel } from 
 import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
+// 文件上传组件
+import FileUpload from "@/components/FileUpload"
+// 图片上传组件
+import ImageUpload from "@/components/ImageUpload"
+// 图片预览组件
+import ImagePreview from "@/components/ImagePreview"
 // 自定义树选择组件
 import TreeSelect from '@/components/TreeSelect'
 // 字典标签组件
@@ -51,6 +57,9 @@ app.config.globalProperties.selectDictLabel = selectDictLabel
 app.component('DictTag', DictTag)
 app.component('Pagination', Pagination)
 app.component('TreeSelect', TreeSelect)
+app.component('FileUpload', FileUpload)
+app.component('ImageUpload', ImageUpload)
+app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
 
 app.use(router)
@@ -64,7 +73,8 @@ directive(app)
 // 使用element-plus 并且设置全局的大小
 app.use(ElementPlus, {
   locale: locale,
-  size: Cookies.get('size') || 'medium'
+  // 支持 large、default、small
+  size: Cookies.get('size') || 'default'
 })
 
 app.mount('#app')

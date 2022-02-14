@@ -6,6 +6,7 @@
         <el-input
           v-model="loginForm.username"
           type="text"
+          size="large"
           auto-complete="off"
           placeholder="账号"
         >
@@ -16,6 +17,7 @@
         <el-input
           v-model="loginForm.password"
           type="password"
+          size="large"
           auto-complete="off"
           placeholder="密码"
           @keyup.enter="handleLogin"
@@ -26,6 +28,7 @@
       <el-form-item prop="code" v-if="captchaOnOff">
         <el-input
           v-model="loginForm.code"
+          size="large"
           auto-complete="off"
           placeholder="验证码"
           style="width: 63%"
@@ -41,7 +44,7 @@
       <el-form-item style="width:100%;">
         <el-button
           :loading="loading"
-          size="medium"
+          size="large"
           type="primary"
           style="width:100%;"
           @click.prevent="handleLogin"
@@ -56,7 +59,7 @@
     </el-form>
     <!--  底部  -->
     <div class="el-login-footer">
-      <span>Copyright © 2018-2021 ruoyi.vip All Rights Reserved.</span>
+      <span>Copyright © 2018-2022 ruoyi.vip All Rights Reserved.</span>
     </div>
   </div>
 </template>
@@ -167,15 +170,15 @@ getCookie();
   width: 400px;
   padding: 25px 25px 5px 25px;
   .el-input {
-    height: 38px;
+    height: 40px;
     input {
-      height: 38px;
+      height: 40px;
     }
   }
   .input-icon {
     height: 39px;
     width: 14px;
-    margin-left: 2px;
+    margin-left: 0px;
   }
 }
 .login-tip {
@@ -185,7 +188,7 @@ getCookie();
 }
 .login-code {
   width: 33%;
-  height: 38px;
+  height: 40px;
   float: right;
   img {
     cursor: pointer;
@@ -205,6 +208,7 @@ getCookie();
   letter-spacing: 1px;
 }
 .login-code-img {
-  height: 38px;
+  height: 40px;
+  padding-left: 12px;
 }
 </style>

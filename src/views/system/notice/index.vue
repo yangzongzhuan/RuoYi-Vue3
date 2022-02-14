@@ -6,7 +6,6 @@
                v-model="queryParams.noticeTitle"
                placeholder="请输入公告标题"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -19,7 +18,7 @@
             />
          </el-form-item>
          <el-form-item label="类型" prop="noticeType">
-            <el-select v-model="queryParams.noticeType" placeholder="公告类型" clearable size="small">
+            <el-select v-model="queryParams.noticeType" placeholder="公告类型" clearable>
                <el-option
                   v-for="dict in sys_notice_type"
                   :key="dict.value"
@@ -29,8 +28,8 @@
             </el-select>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -40,7 +39,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:notice:add']"
             >新增</el-button>
@@ -50,7 +48,6 @@
                type="success"
                plain
                icon="Edit"
-               size="mini"
                :disabled="single"
                @click="handleUpdate"
                v-hasPermi="['system:notice:edit']"
@@ -61,7 +58,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:notice:remove']"
@@ -98,14 +94,12 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:notice:edit']"
                >修改</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"

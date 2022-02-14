@@ -6,7 +6,6 @@ import createVitePlugins from './vite/plugins'
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
   return {
-    base: env.VITE_APP_WEB_PATH,
     plugins: createVitePlugins(env, command === 'build'),
     resolve: {
       // https://cn.vitejs.dev/config/#resolve-alias
@@ -21,16 +20,15 @@ export default defineConfig(({ mode, command }) => {
     },
 	// vite 相关配置
     server: {
+      port: 80,
+      host: true,
       open: true,
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
-        [env.VITE_APP_BASE_API]: {
-          target: 'http://localhost:7099',
+        '/dev-api': {
+          target: 'http://localhost:8080',
           changeOrigin: true,
-          rewrite: (p) => {
-            const reg = new RegExp(`^${env.VITE_APP_BASE_API}`);
-            return p.replace(reg, '');
-          }
+          rewrite: (p) => p.replace(/^\/dev-api/, '')
         }
       },
     },

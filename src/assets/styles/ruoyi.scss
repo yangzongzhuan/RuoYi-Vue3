@@ -37,7 +37,7 @@
 .mb10 {
 	margin-bottom: 10px;
 }
-.ml0 {
+.ml10 {
 	margin-left: 10px;
 }
 .mt20 {
@@ -49,7 +49,7 @@
 .mb20 {
 	margin-bottom: 20px;
 }
-.m20 {
+.ml20 {
 	margin-left: 20px;
 }
 
@@ -64,7 +64,7 @@
 	margin-top: 6vh !important;
 }
 
-.el-dialog__wrapper.scrollbar .el-dialog .el-dialog__body {
+.el-dialog.scrollbar .el-dialog__body {
     overflow: auto;
 	overflow-x: hidden;
 	max-height: 70vh;
@@ -112,6 +112,7 @@
     border: 1px solid #e5e6e7;
     background: #FFFFFF none;
     border-radius:4px;
+    width: 100%;
 }
 
 .pagination-container .el-pagination {
@@ -128,7 +129,7 @@
   }
 }
 
-.el-table .fixed-width .el-button--mini {
+.el-table .fixed-width .el-button--small {
 	padding-left: 0;
 	padding-right: 0;
 	width: inherit;
@@ -138,7 +139,7 @@
 .el-table .el-dropdown-link {
 	cursor: pointer;
 	color: #409EFF;
-	margin-left: 5px;
+	margin-left: 10px;
 }
 
 .el-table .el-dropdown, .el-icon-arrow-down {
@@ -175,12 +176,12 @@
 }
 
 .el-card__header {
-	padding: 14px 15px 7px;
+	padding: 14px 15px 7px !important;
 	min-height: 40px;
 }
 
 .el-card__body {
-	padding: 15px 20px 20px 20px;
+	padding: 15px 20px 20px 20px !important;
 }
 
 .card-box {

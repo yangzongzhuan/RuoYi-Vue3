@@ -82,6 +82,9 @@ export function selectDictLabel(datas, value) {
 
 // 回显数据字典（字符串数组）
 export function selectDictLabels(datas, value, separator) {
+  if(value === undefined) {
+    return "";
+  }
   var actions = [];
   var currentSeparator = undefined === separator ? "," : separator;
   var temp = value.split(currentSeparator);
@@ -110,7 +113,7 @@ export function sprintf(str) {
 }
 
 // 转换字符串，undefined,null等转化为""
-export function praseStrEmpty(str) {
+export function parseStrEmpty(str) {
   if (!str || str == "undefined" || str == "null") {
     return "";
   }

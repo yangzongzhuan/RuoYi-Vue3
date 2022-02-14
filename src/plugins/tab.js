@@ -4,20 +4,21 @@ import router from '@/router'
 export default {
   // 刷新当前tab页签
   refreshPage(obj) {
-    const { path, matched } = router.currentRoute.value;
+    const { path, query, matched } = router.currentRoute.value;
     if (obj === undefined) {
       matched.forEach((m) => {
         if (m.components && m.components.default && m.components.default.name) {
           if (!['Layout', 'ParentView'].includes(m.components.default.name)) {
-            obj = { name: m.components.default.name, path: path };
+            obj = { name: m.components.default.name, path: path, query: query };
           }
         }
       });
     }
     return store.dispatch('tagsView/delCachedView', obj).then(() => {
-      const { path } = obj
+      const { path, query } = obj
       router.replace({
-        path: '/redirect' + path
+        path: '/redirect' + path,
+        query: query
       })
     })
   },

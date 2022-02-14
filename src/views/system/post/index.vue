@@ -6,7 +6,6 @@
                v-model="queryParams.postCode"
                placeholder="请输入岗位编码"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -15,12 +14,11 @@
                v-model="queryParams.postName"
                placeholder="请输入岗位名称"
                clearable
-               size="small"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="岗位状态" clearable size="small">
+            <el-select v-model="queryParams.status" placeholder="岗位状态" clearable>
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -30,8 +28,8 @@
             </el-select>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
 
@@ -41,7 +39,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:post:add']"
             >新增</el-button>
@@ -51,7 +48,6 @@
                type="success"
                plain
                icon="Edit"
-               size="mini"
                :disabled="single"
                @click="handleUpdate"
                v-hasPermi="['system:post:edit']"
@@ -62,7 +58,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:post:remove']"
@@ -73,7 +68,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['system:post:export']"
             >导出</el-button>
@@ -100,14 +94,12 @@
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button
-                  size="mini"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:post:edit']"
                >修改</el-button>
                <el-button
-                  size="mini"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"

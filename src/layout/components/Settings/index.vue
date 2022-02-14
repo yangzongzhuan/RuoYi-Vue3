@@ -72,8 +72,8 @@
 
     <el-divider />
 
-    <el-button size="small" type="primary" plain icon="DocumentAdd" @click="saveSetting">保存配置</el-button>
-    <el-button size="small" plain icon="Refresh" @click="resetSetting">重置配置</el-button>
+    <el-button type="primary" plain icon="DocumentAdd" @click="saveSetting">保存配置</el-button>
+    <el-button plain icon="Refresh" @click="resetSetting">重置配置</el-button>
   </el-drawer>
 
 </template>

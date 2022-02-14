@@ -13,7 +13,7 @@
 const tagAndTagSpacing = ref(4);
 const { proxy } = getCurrentInstance();
 
-const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap);
+const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrap$);
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true)

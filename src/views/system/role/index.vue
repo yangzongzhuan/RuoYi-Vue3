@@ -6,7 +6,6 @@
                v-model="queryParams.roleName"
                placeholder="请输入角色名称"
                clearable
-               size="small"
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
@@ -16,7 +15,6 @@
                v-model="queryParams.roleKey"
                placeholder="请输入权限字符"
                clearable
-               size="small"
                style="width: 240px"
                @keyup.enter="handleQuery"
             />
@@ -26,7 +24,6 @@
                v-model="queryParams.status"
                placeholder="角色状态"
                clearable
-               size="small"
                style="width: 240px"
             >
                <el-option
@@ -37,11 +34,9 @@
                />
             </el-select>
          </el-form-item>
-         <el-form-item label="创建时间">
+         <el-form-item label="创建时间" style="width: 308px">
             <el-date-picker
                v-model="dateRange"
-               size="small"
-               style="width: 240px"
                value-format="YYYY-MM-DD"
                type="daterange"
                range-separator="-"
@@ -50,8 +45,8 @@
             ></el-date-picker>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" icon="Search" size="mini" @click="handleQuery">搜索</el-button>
-            <el-button icon="Refresh" size="mini" @click="resetQuery">重置</el-button>
+            <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+            <el-button icon="Refresh" @click="resetQuery">重置</el-button>
          </el-form-item>
       </el-form>
       <el-row :gutter="10" class="mb8">
@@ -60,7 +55,6 @@
                type="primary"
                plain
                icon="Plus"
-               size="mini"
                @click="handleAdd"
                v-hasPermi="['system:role:add']"
             >新增</el-button>
@@ -70,7 +64,6 @@
                type="success"
                plain
                icon="Edit"
-               size="mini"
                :disabled="single"
                @click="handleUpdate"
                v-hasPermi="['system:role:edit']"
@@ -81,7 +74,6 @@
                type="danger"
                plain
                icon="Delete"
-               size="mini"
                :disabled="multiple"
                @click="handleDelete"
                v-hasPermi="['system:role:remove']"
@@ -92,7 +84,6 @@
                type="warning"
                plain
                icon="Download"
-               size="mini"
                @click="handleExport"
                v-hasPermi="['system:role:export']"
             >导出</el-button>
@@ -117,42 +108,49 @@
                ></el-switch>
             </template>
          </el-table-column>
-         <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+         <el-table-column label="创建时间" align="center" prop="createTime">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  size="mini"
+              <el-tooltip content="修改" placement="top">
+                <el-button
                   v-if="scope.row.roleId !== 1"
                   type="text"
                   icon="Edit"
                   @click="handleUpdate(scope.row)"
                   v-hasPermi="['system:role:edit']"
-               >修改</el-button>
-               <el-button
-                  size="mini"
+                ></el-button>
+              </el-tooltip>
+              <el-tooltip content="删除" placement="top">
+                <el-button
                   v-if="scope.row.roleId !== 1"
                   type="text"
                   icon="Delete"
                   @click="handleDelete(scope.row)"
                   v-hasPermi="['system:role:remove']"
-               >删除</el-button>
-               <el-dropdown size="mini" v-if="scope.row.roleId !== 1" @command="(command) => handleCommand(command, scope.row)">
-                  <span class="el-dropdown-link" v-hasPermi="['system:role:edit']">
-                     <el-icon><d-arrow-right /></el-icon>更多
-                  </span>
-                  <template #dropdown>
-                     <el-dropdown-menu>
-                        <el-dropdown-item command="handleDataScope" icon="CircleCheck"
-                           v-hasPermi="['system:role:edit']">数据权限</el-dropdown-item>
-                        <el-dropdown-item command="handleAuthUser" icon="User"
-                           v-hasPermi="['system:role:edit']">分配用户</el-dropdown-item>
-                     </el-dropdown-menu>
-                  </template>
-               </el-dropdown>
+                ></el-button>
+              </el-tooltip>
+              <el-tooltip content="数据权限" placement="top">
+                <el-button
+                  v-if="scope.row.roleId !== 1"
+                  type="text"
+                  icon="CircleCheck"
+                  @click="handleDataScope(scope.row)"
+                  v-hasPermi="['system:role:edit']"
+                ></el-button>
+              </el-tooltip>
+              <el-tooltip content="分配用户" placement="top">
+                <el-button
+                  v-if="scope.row.roleId !== 1"
+                  type="text"
+                  icon="User"
+                  @click="handleAuthUser(scope.row)"
+                  v-hasPermi="['system:role:edit']"
+                ></el-button>
+              </el-tooltip>
             </template>
          </el-table-column>
       </el-table>

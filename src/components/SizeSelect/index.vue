@@ -24,10 +24,9 @@ const route = useRoute();
 const router = useRouter();
 const {proxy} = getCurrentInstance();
 const sizeOptions = ref([
-  { label: 'Large', value: 'large' },
-  { label: 'Medium', value: 'medium' },
-  { label: 'Small', value: 'small' },
-  { label: 'Mini', value: 'mini' }
+  { label: '较大', value: 'large' },
+  { label: '默认', value: 'default' },
+  { label: '稍小', value: 'small' },
 ])
 
 function refreshView() {
@@ -43,13 +42,9 @@ function refreshView() {
   })
 }
 function handleSetSize(size) {
-  proxy.$ELEMENT.size = size;
+  proxy.$modal.loading("正在设置布局大小，请稍候...");
   store.dispatch('app/setSize', size)
-  refreshView()
-  ElMessage({
-    message: 'Switch Size Success',
-    type: 'success'
-  })
+  setTimeout("window.location.reload()", 1000)
 };
 </script>
 

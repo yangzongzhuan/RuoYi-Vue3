@@ -23,7 +23,7 @@
         </el-tooltip>
       </template>
       <div class="avatar-container">
-        <el-dropdown class="right-menu-item hover-effect" trigger="click">
+        <el-dropdown @command="handleCommand" class="right-menu-item hover-effect" trigger="click">
           <div class="avatar-wrapper">
             <img :src="getters.avatar" class="user-avatar" />
             <el-icon><caret-bottom /></el-icon>
@@ -33,10 +33,10 @@
               <router-link to="/user/profile">
                 <el-dropdown-item>个人中心</el-dropdown-item>
               </router-link>
-              <el-dropdown-item @click="setLayout">
+              <el-dropdown-item command="setLayout">
                 <span>布局设置</span>
               </el-dropdown-item>
-              <el-dropdown-item divided @click="logout">
+              <el-dropdown-item divided command="logout">
                 <span>退出登录</span>
               </el-dropdown-item>
             </el-dropdown-menu>
@@ -63,6 +63,19 @@ const getters = computed(() => store.getters);
 
 function toggleSideBar() {
   store.dispatch('app/toggleSideBar')
+}
+
+function handleCommand(command) {
+  switch (command) {
+    case "setLayout":
+      setLayout();
+      break;
+    case "logout":
+      logout();
+      break;
+    default:
+      break;
+  }
 }
 
 function logout() {
