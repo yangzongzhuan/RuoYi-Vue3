@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-	"build:prod": "vite build",
+    "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
   },
@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "0.2.6",
+    "@vueuse/core": "^7.6.2",
     "axios": "0.24.0",
     "echarts": "5.2.2",
     "element-plus": "2.0.1",
