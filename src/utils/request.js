@@ -9,7 +9,7 @@ import { saveAs } from 'file-saver'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
-let isReloginShow;
+export let isRelogin = { show: false };
 
 axios.defaults.headers['Content-Type'] = 'application/json;charset=utf-8'
 // 创建axios实例
@@ -76,23 +76,20 @@ service.interceptors.response.use(res => {
       return res.data
     }
     if (code === 401) {
-      if (!isReloginShow) {
-        isReloginShow = true;
+      if (!isRelogin.show) {
+        isRelogin.show = true;
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', {
           confirmButtonText: '重新登录',
           cancelButtonText: '取消',
           type: 'warning'
         }
       ).then(() => {
-        isReloginShow = false;
+        isRelogin.show = false;
         store.dispatch('LogOut').then(() => {
-          // 如果是登录页面不需要重新加载
-          if (window.location.hash.indexOf("#/login") != 0) {
-            location.href = '/index';
-          }
+          location.href = '/index';
         })
       }).catch(() => {
-        isReloginShow = false;
+        isRelogin.show = false;
       });
     }
       return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
