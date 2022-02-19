@@ -373,8 +373,8 @@ function selected(name) {
 }
 /** 关闭弹窗隐藏图标选择 */
 function handleClose() {
- cancel();
- showChooseIcon.value = false;
+  cancel();
+  showChooseIcon.value = false;
 }
 /** 搜索按钮操作 */
 function handleQuery() {
