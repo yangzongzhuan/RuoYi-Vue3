@@ -1,6 +1,7 @@
 <template>
   <div class="upload-file">
     <el-upload
+      multiple
       :action="uploadFileUrl"
       :before-upload="handleBeforeUpload"
       :file-list="fileList"
@@ -67,6 +68,8 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 const emit = defineEmits();
+const number = ref(0);
+const uploadList = ref([]);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
 const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传的图片服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() });
@@ -120,6 +123,8 @@ function handleBeforeUpload(file) {
       return false;
     }
   }
+  proxy.$modal.loading("正在上传文件，请稍候...");
+  number.value++;
   return true;
 }
 
@@ -130,14 +135,19 @@ function handleExceed() {
 
 // 上传失败
 function handleUploadError(err) {
-  proxy.$modal.msgError("上传失败");
+  proxy.$modal.msgError("上传文件失败");
 }
 
 // 上传成功回调
 function handleUploadSuccess(res, file) {
-  proxy.$modal.msgSuccess("上传成功");
-  fileList.value.push({ name: res.fileName, url: res.fileName });
-  emit("update:modelValue", listToString(fileList.value));
+  uploadList.value.push({ name: res.fileName, url: res.fileName });
+  if (uploadList.value.length === number.value) {
+    fileList.value = fileList.value.concat(uploadList.value);
+    uploadList.value = [];
+    number.value = 0;
+    emit("update:modelValue", listToString(fileList.value));
+    proxy.$modal.closeLoading();
+  }
 }
 
 // 删除文件
@@ -149,7 +159,7 @@ function handleDelete(index) {
 // 获取文件名称
 function getFileName(name) {
   if (name.lastIndexOf("/") > -1) {
-    return name.slice(name.lastIndexOf("/") + 1).toLowerCase();
+    return name.slice(name.lastIndexOf("/") + 1);
   } else {
     return "";
   }
