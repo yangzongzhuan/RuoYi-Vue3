@@ -1,6 +1,7 @@
 <template>
   <div class="component-upload-image">
     <el-upload
+      multiple
       :action="uploadImgUrl"
       list-type="picture-card"
       :on-success="handleUploadSuccess"
@@ -73,6 +74,8 @@ const props = defineProps({
 
 const { proxy } = getCurrentInstance();
 const emit = defineEmits();
+const number = ref(0);
+const uploadList = ref([]);
 const dialogImageUrl = ref("");
 const dialogVisible = ref(false);
 const baseUrl = import.meta.env.VITE_APP_BASE_API;
@@ -115,9 +118,14 @@ function handleRemove(file, files) {
 
 // 上传成功回调
 function handleUploadSuccess(res) {
-  fileList.value.push({ name: res.fileName, url: res.fileName });
-  emit("update:modelValue", listToString(fileList.value));
-  proxy.$modal.closeLoading();
+  uploadList.value.push({ name: res.fileName, url: res.fileName });
+  if (uploadList.value.length === number.value) {
+    fileList.value = fileList.value.concat(uploadList.value);
+    uploadList.value = [];
+    number.value = 0;
+    emit("update:modelValue", listToString(fileList.value));
+    proxy.$modal.closeLoading();
+  }
 }
 
 // 上传前loading加载
@@ -150,6 +158,7 @@ function handleBeforeUpload(file) {
     }
   }
   proxy.$modal.loading("上传中");
+  number.value++;
 }
 
 // 文件个数超出
