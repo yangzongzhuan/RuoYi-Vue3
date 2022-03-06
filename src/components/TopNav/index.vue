@@ -40,6 +40,7 @@ const currentIndex = ref(null);
 
 const store = useStore();
 const route = useRoute();
+const router = useRouter();
 
 // 主题颜色
 const theme = computed(() => store.state.settings.theme);
@@ -69,7 +70,7 @@ const childrenMenus = computed(() => {
     for (let item in router.children) {
       if (router.children[item].parentPath === undefined) {
         if(router.path === "/") {
-          router.children[item].path = "/redirect/" + router.children[item].path;
+          router.children[item].path = "/" + router.children[item].path;
         } else {
           if(!isHttp(router.children[item].path)) {
             router.children[item].path = router.path + "/" + router.children[item].path;
@@ -86,52 +87,48 @@ const childrenMenus = computed(() => {
 // 默认激活的菜单
 const activeMenu = computed(() => {
   const path = route.path;
-  let activePath = defaultRouter.value;
+  let activePath = path;
   if (path !== undefined && path.lastIndexOf("/") > 0) {
     const tmpPath = path.substring(1, path.length);
     activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"));
+    store.dispatch('app/toggleSideBarHide', false);
   } else if ("/index" == path || "" == path) {
     if (!isFrist.value) {
       isFrist.value = true;
     } else {
       activePath = "index";
     }
+    store.dispatch('app/toggleSideBarHide', true);
+  } else if(!route.children) {
+    activePath = path;
+    store.dispatch('app/toggleSideBarHide', true);
   }
-  let routes = activeRoutes(activePath);
-  if (routes.length === 0) {
-    activePath = currentIndex.value || defaultRouter.value
-    activeRoutes(activePath);
-  }
+  activeRoutes(activePath);
   return activePath;
 })
-// 默认激活的路由
-const defaultRouter = computed(() => {
-  let router;
-  Object.keys(routers.value).some((key) => {
-    if (!routers.value[key].hidden) {
-      router = routers.value[key].path;
-      return true;
-    }
-  });
-  return router;
-})
+
 function setVisibleNumber() {
   const width = document.body.getBoundingClientRect().width / 3;
   visibleNumber.value = parseInt(width / 85);
 }
+
 function handleSelect(key, keyPath) {
   currentIndex.value = key;
+  const route = routers.value.find(item => item.path === key);
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
     window.open(key, "_blank");
-  } else if (key.indexOf("/redirect") !== -1) {
-    // /redirect 路径内部打开
-    router.push({ path: key.replace("/redirect", "") });
+  } else if (!route || !route.children) {
+    // 没有子路由路径内部打开
+    router.push({ path: key });
+    store.dispatch('app/toggleSideBarHide', true);
   } else {
     // 显示左侧联动菜单
     activeRoutes(key);
+    store.dispatch('app/toggleSideBarHide', false);
   }
 }
+
 function activeRoutes(key) {
   let routes = [];
   if (childrenMenus.value && childrenMenus.value.length > 0) {

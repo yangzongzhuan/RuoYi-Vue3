@@ -102,6 +102,7 @@ const topNav = computed({
       value: val
     })
     if (!val) {
+      store.dispatch('app/toggleSideBarHide', false);
       store.commit("SET_SIDEBAR_ROUTERS", store.state.permission.defaultRoutes);
     }
   }
