@@ -82,7 +82,7 @@ const defaultExpandedKey = ref([]);
 function initHandle() {
   nextTick(() => {
     const selectedValue = valueId.value;
-    if(selectedValue && selectedValue !== null && typeof (selectedValue) !== "undefined"){
+    if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
       const node = proxy.$refs.selectTree.getNode(selectedValue)
       if (node) {
         valueTitle.value = node.data[props.objMap.label]
@@ -140,7 +140,7 @@ watch(valueId, () => {
   font-weight: normal;
 }
 
-ul li  .el-tree .el-tree-node__content {
+ul li .el-tree .el-tree-node__content {
   height: auto;
   padding: 0 20px;
   box-sizing: border-box;
