@@ -98,6 +98,10 @@ function setLayout() {
   width: calc(100% - 54px);
 }
 
+.sidebarHide .fixed-header {
+  width: calc(100%);
+}
+
 .mobile .fixed-header {
   width: 100%;
 }
