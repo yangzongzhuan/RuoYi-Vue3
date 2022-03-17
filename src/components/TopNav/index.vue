@@ -172,7 +172,7 @@ onMounted(() => {
 }
 
 /* sub-menu item */
-.topmenu-container.el-menu--horizontal > .el-sub-menu .el-submenu__title {
+.topmenu-container.el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
   float: left;
   height: 50px !important;
   line-height: 50px !important;
