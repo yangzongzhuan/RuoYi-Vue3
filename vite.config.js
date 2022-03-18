@@ -5,7 +5,7 @@ import createVitePlugins from './vite/plugins'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
-  const {VITE_APP_ENV} = env
+  const { VITE_APP_ENV } = env
   return {
     // 部署生产环境和开发环境下的URL。
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
@@ -23,7 +23,7 @@ export default defineConfig(({ mode, command }) => {
       // https://cn.vitejs.dev/config/#resolve-extensions
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
-	// vite 相关配置
+    // vite 相关配置
     server: {
       port: 80,
       host: true,
@@ -37,7 +37,7 @@ export default defineConfig(({ mode, command }) => {
         }
       },
     },
-     //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
+    //fix:error:stdin>:7356:1: warning: "@charset" must be the first rule in the file
     css: {
       postcss: {
         plugins: [
