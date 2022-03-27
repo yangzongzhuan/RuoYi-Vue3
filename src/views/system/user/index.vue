@@ -8,7 +8,7 @@
                   v-model="deptName"
                   placeholder="请输入部门名称"
                   clearable
-                  prefix-icon="el-icon-search"
+                  prefix-icon="Search"
                   style="margin-bottom: 20px"
                />
             </div>
