@@ -144,7 +144,7 @@ watch(() => props.options, val => {
   font-weight: normal;
 }
 
-ul li  .el-tree .el-tree-node__content {
+ul li .el-tree .el-tree-node__content {
   height: auto;
   padding: 0 20px;
   box-sizing: border-box;
