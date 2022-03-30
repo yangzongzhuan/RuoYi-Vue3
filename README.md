@@ -27,7 +27,7 @@ git clone https://github.com/yangzongzhuan/RuoYi-Vue3.git
 cd RuoYi-Vue3
 
 # 安装依赖
-yarn --registry=https://registry.npm.taobao.org
+yarn --registry=https://registry.npmmirror.com
 
 # 启动服务
 yarn dev
