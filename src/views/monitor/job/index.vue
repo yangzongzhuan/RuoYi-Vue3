@@ -195,7 +195,7 @@
                                     <br />参数说明：支持字符串，布尔类型，长整型，浮点型，整型
                                  </div>
                               </template>
-                              <i class="el-icon-question"></i>
+                              <el-icon><question-filled /></el-icon>
                            </el-tooltip>
                         </span>
                      </template>
