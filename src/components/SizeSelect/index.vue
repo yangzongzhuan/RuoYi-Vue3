@@ -33,11 +33,12 @@ function refreshView() {
   // In order to make the cached page re-rendered
   store.dispatch('tagsView/delAllCachedViews', route)
 
-  const { fullPath } = route
+  const { fullPath, query } = route
 
   nextTick(() => {
     router.replace({
-      path: '/redirect' + fullPath
+      path: '/redirect' + fullPath,
+      query: query
     })
   })
 }
