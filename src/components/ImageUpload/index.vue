@@ -105,7 +105,7 @@ watch(() => props.modelValue, val => {
     fileList.value = [];
     return [];
   }
-});
+},{ deep: true, immediate: true });
 
 // 删除图片
 function handleRemove(file, files) {

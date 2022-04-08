@@ -95,7 +95,7 @@ watch(() => props.modelValue, val => {
     fileList.value = [];
     return [];
   }
-});
+},{ deep: true, immediate: true });
 
 // 上传前校检格式和大小
 function handleBeforeUpload(file) {
