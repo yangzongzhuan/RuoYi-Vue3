@@ -588,7 +588,7 @@ function handleAdd() {
     roleOptions.value = response.roles;
     open.value = true;
     title.value = "添加用户";
-    form.password.value = initPassword.value;
+    form.value.password = initPassword.value;
   });
 };
 /** 修改按钮操作 */
