@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-	"build:prod": "vite build",
+    "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
   },
@@ -19,6 +19,7 @@
     "axios": "0.24.0",
     "echarts": "5.2.2",
     "element-plus": "2.0.1",
+    "fast-glob": "^3.2.11",
     "file-saver": "2.0.5",
     "fuse.js": "6.4.6",
     "js-cookie": "3.0.1",
@@ -34,9 +35,9 @@
     "@vue/compiler-sfc": "3.2.22",
     "sass": "1.45.0",
     "unplugin-auto-import": "0.5.3",
-    "vite": "2.6.14",
+    "vite": "2.9.0",
     "vite-plugin-compression": "0.3.6",
-    "vite-plugin-svg-icons": "1.0.5",
+    "vite-plugin-svg-icons": "2.0.1",
     "vite-plugin-vue-setup-extend": "0.1.0"
   }
 }
