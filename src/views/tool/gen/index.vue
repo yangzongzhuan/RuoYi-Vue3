@@ -163,6 +163,7 @@
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :key="key"
         >
+          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
           <pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
@@ -273,6 +274,10 @@ function handlePreview(row) {
     preview.value.open = true;
     preview.value.activeName = "domain.java";
   });
+}
+/** 复制代码成功 */
+function copyTextSuccess() {
+  proxy.$modal.msgSuccess("复制成功");
 }
 // 多选框选中数据
 function handleSelectionChange(selection) {
