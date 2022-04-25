@@ -97,11 +97,13 @@
             <el-row>
                <el-col :span="24" v-if="form.parentId !== 0">
                   <el-form-item label="上级部门" prop="parentId">
-                     <tree-select
-                        v-model:value="form.parentId"
-                        :options="deptOptions"
-                        :objMap="{ value: 'deptId', label: 'deptName', children: 'children' }"
+                     <el-tree-select
+                        v-model="form.parentId"
+                        :data="deptOptions"
+                        :props="{ value: 'deptId', label: 'deptName', children: 'children' }"
+                        value-key="deptId"
                         placeholder="选择上级部门"
+                        check-strictly
                      />
                   </el-form-item>
                </el-col>
@@ -222,9 +224,9 @@ function resetQuery() {
   handleQuery();
 }
 /** 新增按钮操作 */
-async function handleAdd(row) {
+function handleAdd(row) {
   reset();
-  await listDept().then(response => {
+  listDept().then(response => {
     deptOptions.value = proxy.handleTree(response.data, "deptId");
   });
   if (row != undefined) {
@@ -242,9 +244,9 @@ function toggleExpandAll() {
   });
 }
 /** 修改按钮操作 */
-async function handleUpdate(row) {
+function handleUpdate(row) {
   reset();
-  await listDeptExcludeChild(row.deptId).then(response => {
+  listDeptExcludeChild(row.deptId).then(response => {
     deptOptions.value = proxy.handleTree(response.data, "deptId");
   });
   getDept(row.deptId).then(response => {

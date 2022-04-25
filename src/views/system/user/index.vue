@@ -207,11 +207,13 @@
                </el-col>
                <el-col :span="12">
                   <el-form-item label="归属部门" prop="deptId">
-                     <tree-select
-                        v-model:value="form.deptId"
-                        :options="deptOptions"
+                     <el-tree-select
+                        v-model="form.deptId"
+                        :data="deptOptions"
+                        :props="{ value: 'id', label: 'label', children: 'children' }"
+                        value-key="id"
                         placeholder="请选择归属部门"
-                        :objMap="{ value: 'id', label: 'label', children: 'children' }"
+                        check-strictly
                      />
                   </el-form-item>
                </el-col>

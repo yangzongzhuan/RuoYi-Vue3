@@ -103,11 +103,13 @@
             <el-row>
                <el-col :span="24">
                   <el-form-item label="上级菜单">
-                     <tree-select
-                        v-model:value="form.parentId"
-                        :options="menuOptions"
-                        :objMap="{ value: 'menuId', label: 'menuName', children: 'children' }"
+                     <el-tree-select
+                        v-model="form.parentId"
+                        :data="menuOptions"
+                        :props="{ value: 'menuId', label: 'menuName', children: 'children' }"
+                        value-key="menuId"
                         placeholder="选择上级菜单"
+                        check-strictly
                      />
                   </el-form-item>
                </el-col>
@@ -332,9 +334,9 @@ function getList() {
   });
 }
 /** 查询菜单下拉树结构 */
-async function getTreeselect() {
+function getTreeselect() {
   menuOptions.value = [];
-  await listMenu().then(response => {
+  listMenu().then(response => {
     const menu = { menuId: 0, menuName: "主类目", children: [] };
     menu.children = proxy.handleTree(response.data, "menuId");
     menuOptions.value.push(menu);
@@ -386,9 +388,9 @@ function resetQuery() {
   handleQuery();
 }
 /** 新增按钮操作 */
-async function handleAdd(row) {
+function handleAdd(row) {
   reset();
-  await getTreeselect();
+  getTreeselect();
   if (row != null && row.menuId) {
     form.value.parentId = row.menuId;
   } else {
