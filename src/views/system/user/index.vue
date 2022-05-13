@@ -19,6 +19,7 @@
                   :expand-on-click-node="false"
                   :filter-node-method="filterNode"
                   ref="deptTreeRef"
+                  highlight-current
                   default-expand-all
                   @node-click="handleNodeClick"
                />
