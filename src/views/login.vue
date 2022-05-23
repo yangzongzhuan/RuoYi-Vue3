@@ -95,6 +95,11 @@ const captchaOnOff = ref(true);
 const register = ref(false);
 const redirect = ref(undefined);
 
+// 监听路由变化 当用户保存页面登录过期时候，用户重新登录后，路由实现页面重定向功能
+watch(route, (newRoute, oldRoute) => {
+  redirect.value = newRoute.query && newRoute.query.redirect
+}, { immediate: true })
+
 function handleLogin() {
   proxy.$refs.loginRef.validate(valid => {
     if (valid) {
