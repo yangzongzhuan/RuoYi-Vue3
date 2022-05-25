@@ -98,7 +98,7 @@
       </el-table>
 
       <!-- 添加或修改菜单对话框 -->
-      <el-dialog :title="title" v-model="open" width="680px" :before-close="handleClose" append-to-body>
+      <el-dialog :title="title" v-model="open" width="680px" append-to-body>
          <el-form ref="menuRef" :model="form" :rules="rules" label-width="100px">
             <el-row>
                <el-col :span="24">
@@ -132,7 +132,7 @@
                         @show="showSelectIcon"
                      >
                         <template #reference>
-                           <el-input v-model="form.icon" placeholder="点击选择图标" @click="showSelectIcon" readonly>
+                           <el-input v-model="form.icon" placeholder="点击选择图标" @click="showSelectIcon" v-click-outside="hideSelectIcon" readonly>
                               <template #prefix>
                                  <svg-icon
                                     v-if="form.icon"
@@ -295,6 +295,7 @@
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu";
 import SvgIcon from "@/components/SvgIcon";
 import IconSelect from "@/components/IconSelect";
+import { ClickOutside as vClickOutside } from 'element-plus'
 
 const { proxy } = getCurrentInstance();
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable");
@@ -373,9 +374,8 @@ function selected(name) {
   form.value.icon = name;
   showChooseIcon.value = false;
 }
-/** 关闭弹窗隐藏图标选择 */
-function handleClose() {
-  cancel();
+/** 图标外层点击隐藏下拉列表 */
+function hideSelectIcon() {
   showChooseIcon.value = false;
 }
 /** 搜索按钮操作 */
