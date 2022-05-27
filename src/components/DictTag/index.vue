@@ -6,7 +6,7 @@
           v-if="item.elTagType == 'default' || item.elTagType == ''"
           :key="item.value"
           :index="index"
-          :class="item.elTagType"
+          :class="item.elTagClass"
         >{{ item.label }}</span>
         <el-tag
           v-else
@@ -14,7 +14,7 @@
           :key="item.value + ''"
           :index="index"
           :type="item.elTagType === 'primary' ? '' : item.elTagType"
-          :class="item.elTagType"
+          :class="item.elTagClass"
         >{{ item.label }}</el-tag>
       </template>
     </template>
