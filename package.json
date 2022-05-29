@@ -37,7 +37,7 @@
     "unplugin-auto-import": "0.8.5",
     "vite": "2.9.9",
     "vite-plugin-compression": "0.5.1",
-    "vite-plugin-svg-icons": "1.0.5",
+    "vite-plugin-svg-icons": "2.0.1",
     "vite-plugin-vue-setup-extend": "0.4.0"
   }
 }
