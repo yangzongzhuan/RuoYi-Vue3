@@ -31,7 +31,7 @@
     "vuex": "4.0.2"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "2.3.1",
+    "@vitejs/plugin-vue": "2.3.3",
     "@vue/compiler-sfc": "3.2.31",
     "sass": "1.50.0",
     "unplugin-auto-import": "0.8.5",
