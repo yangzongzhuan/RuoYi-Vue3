@@ -84,26 +84,28 @@ import originElementPlus from 'element-plus/theme-chalk/index.css'
 import axios from 'axios'
 import { ElLoading, ElMessage } from 'element-plus'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
+import useAppStore from '@/store/modules/app'
+import useSettingsStore from '@/store/modules/settings'
+import usePermissionStore from '@/store/modules/permission'
 
 const { proxy } = getCurrentInstance();
-const store = useStore();
+const appStore = useAppStore()
+const settingsStore = useSettingsStore()
+const permissionStore = usePermissionStore()
 const showSettings = ref(false);
-const theme = ref(store.state.settings.theme);
-const sideTheme = ref(store.state.settings.sideTheme);
-const storeSettings = computed(() => store.state.settings);
+const theme = ref(settingsStore.theme);
+const sideTheme = ref(settingsStore.sideTheme);
+const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
 
 /** 是否需要topnav */
 const topNav = computed({
   get: () => storeSettings.value.topNav,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'topNav',
-      value: val
-    })
+    settingsStore.changeSetting({ key: 'topNav', value: val })
     if (!val) {
-      store.dispatch('app/toggleSideBarHide', false);
-      store.commit("SET_SIDEBAR_ROUTERS", store.state.permission.defaultRoutes);
+      appStore.toggleSideBarHide(false);
+      permissionStore.setSidebarRouters(permissionStore.defaultRoutes);
     }
   }
 })
@@ -111,57 +113,39 @@ const topNav = computed({
 const tagsView = computed({
   get: () => storeSettings.value.tagsView,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'tagsView',
-      value: val
-    })
+    settingsStore.changeSetting({ key: 'tagsView', value: val })
   }
 })
 /**是否需要固定头部 */
 const fixedHeader = computed({
   get: () => storeSettings.value.fixedHeader,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'fixedHeader',
-      value: val
-    })
+    settingsStore.changeSetting({ key: 'fixedHeader', value: val })
   }
 })
 /**是否需要侧边栏的logo */
 const sidebarLogo = computed({
   get: () => storeSettings.value.sidebarLogo,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'sidebarLogo',
-      value: val
-    })
+    settingsStore.changeSetting({ key: 'sidebarLogo', value: val })
   }
 })
 /**是否需要侧边栏的动态网页的title */
 const dynamicTitle = computed({
   get: () => storeSettings.value.dynamicTitle,
   set: (val) => {
-    store.dispatch('settings/changeSetting', {
-      key: 'dynamicTitle',
-      value: val
-    })
+    settingsStore.changeSetting({ key: 'dynamicTitle', value: val })
     // 动态设置网页标题
     useDynamicTitle()
   }
 })
 
 function themeChange(val) {
-  store.dispatch('settings/changeSetting', {
-    key: 'theme',
-    value: val
-  })
+  settingsStore.changeSetting({ key: 'theme', value: val })
   theme.value = val;
 }
 function handleTheme(val) {
-  store.dispatch('settings/changeSetting', {
-    key: 'sideTheme',
-    value: val
-  })
+  settingsStore.changeSetting({ key: 'sideTheme', value: val })
   sideTheme.value = val;
 }
 function saveSetting() {

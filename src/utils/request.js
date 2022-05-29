@@ -1,11 +1,11 @@
 import axios from 'axios'
 import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
-import store from '@/store'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
 import cache from '@/plugins/cache'
 import { saveAs } from 'file-saver'
+import useUserStore from '@/store/modules/user'
 
 let downloadLoadingInstance;
 // 是否显示重新登录
@@ -85,7 +85,7 @@ service.interceptors.response.use(res => {
         }
       ).then(() => {
         isRelogin.show = false;
-        store.dispatch('LogOut').then(() => {
+        useUserStore().logOut().then(() => {
           location.href = '/index';
         })
       }).catch(() => {

@@ -3,13 +3,13 @@
  * Copyright (c) 2019 ruoyi
  */
  
-import store from '@/store'
+import useUserStore from '@/store/modules/user'
 
 export default {
   mounted(el, binding, vnode) {
     const { value } = binding
     const super_admin = "admin";
-    const roles = store.getters && store.getters.roles
+    const roles = useUserStore().roles
 
     if (value && value instanceof Array && value.length > 0) {
       const roleFlag = value

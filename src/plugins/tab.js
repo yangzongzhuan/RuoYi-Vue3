@@ -1,4 +1,4 @@
-import store from '@/store'
+import useTagsViewStore from '@/store/modules/tagsview'
 import router from '@/router'
 
 export default {
@@ -14,7 +14,7 @@ export default {
         }
       });
     }
-    return store.dispatch('tagsView/delCachedView', obj).then(() => {
+    return useTagsViewStore().delCachedView(obj).then(() => {
       const { path, query } = obj
       router.replace({
         path: '/redirect' + path,
@@ -24,7 +24,7 @@ export default {
   },
   // 关闭当前tab页签，打开新页签
   closeOpenPage(obj) {
-    store.dispatch("tagsView/delView", router.currentRoute.value);
+    useTagsViewStore().delView(router.currentRoute.value);
     if (obj !== undefined) {
       return router.push(obj);
     }
@@ -32,27 +32,27 @@ export default {
   // 关闭指定tab页签
   closePage(obj) {
     if (obj === undefined) {
-      return store.dispatch('tagsView/delView', router.currentRoute.value).then(({ lastPath }) => {
+      return useTagsViewStore().delView(router.currentRoute.value).then(({ lastPath }) => {
         return router.push(lastPath || '/index');
       });
     }
-    return store.dispatch('tagsView/delView', obj);
+    return useTagsViewStore().delView(obj);
   },
   // 关闭所有tab页签
   closeAllPage() {
-    return store.dispatch('tagsView/delAllViews');
+    return useTagsViewStore().delAllViews();
   },
   // 关闭左侧tab页签
   closeLeftPage(obj) {
-    return store.dispatch('tagsView/delLeftTags', obj || router.currentRoute.value);
+    return useTagsViewStore().delLeftTags(obj || router.currentRoute.value);
   },
   // 关闭右侧tab页签
   closeRightPage(obj) {
-    return store.dispatch('tagsView/delRightTags', obj || router.currentRoute.value);
+    return useTagsViewStore().delRightTags(obj || router.currentRoute.value);
   },
   // 关闭其他tab页签
   closeOtherPage(obj) {
-    return store.dispatch('tagsView/delOthersViews', obj || router.currentRoute.value);
+    return useTagsViewStore().delOthersViews(obj || router.currentRoute.value);
   },
   // 打开tab页签
   openPage(url) {
@@ -60,6 +60,6 @@ export default {
   },
   // 修改tab页签
   updatePage(obj) {
-    return store.dispatch('tagsView/updateVisitedView', obj);
+    return useTagsViewStore().updateVisitedView(obj);
   }
 }

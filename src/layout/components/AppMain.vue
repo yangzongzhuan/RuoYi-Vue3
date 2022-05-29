@@ -11,11 +11,13 @@
 </template>
 
 <script setup>
-let store = useStore()
+import useTagsViewStore from '@/store/modules/tagsview'
+
+const tagsViewStore = useTagsViewStore()
 const route = useRoute()
-store.dispatch('tagsView/addCachedView', route)
+tagsViewStore.addCachedView(route)
 const cachedViews = computed(() => {
-    return store.state.tagsView.cachedViews
+    return tagsViewStore.cachedViews
 })
 </script>
 

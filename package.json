@@ -6,7 +6,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite",
-	"build:prod": "vite build",
+    "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview"
   },
@@ -25,10 +25,10 @@
     "js-cookie": "3.0.1",
     "jsencrypt": "3.2.1",
     "nprogress": "0.2.0",
+    "pinia": "2.0.14",
     "vue": "3.2.31",
     "vue-cropper": "1.0.3",
-    "vue-router": "4.0.14",
-    "vuex": "4.0.2"
+    "vue-router": "4.0.14"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "2.3.3",

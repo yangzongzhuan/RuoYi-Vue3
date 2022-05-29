@@ -3,13 +3,13 @@
  * Copyright (c) 2019 ruoyi
  */
  
-import store from '@/store'
+import useUserStore from '@/store/modules/user'
 
 export default {
   mounted(el, binding, vnode) {
     const { value } = binding
     const all_permission = "*:*:*";
-    const permissions = store.getters && store.getters.permissions
+    const permissions = useUserStore().permissions
 
     if (value && value instanceof Array && value.length > 0) {
       const permissionFlag = value
