@@ -44,7 +44,7 @@
 <script setup>
 import ScrollPane from './ScrollPane'
 import { getNormalPath } from '@/utils/ruoyi'
-import useTagsViewStore from '@/store/modules/tagsview'
+import useTagsViewStore from '@/store/modules/tagsView'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
