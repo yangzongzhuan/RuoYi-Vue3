@@ -40,7 +40,7 @@ const useUserStore = defineStore(
               this.roles = res.roles
               this.permissions = res.permissions
             } else {
-              this.setRoutes = ['ROLE_DEFAULT']
+              this.roles = ['ROLE_DEFAULT']
             }
             this.name = user.userName
             this.avatar = avatar;
