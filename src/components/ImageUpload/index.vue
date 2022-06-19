@@ -186,3 +186,10 @@ function listToString(list, separator) {
   return strs != "" ? strs.substr(0, strs.length - 1) : "";
 }
 </script>
+
+<style scoped lang="scss">
+// .el-upload--picture-card 控制加号部分
+::v-deep.hide .el-upload--picture-card {
+    display: none;
+}
+</style>
