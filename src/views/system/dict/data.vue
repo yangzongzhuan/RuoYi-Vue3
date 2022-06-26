@@ -156,7 +156,7 @@
                   <el-option
                      v-for="item in listClassOptions"
                      :key="item.value"
-                     :label="item.label"
+                     :label="item.label + '(' + item.value + ')'"
                      :value="item.value"
                   ></el-option>
                </el-select>
