@@ -161,7 +161,7 @@
           v-for="(value, key) in preview.data"
           :label="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
           :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
-          :key="key"
+          :key="value"
         >
           <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
           <pre>{{ value }}</pre>
