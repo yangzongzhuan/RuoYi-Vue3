@@ -149,6 +149,44 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.3 - 2022-06-27">
+              <ol>
+                <li>新增缓存列表菜单功能</li>
+                <li>代码生成树表新增(展开/折叠)</li>
+                <li>Excel注解支持color字体颜色</li>
+                <li>新增Anonymous匿名访问不鉴权注解</li>
+                <li>用户头像上传限制只能为图片格式</li>
+                <li>接口使用泛型使其看到响应属性字段</li>
+                <li>检查定时任务bean所在包名是否为白名单配置</li>
+                <li>添加页签openPage支持传递参数</li>
+                <li>用户缓存信息添加部门ancestors祖级列表</li>
+                <li>升级element-ui到最新版本2.15.8</li>
+                <li>升级oshi到最新版本6.1.6</li>
+                <li>升级druid到最新版本1.2.11</li>
+                <li>升级fastjson到最新版2.0.8</li>
+                <li>升级spring-boot到最新版本2.5.14</li>
+                <li>降级jsencrypt版本兼容IE浏览器</li>
+                <li>删除多余的salt字段</li>
+                <li>新增获取不带后缀文件名称方法</li>
+                <li>新增获取配置文件中的属性值方法</li>
+                <li>新增内容编码/解码方便插件集成使用</li>
+                <li>字典类型必须以字母开头，且只能为（小写字母，数字，下滑线）</li>
+                <li>优化设置分页参数默认值</li>
+                <li>优化对空字符串参数处理的过滤</li>
+                <li>优化显示顺序orderNum类型为整型</li>
+                <li>优化表单构建按钮不显示正则校验</li>
+                <li>优化字典数据回显样式下拉框显示值</li>
+                <li>优化R响应成功状态码与全局保持一致</li>
+                <li>优化druid开启wall过滤器出现的异常问题</li>
+                <li>优化用户管理左侧树型组件增加选中高亮保持</li>
+                <li>优化新增用户与角色信息&用户与岗位信息逻辑</li>
+                <li>优化默认不启用压缩文件缓存防止node_modules过大</li>
+                <li>修复字典数据显示不全问题</li>
+                <li>修复操作日志查询类型条件为0时会查到所有数据</li>
+                <li>修复Excel注解prompt/combo同时使用不生效问题</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.2 - 2022-04-01">
               <ol>
                 <li>前端支持设置是否需要防止数据重复提交</li>
@@ -796,7 +834,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.2')
+const version = ref('3.8.3')
 
 function goTarget(url) {
   window.open(url, '__blank')
