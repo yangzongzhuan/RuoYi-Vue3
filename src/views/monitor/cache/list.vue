@@ -119,7 +119,7 @@
               >清理全部</el-button
             >
           </template>
-          <el-form :model="form">
+          <el-form :model="cacheForm">
             <el-row :gutter="32">
               <el-col :offset="1" :span="22">
                 <el-form-item label="缓存名称:" prop="cacheName">
