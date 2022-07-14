@@ -37,7 +37,7 @@
           <template #prefix><svg-icon icon-class="password" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="code" v-if="captchaOnOff">
+      <el-form-item prop="code" v-if="captchaEnabled">
         <el-input
           size="large" 
           v-model="registerForm.code"
@@ -116,7 +116,7 @@ const registerRules = {
 
 const codeUrl = ref("");
 const loading = ref(false);
-const captchaOnOff = ref(true);
+const captchaEnabled = ref(true);
 
 function handleRegister() {
   proxy.$refs.registerRef.validate(valid => {
@@ -132,7 +132,7 @@ function handleRegister() {
         }).catch(() => {});
       }).catch(() => {
         loading.value = false;
-        if (captchaOnOff) {
+        if (captchaEnabled) {
           getCode();
         }
       });
@@ -142,8 +142,8 @@ function handleRegister() {
 
 function getCode() {
   getCodeImg().then(res => {
-    captchaOnOff.value = res.captchaOnOff === undefined ? true : res.captchaOnOff;
-    if (captchaOnOff.value) {
+    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+    if (captchaEnabled.value) {
       codeUrl.value = "data:image/gif;base64," + res.img;
       registerForm.value.uuid = res.uuid;
     }
