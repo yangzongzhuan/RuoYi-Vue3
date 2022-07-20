@@ -182,6 +182,7 @@
 </template>
 
 <script setup name="Dict">
+import useDictStore from '@/store/modules/dict'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
 
 const { proxy } = getCurrentInstance();
@@ -313,6 +314,7 @@ function handleExport() {
 function handleRefreshCache() {
   refreshCache().then(() => {
     proxy.$modal.msgSuccess("刷新成功");
+    useDictStore().cleanDict();
   });
 }
 
