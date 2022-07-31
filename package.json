@@ -35,7 +35,7 @@
     "@vue/compiler-sfc": "3.2.36",
     "sass": "1.52.1",
     "unplugin-auto-import": "0.8.5",
-    "vite": "2.9.9",
+    "vite": "2.9.14",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1",
     "vite-plugin-vue-setup-extend": "0.4.0"
