@@ -26,7 +26,7 @@
     "jsencrypt": "3.2.1",
     "nprogress": "0.2.0",
     "pinia": "2.0.14",
-    "vue": "3.2.31",
+    "vue": "3.2.37",
     "vue-cropper": "1.0.3",
     "vue-router": "4.0.14"
   },
