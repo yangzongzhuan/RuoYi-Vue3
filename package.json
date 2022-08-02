@@ -26,7 +26,7 @@
     "jsencrypt": "3.2.1",
     "nprogress": "0.2.0",
     "pinia": "2.0.14",
-    "vue": "3.2.31",
+    "vue": "3.2.37",
     "vue-cropper": "1.0.3",
     "vue-router": "4.0.14"
   },
@@ -35,7 +35,7 @@
     "@vue/compiler-sfc": "3.2.36",
     "sass": "1.52.1",
     "unplugin-auto-import": "0.8.5",
-    "vite": "2.9.9",
+    "vite": "2.9.14",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1",
     "vite-plugin-vue-setup-extend": "0.4.0"

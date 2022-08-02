@@ -375,8 +375,12 @@ function selected(name) {
   showChooseIcon.value = false;
 }
 /** 图标外层点击隐藏下拉列表 */
-function hideSelectIcon() {
-  showChooseIcon.value = false;
+function hideSelectIcon(event) {
+  var elem = event.relatedTarget || event.srcElement || event.target || event.currentTarget;
+  var className = elem.className;
+  if (className !== "el-input__inner") {
+    showChooseIcon.value = false;
+  }
 }
 /** 搜索按钮操作 */
 function handleQuery() {
