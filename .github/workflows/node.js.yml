@@ -1,14 +1,22 @@
-name: CI
-on: [push]
+name: Build Deploy
+  on: [push]
+    branches:
+      - main
 jobs:
-  build:
-    name: Test
+  deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: borales/actions-yarn@v3.0.0
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+
+      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+        run: |
+          yarn
+          yarn build:prod
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        env: # 设置环境变量
+          ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }} # toKen私密变量
         with:
-          cmd: install # will run `yarn install` command
-      - uses: borales/actions-yarn@v3.0.0
-        with:
-          cmd: build:prod  # will run `yarn build` command
+          folder: dist/
+          branch: dist # 部署到的分支
