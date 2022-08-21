@@ -350,8 +350,7 @@
 
 <script setup name="User">
 import { getToken } from "@/utils/auth";
-import { treeselect } from "@/api/system/dept";
-import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser } from "@/api/system/user";
+import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 
 const router = useRouter();
 const { proxy } = getCurrentInstance();
@@ -429,8 +428,8 @@ watch(deptName, val => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
 /** 查询部门下拉树结构 */
-function getTreeselect() {
-  treeselect().then(response => {
+function getDeptTree() {
+  deptTreeSelect().then(response => {
     deptOptions.value = response.data;
   });
 };
@@ -550,15 +549,6 @@ const handleFileSuccess = (response, file, fileList) => {
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
-/** 初始化部门数据 */
-function initTreeData() {
-  // 判断部门的数据是否存在，存在不获取，不存在则获取
-  if (deptOptions.value === undefined) {
-    treeselect().then(response => {
-      deptOptions.value = response.data;
-    });
-  }
-};
 /** 重置操作表单 */
 function reset() {
   form.value = {
@@ -585,7 +575,6 @@ function cancel() {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
-  initTreeData();
   getUser().then(response => {
     postOptions.value = response.posts;
     roleOptions.value = response.roles;
@@ -597,7 +586,6 @@ function handleAdd() {
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
-  initTreeData();
   const userId = row.userId || ids.value;
   getUser(userId).then(response => {
     form.value = response.data;
@@ -631,6 +619,6 @@ function submitForm() {
   });
 };
 
-getTreeselect();
+getDeptTree();
 getList();
 </script>
