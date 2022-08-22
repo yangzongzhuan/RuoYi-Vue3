@@ -17,6 +17,14 @@ export function delLogininfor(infoId) {
   })
 }
 
+// 解锁用户登录状态
+export function unlockLogininfor(userName) {
+  return request({
+    url: '/monitor/logininfor/unlock/' + userName,
+    method: 'get'
+  })
+}
+
 // 清空登录日志
 export function cleanLogininfor() {
   return request({
