@@ -1,7 +1,7 @@
 <template>
-  <div class="top-right-btn">
+  <div class="top-right-btn" :style="style">
     <el-row>
-      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top">
+      <el-tooltip class="item" effect="dark" :content="showSearch ? '隐藏搜索' : '显示搜索'" placement="top" v-if="search">
         <el-button circle icon="Search" @click="toggleSearch()" />
       </el-tooltip>
       <el-tooltip class="item" effect="dark" content="刷新" placement="top">
@@ -31,6 +31,14 @@ const props = defineProps({
   columns: {
     type: Array,
   },
+  search: {
+    type: Boolean,
+    default: true,
+  },
+  gutter: {
+    type: Number,
+    default: 10,
+  },
 })
 
 const emits = defineEmits(['update:showSearch', 'queryTable']);
@@ -41,6 +49,14 @@ const value = ref([]);
 const title = ref("显示/隐藏");
 // 是否显示弹出层
 const open = ref(false);
+
+const style = computed(() => {
+  const ret = {};
+  if (props.gutter) {
+    ret.marginRight = `${props.gutter / 2}px`;
+  }
+  return ret;
+});
 
 // 搜索
 function toggleSearch() {

@@ -53,7 +53,7 @@
                      <userInfo :user="state.user" />
                   </el-tab-pane>
                   <el-tab-pane label="修改密码" name="resetPwd">
-                     <resetPwd :user="state.user" />
+                     <resetPwd />
                   </el-tab-pane>
                </el-tabs>
             </el-card>

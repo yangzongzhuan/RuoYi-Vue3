@@ -1,6 +1,5 @@
 import Cookies from 'js-cookie'
 
-
 const useAppStore = defineStore(
   'app',
   {
