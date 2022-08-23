@@ -3,12 +3,21 @@ const useTagsViewStore = defineStore(
   {
     state: () => ({
       visitedViews: [],
-      cachedViews: []
+      cachedViews: [],
+      iframeViews: []
     }),
     actions: {
       addView(view) {
         this.addVisitedView(view)
         this.addCachedView(view)
+      },
+      addIframeView(view) {
+        if (this.iframeViews.some(v => v.path === view.path)) return
+        this.iframeViews.push(
+          Object.assign({}, view, {
+            title: view.meta.title || 'no-name'
+          })
+        )
       },
       addVisitedView(view) {
         if (this.visitedViews.some(v => v.path === view.path)) return
@@ -42,7 +51,14 @@ const useTagsViewStore = defineStore(
               break
             }
           }
+          this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
           resolve([...this.visitedViews])
+        })
+      },
+      delIframeView(view) {
+        return new Promise(resolve => {
+          this.iframeViews = this.iframeViews.filter(item => item.path !== view.path)
+          resolve([...this.iframeViews])
         })
       },
       delCachedView(view) {
@@ -67,6 +83,7 @@ const useTagsViewStore = defineStore(
           this.visitedViews = this.visitedViews.filter(v => {
             return v.meta.affix || v.path === view.path
           })
+          this.iframeViews = this.iframeViews.filter(item => item.path === view.path)
           resolve([...this.visitedViews])
         })
       },
@@ -95,6 +112,7 @@ const useTagsViewStore = defineStore(
         return new Promise(resolve => {
           const affixTags = this.visitedViews.filter(tag => tag.meta.affix)
           this.visitedViews = affixTags
+          this.iframeViews = []
           resolve([...this.visitedViews])
         })
       },
@@ -126,6 +144,10 @@ const useTagsViewStore = defineStore(
             if (i > -1) {
               this.cachedViews.splice(i, 1)
             }
+            if(item.meta.link) {
+              const fi = this.iframeViews.findIndex(v => v.path === item.path)
+              this.iframeViews.splice(fi, 1)
+            }
             return false
           })
           resolve([...this.visitedViews])
@@ -144,6 +166,10 @@ const useTagsViewStore = defineStore(
             const i = this.cachedViews.indexOf(item.name)
             if (i > -1) {
               this.cachedViews.splice(i, 1)
+            }
+            if(item.meta.link) {
+              const fi = this.iframeViews.findIndex(v => v.path === item.path)
+              this.iframeViews.splice(fi, 1)
             }
             return false
           })
