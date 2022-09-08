@@ -125,7 +125,7 @@ export function filterDynamicRoutes(routes) {
 }
 
 export const loadView = (view) => {
-  let res;
+  let res = () => import('@/views/error/404');
   for (const path in modules) {
     const dir = path.split('views/')[1].split('.vue')[0];
     if (dir === view) {
