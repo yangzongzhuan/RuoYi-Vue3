@@ -149,6 +149,42 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.4 - 2022-09-26">
+              <ol>
+                <li>数据逻辑删除不进行唯一验证</li>
+                <li>Excel注解支持导出对象的子列表方法</li>
+                <li>Excel注解支持自定义隐藏属性列</li>
+                <li>Excel注解支持backgroundColor属性设置背景色</li>
+                <li>支持配置密码最大错误次数/锁定时间</li>
+                <li>登录日志新增解锁账户功能</li>
+                <li>通用下载方法新增config配置选项</li>
+                <li>支持多权限字符匹配角色数据权限</li>
+                <li>页面内嵌iframe切换tab不刷新数据</li>
+                <li>操作日志记录支持排除敏感属性字段</li>
+                <li>修复多文件上传报错出现的异常问题</li>
+                <li>修复图片预览组件src属性为null值控制台报错问题</li>
+                <li>升级oshi到最新版本6.2.2</li>
+                <li>升级fastjson到最新版2.0.14</li>
+                <li>升级pagehelper到最新版1.4.3</li>
+                <li>升级core-js到最新版本3.25.2</li>
+                <li>升级element-ui到最新版本2.15.10</li>
+                <li>优化任务过期不执行调度</li>
+                <li>优化字典数据使用store存取</li>
+                <li>优化修改资料头像被覆盖的问题</li>
+                <li>优化修改用户登录账号重复验证</li>
+                <li>优化代码生成同步后值NULL问题</li>
+                <li>优化定时任务支持执行父类方法</li>
+                <li>优化用户个人信息接口防止修改部门</li>
+                <li>优化布局设置使用el-drawer抽屉显示</li>
+                <li>优化没有权限的用户编辑部门缺少数据</li>
+                <li>优化日志注解记录限制请求地址的长度</li>
+                <li>优化excel/scale属性导出单元格数值类型</li>
+                <li>优化日志操作中重置按钮时重复查询的问题</li>
+                <li>优化多个相同角色数据导致权限SQL重复问题</li>
+                <li>优化表格上右侧工具条（搜索按钮显隐&右侧样式凸出）</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.3 - 2022-06-27">
               <ol>
                 <li>新增缓存列表菜单功能</li>
