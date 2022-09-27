@@ -870,7 +870,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.3')
+const version = ref('3.8.4')
 
 function goTarget(url) {
   window.open(url, '__blank')
