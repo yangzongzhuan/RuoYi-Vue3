@@ -204,7 +204,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item label="cron表达式" prop="cronExpression">
-                     <el-input v-model="form.cronExpression" placeholder="请输入cron执行表达式">
+                     <el-input v-model="form.cronExpression" placeholder="请输入cron执行表达式" readonly>
                         <template #append>
                            <el-button type="primary" @click="handleShowCron">
                               生成表达式
@@ -341,7 +341,7 @@ const data = reactive({
   rules: {
     jobName: [{ required: true, message: "任务名称不能为空", trigger: "blur" }],
     invokeTarget: [{ required: true, message: "调用目标字符串不能为空", trigger: "blur" }],
-    cronExpression: [{ required: true, message: "cron执行表达式不能为空", trigger: "blur" }]
+    cronExpression: [{ required: true, message: "cron执行表达式不能为空", trigger: "change" }]
   }
 });
 
