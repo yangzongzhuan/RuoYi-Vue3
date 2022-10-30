@@ -204,7 +204,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item label="cron表达式" prop="cronExpression">
-                     <el-input v-model="form.cronExpression" placeholder="请输入cron执行表达式" readonly>
+                     <el-input v-model="form.cronExpression" placeholder="请输入cron执行表达式">
                         <template #append>
                            <el-button type="primary" @click="handleShowCron">
                               生成表达式
