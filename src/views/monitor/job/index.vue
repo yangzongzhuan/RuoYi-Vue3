@@ -448,7 +448,7 @@ function crontabFill(value) {
 /** 任务日志列表查询 */
 function handleJobLog(row) {
   const jobId = row.jobId || 0;
-  router.push({ path: "/monitor/job-log/index", query: { jobId: jobId } });
+  router.push('/monitor/job-log/index/' + jobId)
 }
 /** 新增按钮操作 */
 function handleAdd() {
