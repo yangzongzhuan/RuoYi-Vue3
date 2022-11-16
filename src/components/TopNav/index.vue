@@ -3,6 +3,7 @@
     :default-active="activeMenu"
     mode="horizontal"
     @select="handleSelect"
+    :ellipsis="false"
   >
     <template v-for="(item, index) in topMenus">
       <el-menu-item :style="{'--theme': theme}" :index="item.path" :key="index" v-if="index < visibleNumber"
