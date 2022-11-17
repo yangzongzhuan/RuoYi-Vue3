@@ -141,6 +141,8 @@ function activeRoutes(key) {
   }
   if(routes.length > 0) {
     permissionStore.setSidebarRouters(routes);
+  } else {
+    appStore.toggleSideBarHide(true);
   }
   return routes;
 }
