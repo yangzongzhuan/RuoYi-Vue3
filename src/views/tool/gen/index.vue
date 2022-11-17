@@ -1,11 +1,12 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
       <el-form-item label="表名称" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
+          style="width: 200px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -14,6 +15,7 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
+          style="width: 200px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>

@@ -97,7 +97,9 @@ const activeMenu = computed(() => {
   if (path !== undefined && path.lastIndexOf("/") > 0 && hideList.indexOf(path) === -1) {
     const tmpPath = path.substring(1, path.length);
     activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"));
-    appStore.toggleSideBarHide(false);
+    if (!route.meta.link) {
+        appStore.toggleSideBarHide(false);
+    }
   } else if(!route.children) {
     activePath = path;
     appStore.toggleSideBarHide(true);

@@ -1,11 +1,12 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true">
          <el-form-item label="登录地址" prop="ipaddr">
             <el-input
                v-model="queryParams.ipaddr"
                placeholder="请输入登录地址"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -14,6 +15,7 @@
                v-model="queryParams.userName"
                placeholder="请输入用户名称"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>

@@ -60,12 +60,15 @@
 	color: inherit;
 }
 
+.el-form .el-form-item__label {
+	font-weight: 700;
+}
 .el-dialog:not(.is-fullscreen) {
 	margin-top: 6vh !important;
 }
 
 .el-dialog.scrollbar .el-dialog__body {
-    overflow: auto;
+	overflow: auto;
 	overflow-x: hidden;
 	max-height: 70vh;
 	padding: 10px 20px 0;
