@@ -154,36 +154,16 @@
                <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
                   <template #default="scope">
                      <el-tooltip content="修改" placement="top" v-if="scope.row.userId !== 1">
-                        <el-button
-                           type="text"
-                           icon="Edit"
-                           @click="handleUpdate(scope.row)"
-                           v-hasPermi="['system:user:edit']"
-                        ></el-button>
+                        <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                      </el-tooltip>
                      <el-tooltip content="删除" placement="top" v-if="scope.row.userId !== 1">
-                        <el-button
-                           type="text"
-                           icon="Delete"
-                           @click="handleDelete(scope.row)"
-                           v-hasPermi="['system:user:remove']"
-                        ></el-button>
+                        <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:user:remove']"></el-button>
                      </el-tooltip>
                      <el-tooltip content="重置密码" placement="top" v-if="scope.row.userId !== 1">
-                        <el-button
-                           type="text"
-                           icon="Key"
-                           @click="handleResetPwd(scope.row)"
-                           v-hasPermi="['system:user:resetPwd']"
-                        ></el-button>
+                         <el-button link type="primary" icon="Key" @click="handleResetPwd(scope.row)" v-hasPermi="['system:user:resetPwd']"></el-button>
                      </el-tooltip>
                      <el-tooltip content="分配角色" placement="top" v-if="scope.row.userId !== 1">
-                        <el-button
-                           type="text"
-                           icon="CircleCheck"
-                           @click="handleAuthRole(scope.row)"
-                           v-hasPermi="['system:user:edit']"
-                        ></el-button>
+                        <el-button link type="primary" icon="CircleCheck" @click="handleAuthRole(scope.row)" v-hasPermi="['system:user:edit']"></el-button>
                      </el-tooltip>
                   </template>
                </el-table-column>

@@ -7,6 +7,7 @@
                v-model="queryParams.userName"
                placeholder="请输入用户名称"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
@@ -15,6 +16,7 @@
                v-model="queryParams.phonenumber"
                placeholder="请输入手机号码"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
