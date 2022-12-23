@@ -69,7 +69,7 @@
                <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
             </template>
          </el-table-column>
-         <el-table-column label="创建时间" align="center" prop="createTime">
+         <el-table-column label="创建时间" align="center" width="160" prop="createTime">
             <template #default="scope">
                <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
@@ -96,7 +96,6 @@
                         value-key="menuId"
                         placeholder="选择上级菜单"
                         check-strictly
-                        :render-after-expand="false"
                      />
                   </el-form-item>
                </el-col>

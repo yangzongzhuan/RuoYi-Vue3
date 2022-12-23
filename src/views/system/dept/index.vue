@@ -89,7 +89,6 @@
                         value-key="deptId"
                         placeholder="选择上级部门"
                         check-strictly
-                        :render-after-expand="false"
                      />
                   </el-form-item>
                </el-col>
