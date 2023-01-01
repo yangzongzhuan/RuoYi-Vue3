@@ -149,6 +149,44 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.5 - 2023-01-01">
+              <ol>
+                <li>定时任务违规的字符</li>
+                <li>重置时取消部门选中</li>
+                <li>新增返回警告消息提示</li>
+                <li>忽略不必要的属性数据返回</li>
+                <li>修改参数键名时移除前缓存配置</li>
+                <li>导入更新用户数据前校验数据权限</li>
+                <li>兼容Excel下拉框内容过多无法显示的问题</li>
+                <li>升级echarts到最新版本5.4.0</li>
+                <li>升级core-js到最新版本3.25.3</li>
+                <li>升级oshi到最新版本6.4.0</li>
+                <li>升级kaptcha到最新版2.3.3</li>
+                <li>升级druid到最新版本1.2.15</li>
+                <li>升级fastjson到最新版2.0.20</li>
+                <li>升级pagehelper到最新版1.4.6</li>
+                <li>优化弹窗内容过多展示不全问题</li>
+                <li>优化swagger-ui静态资源使用缓存</li>
+                <li>开启TopNav没有子菜单隐藏侧边栏</li>
+                <li>删除fuse无效选项maxPatternLength</li>
+                <li>优化导出对象的子列表为空会出现[]问题</li>
+                <li>优化编辑头像时透明部分会变成黑色问题</li>
+                <li>优化小屏幕上修改头像界面布局错位的问题</li>
+                <li>修复代码生成勾选属性无效问题</li>
+                <li>修复文件上传组件格式验证问题</li>
+                <li>修复回显数据字典数组异常问题</li>
+                <li>修复sheet超出最大行数异常问题</li>
+                <li>修复Log注解GET请求记录不到参数问题</li>
+                <li>修复调度日志点击多次数据不变化的问题</li>
+                <li>修复主题颜色在Drawer组件不会加载问题</li>
+                <li>修复文件名包含特殊字符的文件无法下载问题</li>
+                <li>修复table中更多按钮切换主题色未生效修复问题</li>
+                <li>修复某些特性的环境生成代码变乱码TXT文件问题</li>
+                <li>修复代码生成图片/文件/单选时选择必填无法校验问题</li>
+                <li>修复某些特性的情况用户编辑对话框中角色和部门无法修改问题</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.4 - 2022-09-26">
               <ol>
                 <li>数据逻辑删除不进行唯一验证</li>
@@ -870,7 +908,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.4')
+const version = ref('3.8.5')
 
 function goTarget(url) {
   window.open(url, '__blank')
