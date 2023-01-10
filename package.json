@@ -15,6 +15,7 @@
     "url": "https://gitee.com/y_project/RuoYi-Vue.git"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^5.0.0",
     "@element-plus/icons-vue": "2.0.10",
     "@vueuse/core": "9.5.0",
     "axios": "0.27.2",
