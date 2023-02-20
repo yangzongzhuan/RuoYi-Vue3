@@ -13,9 +13,6 @@ module.exports = {
     es6: true,
     'vue/setup-compiler-macros': true,
   },
-  globals: {
-    BMapGL: true,
-  },
   rules: {
     'consistent-return': 'off',
     'prettier/prettier': ['error'],
