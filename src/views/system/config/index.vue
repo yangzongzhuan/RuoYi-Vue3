@@ -101,7 +101,7 @@
          <el-table-column label="参数主键" align="center" prop="configId" />
          <el-table-column label="参数名称" align="center" prop="configName" :show-overflow-tooltip="true" />
          <el-table-column label="参数键名" align="center" prop="configKey" :show-overflow-tooltip="true" />
-         <el-table-column label="参数键值" align="center" prop="configValue" />
+         <el-table-column label="参数键值" align="center" prop="configValue" :show-overflow-tooltip="true" />
          <el-table-column label="系统内置" align="center" prop="configType">
             <template #default="scope">
                <dict-tag :options="sys_yes_no" :value="scope.row.configType" />
