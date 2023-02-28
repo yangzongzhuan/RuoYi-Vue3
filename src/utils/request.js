@@ -72,7 +72,7 @@ service.interceptors.response.use(res => {
     // 获取错误信息
     const msg = errorCode[code] || res.data.msg || errorCode['default']
     // 二进制数据则直接返回
-    if(res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer'){
+    if (res.request.responseType ===  'blob' || res.request.responseType ===  'arraybuffer') {
       return res.data
     }
     if (code === 401) {
@@ -125,8 +125,8 @@ export function download(url, params, filename, config) {
     responseType: 'blob',
     ...config
   }).then(async (data) => {
-    const isLogin = await blobValidate(data);
-    if (isLogin) {
+    const isBlob = blobValidate(data);
+    if (isBlob) {
       const blob = new Blob([data])
       saveAs(blob, filename)
     } else {
