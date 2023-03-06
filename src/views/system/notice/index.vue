@@ -143,12 +143,7 @@
                </el-col>
                <el-col :span="24">
                   <el-form-item label="内容">
-                     <el-input
-                        :rows="6"
-                        type="textarea"
-                        placeholder="请输入内容"
-                        v-model="form.noticeContent"
-                     />
+                    <editor v-model="form.noticeContent" :min-height="192"/>
                   </el-form-item>
                </el-col>
             </el-row>
