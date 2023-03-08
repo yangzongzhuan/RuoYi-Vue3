@@ -56,8 +56,7 @@ const options = ref({
     ],
   },
   placeholder: '请输入内容',
-  readOnly: props.readOnly,
-  theme: 'snow'
+  readOnly: props.readOnly
 });
 
 const styles = computed(() => {
@@ -73,7 +72,7 @@ const styles = computed(() => {
 
 const content = ref("");
 watch(() => props.modelValue, (v) => {
-  if (v !== content) {
+  if (v !== content.value) {
     content.value = v === undefined ? "<p></p>" : v;
   }
 }, { immediate: true });
