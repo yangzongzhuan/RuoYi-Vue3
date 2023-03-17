@@ -6,6 +6,7 @@ import ElementPlus from 'element-plus'
 import locale from 'element-plus/lib/locale/lang/zh-cn' // 中文语言
 
 import '@/assets/styles/index.scss' // global css
+
 import App from './App'
 import store from './store'
 import router from './router'
