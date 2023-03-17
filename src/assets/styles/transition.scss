@@ -18,10 +18,6 @@
   transition: all .5s;
 }
 
-.fade-transform-leave-active {
-  position: absolute;
-}
-
 .fade-transform-enter {
   opacity: 0;
   transform: translateX(-30px);
