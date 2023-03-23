@@ -478,15 +478,6 @@ function handleCheckedTreeConnect(value, type) {
     form.value.deptCheckStrictly = value ? true : false;
   }
 }
-/** 所有菜单节点数据 */
-function getMenuAllCheckedKeys() {
-  // 目前被选中的菜单节点
-  let checkedKeys = menuRef.value.getCheckedKeys();
-  // 半选中的菜单节点
-  let halfCheckedKeys = menuRef.value.getHalfCheckedKeys();
-  checkedKeys.unshift.apply(checkedKeys, halfCheckedKeys);
-  return checkedKeys;
-}
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["roleRef"].validate((valid) => {
