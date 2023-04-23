@@ -185,7 +185,7 @@ function refreshCacheNames() {
 /** 清理指定名称缓存 */
 function handleClearCacheName(row) {
   clearCacheName(row.cacheName).then(response => {
-    proxy.$modal.msgSuccess("清理缓存名称[" + nowCacheName.value + "]成功");
+    proxy.$modal.msgSuccess("清理缓存名称[" + row.cacheName + "]成功");
     getCacheKeys();
   });
 }
