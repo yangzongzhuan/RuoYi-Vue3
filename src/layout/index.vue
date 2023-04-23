@@ -3,14 +3,12 @@
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside"/>
     <sidebar v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
-      <el-scrollbar>
-        <div :class="{ 'fixed-header': fixedHeader }">
-          <navbar @setLayout="setLayout" />
-          <tags-view v-if="needTagsView" />
-        </div>
-        <app-main />
-        <settings ref="settingRef" />
-      </el-scrollbar>
+      <div :class="{ 'fixed-header': fixedHeader }">
+        <navbar @setLayout="setLayout" />
+        <tags-view v-if="needTagsView" />
+      </div>
+      <app-main />
+      <settings ref="settingRef" />
     </div> 
   </div>
 </template>
@@ -73,18 +71,6 @@ function setLayout() {
   position: relative;
   height: 100%;
   width: 100%;
-
-  .el-scrollbar {
-    height: 100%;
-  }
-
-  :deep(.el-scrollbar__bar).is-vertical {
-    z-index: 10;
-  }
-
-  :deep(.el-scrollbar__wrap) {
-    overflow-x: hidden;
-  }
 
   &.mobile.openSidebar {
     position: fixed;
