@@ -1,8 +1,8 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
          <el-form-item label="字典名称" prop="dictType">
-            <el-select v-model="queryParams.dictType">
+            <el-select v-model="queryParams.dictType" style="width: 200px">
                <el-option
                   v-for="item in typeOptions"
                   :key="item.dictId"
@@ -16,11 +16,12 @@
                v-model="queryParams.dictLabel"
                placeholder="请输入字典标签"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="数据状态" clearable>
+            <el-select v-model="queryParams.status" placeholder="数据状态" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_normal_disable"
                   :key="dict.value"
@@ -107,20 +108,10 @@
                <span>{{ parseTime(scope.row.createTime) }}</span>
             </template>
          </el-table-column>
-         <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width">
+         <el-table-column label="操作" align="center" width="160" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button
-                  type="text"
-                  icon="Edit"
-                  @click="handleUpdate(scope.row)"
-                  v-hasPermi="['system:dict:edit']"
-               >修改</el-button>
-               <el-button
-                  type="text"
-                  icon="Delete"
-                  @click="handleDelete(scope.row)"
-                  v-hasPermi="['system:dict:remove']"
-               >删除</el-button>
+               <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">修改</el-button>
+               <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">删除</el-button>
             </template>
          </el-table-column>
       </el-table>

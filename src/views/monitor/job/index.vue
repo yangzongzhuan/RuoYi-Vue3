@@ -1,16 +1,17 @@
 <template>
    <div class="app-container">
-      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
          <el-form-item label="任务名称" prop="jobName">
             <el-input
                v-model="queryParams.jobName"
                placeholder="请输入任务名称"
                clearable
+               style="width: 200px"
                @keyup.enter="handleQuery"
             />
          </el-form-item>
          <el-form-item label="任务组名" prop="jobGroup">
-            <el-select v-model="queryParams.jobGroup" placeholder="请选择任务组名" clearable>
+            <el-select v-model="queryParams.jobGroup" placeholder="请选择任务组名" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_job_group"
                   :key="dict.value"
@@ -20,7 +21,7 @@
             </el-select>
          </el-form-item>
          <el-form-item label="任务状态" prop="status">
-            <el-select v-model="queryParams.status" placeholder="请选择任务状态" clearable>
+            <el-select v-model="queryParams.status" placeholder="请选择任务状态" clearable style="width: 200px">
                <el-option
                   v-for="dict in sys_job_status"
                   :key="dict.value"
@@ -110,44 +111,19 @@
          <el-table-column label="操作" align="center" width="200" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-tooltip content="修改" placement="top">
-                  <el-button
-                     type="text"
-                     icon="Edit"
-                     @click="handleUpdate(scope.row)"
-                     v-hasPermi="['monitor:job:edit']"
-                  ></el-button>
+                  <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['monitor:job:edit']"></el-button>
                </el-tooltip>
                <el-tooltip content="删除" placement="top">
-                  <el-button
-                     type="text"
-                     icon="Delete"
-                     @click="handleDelete(scope.row)"
-                     v-hasPermi="['monitor:job:remove']"
-                  ></el-button>
+                  <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['monitor:job:remove']"></el-button>
                </el-tooltip>
                <el-tooltip content="执行一次" placement="top">
-                  <el-button
-                     type="text"
-                     icon="CaretRight"
-                     @click="handleRun(scope.row)"
-                     v-hasPermi="['monitor:job:changeStatus']"
-                  ></el-button>
+                  <el-button link type="primary" icon="CaretRight" @click="handleRun(scope.row)" v-hasPermi="['monitor:job:changeStatus']"></el-button>
                </el-tooltip>
                <el-tooltip content="任务详细" placement="top">
-                  <el-button
-                     type="text"
-                     icon="View"
-                     @click="handleView(scope.row)"
-                     v-hasPermi="['monitor:job:query']"
-                  ></el-button>
+                  <el-button link type="primary" icon="View" @click="handleView(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
                </el-tooltip>
                <el-tooltip content="调度日志" placement="top">
-                  <el-button
-                     type="text"
-                     icon="Operation"
-                     @click="handleJobLog(scope.row)"
-                     v-hasPermi="['monitor:job:query']"
-                  ></el-button>
+                  <el-button link type="primary" icon="Operation" @click="handleJobLog(scope.row)" v-hasPermi="['monitor:job:query']"></el-button>
                </el-tooltip>
             </template>
          </el-table-column>
