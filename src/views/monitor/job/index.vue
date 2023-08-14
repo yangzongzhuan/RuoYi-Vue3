@@ -138,7 +138,7 @@
       />
 
       <!-- 添加或修改定时任务对话框 -->
-      <el-dialog :title="title" v-model="open" width="800px" append-to-body>
+      <el-dialog :title="title" v-model="open" width="820px" append-to-body>
          <el-form ref="jobRef" :model="form" :rules="rules" label-width="120px">
             <el-row>
                <el-col :span="12">
@@ -190,7 +190,18 @@
                      </el-input>
                   </el-form-item>
                </el-col>
-               <el-col :span="24">
+               <el-col :span="24" v-if="form.jobId !== undefined">
+                  <el-form-item label="状态">
+                     <el-radio-group v-model="form.status">
+                        <el-radio
+                           v-for="dict in sys_job_status"
+                           :key="dict.value"
+                           :label="dict.value"
+                        >{{ dict.label }}</el-radio>
+                     </el-radio-group>
+                  </el-form-item>
+               </el-col>
+               <el-col :span="12">
                   <el-form-item label="执行策略" prop="misfirePolicy">
                      <el-radio-group v-model="form.misfirePolicy">
                         <el-radio-button label="1">立即执行</el-radio-button>
@@ -204,17 +215,6 @@
                      <el-radio-group v-model="form.concurrent">
                         <el-radio-button label="0">允许</el-radio-button>
                         <el-radio-button label="1">禁止</el-radio-button>
-                     </el-radio-group>
-                  </el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="状态">
-                     <el-radio-group v-model="form.status">
-                        <el-radio
-                           v-for="dict in sys_job_status"
-                           :key="dict.value"
-                           :label="dict.value"
-                        >{{ dict.label }}</el-radio>
                      </el-radio-group>
                   </el-form-item>
                </el-col>
@@ -256,7 +256,7 @@
                <el-col :span="12">
                   <el-form-item label="任务状态：">
                      <div v-if="form.status == 0">正常</div>
-                     <div v-else-if="form.status == 1">失败</div>
+                     <div v-else-if="form.status == 1">暂停</div>
                   </el-form-item>
                </el-col>
                <el-col :span="12">
