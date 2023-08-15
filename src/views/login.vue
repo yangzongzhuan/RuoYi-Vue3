@@ -71,6 +71,7 @@ import { encrypt, decrypt } from "@/utils/jsencrypt";
 import useUserStore from '@/store/modules/user'
 
 const userStore = useUserStore()
+const route = useRoute();
 const router = useRouter();
 const { proxy } = getCurrentInstance();
 
@@ -95,6 +96,10 @@ const captchaEnabled = ref(true);
 // 注册开关
 const register = ref(false);
 const redirect = ref(undefined);
+
+watch(route, (newRoute) => {
+    redirect.value = newRoute.query && newRoute.query.redirect;
+}, { immediate: true });
 
 function handleLogin() {
   proxy.$refs.loginRef.validate(valid => {
