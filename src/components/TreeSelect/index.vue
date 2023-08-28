@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -41,14 +40,14 @@ const props = defineProps({
         value: 'id', // ID字段名
         label: 'label', // 显示名称
         children: 'children' // 子级字段名
-      }
+      };
     }
   },
   /* 自动收起 */
   accordion: {
     type: Boolean,
     default: () => {
-      return false
+      return false;
     }
   },
   /**当前双向数据绑定的值 */
@@ -66,14 +65,14 @@ const props = defineProps({
     type: String,
     default: ''
   }
-})
+});
 
 const emit = defineEmits(['update:value']);
 
 const valueId = computed({
   get: () => props.value,
   set: (val) => {
-    emit('update:value', val)
+    emit('update:value', val);
   }
 });
 const valueTitle = ref('');
@@ -82,54 +81,54 @@ const defaultExpandedKey = ref([]);
 function initHandle() {
   nextTick(() => {
     const selectedValue = valueId.value;
-    if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
-      const node = proxy.$refs.selectTree.getNode(selectedValue)
+    if (selectedValue !== null && typeof selectedValue !== 'undefined') {
+      const node = proxy.$refs.selectTree.getNode(selectedValue);
       if (node) {
-        valueTitle.value = node.data[props.objMap.label]
-        proxy.$refs.selectTree.setCurrentKey(selectedValue) // 设置默认选中
-        defaultExpandedKey.value = [selectedValue] // 设置默认展开
+        valueTitle.value = node.data[props.objMap.label];
+        proxy.$refs.selectTree.setCurrentKey(selectedValue); // 设置默认选中
+        defaultExpandedKey.value = [selectedValue]; // 设置默认展开
       }
     } else {
-      clearHandle()
+      clearHandle();
     }
-  })
+  });
 }
 function handleNodeClick(node) {
-  valueTitle.value = node[props.objMap.label]
+  valueTitle.value = node[props.objMap.label];
   valueId.value = node[props.objMap.value];
   defaultExpandedKey.value = [];
-  proxy.$refs.treeSelect.blur()
-  selectFilterData('')
+  proxy.$refs.treeSelect.blur();
+  selectFilterData('');
 }
 function selectFilterData(val) {
-  proxy.$refs.selectTree.filter(val)
+  proxy.$refs.selectTree.filter(val);
 }
 function filterNode(value, data) {
-  if (!value) return true
-  return data[props.objMap['label']].indexOf(value) !== -1
+  if (!value) return true;
+  return data[props.objMap['label']].indexOf(value) !== -1;
 }
 function clearHandle() {
-  valueTitle.value = ''
-  valueId.value = ''
+  valueTitle.value = '';
+  valueId.value = '';
   defaultExpandedKey.value = [];
-  clearSelected()
+  clearSelected();
 }
 function clearSelected() {
-  const allNode = document.querySelectorAll('#tree-option .el-tree-node')
-  allNode.forEach((element) => element.classList.remove('is-current'))
+  const allNode = document.querySelectorAll('#tree-option .el-tree-node');
+  allNode.forEach((element) => element.classList.remove('is-current'));
 }
 
 onMounted(() => {
-  initHandle()
-})
+  initHandle();
+});
 
 watch(valueId, () => {
   initHandle();
-})
+});
 </script>
 
-<style lang='scss' scoped>
-@import "@/assets/styles/variables.module.scss";
+<style lang="scss" scoped>
+@import '@/assets/styles/variables.module.scss';
 .el-scrollbar .el-scrollbar__view .el-select-dropdown__item {
   padding: 0;
   background-color: #fff;

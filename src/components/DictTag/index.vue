@@ -2,13 +2,9 @@
   <div>
     <template v-for="(item, index) in options">
       <template v-if="values.includes(item.value)">
-        <span
-          v-if="item.elTagType == 'default' || item.elTagType == ''"
-          :key="item.value"
-          :index="index"
-          :class="item.elTagClass"
-          >{{ item.label + " " }}</span
-        >
+        <span v-if="item.elTagType == 'default' || item.elTagType == ''" :key="item.value" :index="index" :class="item.elTagClass">{{
+          item.label + ' '
+        }}</span>
         <el-tag
           v-else
           :disable-transitions="true"
@@ -16,7 +12,7 @@
           :index="index"
           :type="item.elTagType === 'primary' ? '' : item.elTagType"
           :class="item.elTagClass"
-          >{{ item.label + " " }}</el-tag
+          >{{ item.label + ' ' }}</el-tag
         >
       </template>
     </template>
@@ -34,19 +30,19 @@ const props = defineProps({
   // 数据
   options: {
     type: Array,
-    default: null,
+    default: null
   },
   // 当前的值
   value: [Number, String, Array],
   // 当未找到匹配的数据时，显示value
   showValue: {
     type: Boolean,
-    default: true,
-  },
+    default: true
+  }
 });
 
 const values = computed(() => {
-  if (props.value !== null && typeof props.value !== "undefined") {
+  if (props.value !== null && typeof props.value !== 'undefined') {
     return Array.isArray(props.value) ? props.value : [String(props.value)];
   } else {
     return [];
@@ -55,7 +51,7 @@ const values = computed(() => {
 
 const unmatch = computed(() => {
   unmatchArray.value = [];
-  if (props.value !== null && typeof props.value !== "undefined") {
+  if (props.value !== null && typeof props.value !== 'undefined') {
     // 传入值为非数组
     if (!Array.isArray(props.value)) {
       if (props.options.some((v) => v.value == props.value)) return false;
@@ -64,8 +60,7 @@ const unmatch = computed(() => {
     }
     // 传入值为Array
     props.value.forEach((item) => {
-      if (!props.options.some((v) => v.value == item))
-        unmatchArray.value.push(item);
+      if (!props.options.some((v) => v.value == item)) unmatchArray.value.push(item);
     });
     return true;
   }
@@ -74,9 +69,9 @@ const unmatch = computed(() => {
 });
 
 function handleArray(array) {
-  if (array.length === 0) return "";
+  if (array.length === 0) return '';
   return array.reduce((pre, cur) => {
-    return pre + " " + cur;
+    return pre + ' ' + cur;
   });
 }
 </script>

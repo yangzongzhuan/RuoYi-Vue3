@@ -1,5 +1,8 @@
 <template>
-  <div :class="{ 'has-logo': showLogo }" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div
+    :class="{ 'has-logo': showLogo }"
+    :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }"
+  >
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
       <el-menu
@@ -12,31 +15,26 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item
-          v-for="(route, index) in sidebarRouters"
-          :key="route.path + index"
-          :item="route"
-          :base-path="route.path"
-        />
+        <sidebar-item v-for="(route, index) in sidebarRouters" :key="route.path + index" :item="route" :base-path="route.path" />
       </el-menu>
     </el-scrollbar>
   </div>
 </template>
 
 <script setup>
-import Logo from './Logo'
-import SidebarItem from './SidebarItem'
-import variables from '@/assets/styles/variables.module.scss'
-import useAppStore from '@/store/modules/app'
-import useSettingsStore from '@/store/modules/settings'
-import usePermissionStore from '@/store/modules/permission'
+import Logo from './Logo';
+import SidebarItem from './SidebarItem';
+import variables from '@/assets/styles/variables.module.scss';
+import useAppStore from '@/store/modules/app';
+import useSettingsStore from '@/store/modules/settings';
+import usePermissionStore from '@/store/modules/permission';
 
 const route = useRoute();
-const appStore = useAppStore()
-const settingsStore = useSettingsStore()
-const permissionStore = usePermissionStore()
+const appStore = useAppStore();
+const settingsStore = useSettingsStore();
+const permissionStore = usePermissionStore();
 
-const sidebarRouters =  computed(() => permissionStore.sidebarRouters);
+const sidebarRouters = computed(() => permissionStore.sidebarRouters);
 const showLogo = computed(() => settingsStore.sidebarLogo);
 const sideTheme = computed(() => settingsStore.sideTheme);
 const theme = computed(() => settingsStore.theme);
@@ -49,6 +47,5 @@ const activeMenu = computed(() => {
     return meta.activeMenu;
   }
   return path;
-})
-
+});
 </script>

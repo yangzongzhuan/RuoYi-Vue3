@@ -26,12 +26,7 @@
       <br />
       <el-row>
         <el-col :lg="2" :md="2">
-          <el-upload
-            action="#"
-            :http-request="requestUpload"
-            :show-file-list="false"
-            :before-upload="beforeUpload"
-          >
+          <el-upload action="#" :http-request="requestUpload" :show-file-list="false" :before-upload="beforeUpload">
             <el-button>
               选择
               <el-icon class="el-icon--right"><Upload /></el-icon>
@@ -59,17 +54,17 @@
 </template>
 
 <script setup>
-import "vue-cropper/dist/index.css";
-import { VueCropper } from "vue-cropper";
-import { uploadAvatar } from "@/api/system/user";
-import useUserStore from "@/store/modules/user";
+import 'vue-cropper/dist/index.css';
+import { VueCropper } from 'vue-cropper';
+import { uploadAvatar } from '@/api/system/user';
+import useUserStore from '@/store/modules/user';
 
 const userStore = useUserStore();
 const { proxy } = getCurrentInstance();
 
 const open = ref(false);
 const visible = ref(false);
-const title = ref("修改头像");
+const title = ref('修改头像');
 
 //图片裁剪数据
 const options = reactive({
@@ -78,7 +73,7 @@ const options = reactive({
   autoCropWidth: 200, // 默认生成截图框宽度
   autoCropHeight: 200, // 默认生成截图框高度
   fixedBox: true, // 固定截图框大小 不允许改变
-  outputType: "png", // 默认生成截图为PNG格式
+  outputType: 'png', // 默认生成截图为PNG格式
   previews: {} //预览数据
 });
 
@@ -107,8 +102,8 @@ function changeScale(num) {
 }
 /** 上传预处理 */
 function beforeUpload(file) {
-  if (file.type.indexOf("image/") == -1) {
-    proxy.$modal.msgError("文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。");
+  if (file.type.indexOf('image/') == -1) {
+    proxy.$modal.msgError('文件格式错误，请上传图片类型,如：JPG，PNG后缀的文件。');
   } else {
     const reader = new FileReader();
     reader.readAsDataURL(file);
@@ -119,14 +114,14 @@ function beforeUpload(file) {
 }
 /** 上传图片 */
 function uploadImg() {
-  proxy.$refs.cropper.getCropBlob(data => {
+  proxy.$refs.cropper.getCropBlob((data) => {
     let formData = new FormData();
-    formData.append("avatarfile", data);
-    uploadAvatar(formData).then(response => {
+    formData.append('avatarfile', data);
+    uploadAvatar(formData).then((response) => {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
       userStore.avatar = options.img;
-      proxy.$modal.msgSuccess("修改成功");
+      proxy.$modal.msgSuccess('修改成功');
       visible.value = false;
     });
   });
@@ -142,7 +137,7 @@ function closeDialog() {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .user-info-head {
   position: relative;
   display: inline-block;
@@ -150,7 +145,7 @@ function closeDialog() {
 }
 
 .user-info-head:hover:after {
-  content: "+";
+  content: '+';
   position: absolute;
   left: 0;
   right: 0;

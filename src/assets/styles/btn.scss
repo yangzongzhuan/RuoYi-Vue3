@@ -14,31 +14,31 @@
 }
 
 .blue-btn {
-  @include colorBtn($blue)
+  @include colorBtn($blue);
 }
 
 .light-blue-btn {
-  @include colorBtn($light-blue)
+  @include colorBtn($light-blue);
 }
 
 .red-btn {
-  @include colorBtn($red)
+  @include colorBtn($red);
 }
 
 .pink-btn {
-  @include colorBtn($pink)
+  @include colorBtn($pink);
 }
 
 .green-btn {
-  @include colorBtn($green)
+  @include colorBtn($green);
 }
 
 .tiffany-btn {
-  @include colorBtn($tiffany)
+  @include colorBtn($tiffany);
 }
 
 .yellow-btn {
-  @include colorBtn($yellow)
+  @include colorBtn($yellow);
 }
 
 .pan-btn {

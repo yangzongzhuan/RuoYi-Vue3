@@ -18,20 +18,20 @@ export default defineComponent({
     color: {
       type: String,
       default: ''
-    },
+    }
   },
   setup(props) {
     return {
       iconName: computed(() => `#icon-${props.iconClass}`),
       svgClass: computed(() => {
         if (props.className) {
-          return `svg-icon ${props.className}`
+          return `svg-icon ${props.className}`;
         }
-        return 'svg-icon'
+        return 'svg-icon';
       })
-    }
+    };
   }
-})
+});
 </script>
 
 <style scope lang="scss">

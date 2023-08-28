@@ -1,3 +1,3 @@
-const store = createPinia()
+const store = createPinia();
 
-export default store
+export default store;

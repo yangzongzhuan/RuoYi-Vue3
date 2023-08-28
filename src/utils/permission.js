@@ -1,4 +1,4 @@
-import useUserStore from '@/store/modules/user'
+import useUserStore from '@/store/modules/user';
 
 /**
  * 字符权限校验
@@ -7,21 +7,21 @@ import useUserStore from '@/store/modules/user'
  */
 export function checkPermi(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const permissions = useUserStore().permissions
-    const permissionDatas = value
-    const all_permission = "*:*:*";
+    const permissions = useUserStore().permissions;
+    const permissionDatas = value;
+    const all_permission = '*:*:*';
 
-    const hasPermission = permissions.some(permission => {
-      return all_permission === permission || permissionDatas.includes(permission)
-    })
+    const hasPermission = permissions.some((permission) => {
+      return all_permission === permission || permissionDatas.includes(permission);
+    });
 
     if (!hasPermission) {
-      return false
+      return false;
     }
-    return true
+    return true;
   } else {
-    console.error(`need roles! Like checkPermi="['system:user:add','system:user:edit']"`)
-    return false
+    console.error(`need roles! Like checkPermi="['system:user:add','system:user:edit']"`);
+    return false;
   }
 }
 
@@ -32,20 +32,20 @@ export function checkPermi(value) {
  */
 export function checkRole(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = useUserStore().roles
-    const permissionRoles = value
-    const super_admin = "admin";
+    const roles = useUserStore().roles;
+    const permissionRoles = value;
+    const super_admin = 'admin';
 
-    const hasRole = roles.some(role => {
-      return super_admin === role || permissionRoles.includes(role)
-    })
+    const hasRole = roles.some((role) => {
+      return super_admin === role || permissionRoles.includes(role);
+    });
 
     if (!hasRole) {
-      return false
+      return false;
     }
-    return true
+    return true;
   } else {
-    console.error(`need roles! Like checkRole="['admin','editor']"`)
-    return false
+    console.error(`need roles! Like checkRole="['admin','editor']"`);
+    return false;
   }
 }

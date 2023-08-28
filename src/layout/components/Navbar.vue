@@ -48,33 +48,33 @@
 </template>
 
 <script setup>
-import { ElMessageBox } from 'element-plus'
-import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
-import Hamburger from '@/components/Hamburger'
-import Screenfull from '@/components/Screenfull'
-import SizeSelect from '@/components/SizeSelect'
-import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
-import useAppStore from '@/store/modules/app'
-import useUserStore from '@/store/modules/user'
-import useSettingsStore from '@/store/modules/settings'
+import { ElMessageBox } from 'element-plus';
+import Breadcrumb from '@/components/Breadcrumb';
+import TopNav from '@/components/TopNav';
+import Hamburger from '@/components/Hamburger';
+import Screenfull from '@/components/Screenfull';
+import SizeSelect from '@/components/SizeSelect';
+import HeaderSearch from '@/components/HeaderSearch';
+import RuoYiGit from '@/components/RuoYi/Git';
+import RuoYiDoc from '@/components/RuoYi/Doc';
+import useAppStore from '@/store/modules/app';
+import useUserStore from '@/store/modules/user';
+import useSettingsStore from '@/store/modules/settings';
 
-const appStore = useAppStore()
-const userStore = useUserStore()
-const settingsStore = useSettingsStore()
+const appStore = useAppStore();
+const userStore = useUserStore();
+const settingsStore = useSettingsStore();
 
 function toggleSideBar() {
-  appStore.toggleSideBar()
+  appStore.toggleSideBar();
 }
 
 function handleCommand(command) {
   switch (command) {
-    case "setLayout":
+    case 'setLayout':
       setLayout();
       break;
-    case "logout":
+    case 'logout':
       logout();
       break;
     default:
@@ -87,20 +87,22 @@ function logout() {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
     type: 'warning'
-  }).then(() => {
-    userStore.logOut().then(() => {
-      location.href = '/index';
+  })
+    .then(() => {
+      userStore.logOut().then(() => {
+        location.href = '/index';
+      });
     })
-  }).catch(() => { });
+    .catch(() => {});
 }
 
-const emits = defineEmits(['setLayout'])
+const emits = defineEmits(['setLayout']);
 function setLayout() {
   emits('setLayout');
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .navbar {
   height: 50px;
   overflow: hidden;

@@ -5,12 +5,12 @@
 </template>
 
 <script setup>
-import { useFullscreen } from '@vueuse/core'
+import { useFullscreen } from '@vueuse/core';
 
 const { isFullscreen, enter, exit, toggle } = useFullscreen();
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .screenfull-svg {
   display: inline-block;
   cursor: pointer;

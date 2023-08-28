@@ -1,6 +1,6 @@
-import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from 'vue-router';
 /* Layout */
-import Layout from '@/layout'
+import Layout from '@/layout';
 
 /**
  * Note: 路由配置项
@@ -48,7 +48,7 @@ export const constantRoutes = [
     hidden: true
   },
   {
-    path: "/:pathMatch(.*)*",
+    path: '/:pathMatch(.*)*',
     component: () => import('@/views/error/404'),
     hidden: true
   },
@@ -84,7 +84,7 @@ export const constantRoutes = [
       }
     ]
   }
-]
+];
 
 // 动态路由，基于用户权限动态去加载
 export const dynamicRoutes = [
@@ -158,18 +158,18 @@ export const dynamicRoutes = [
       }
     ]
   }
-]
+];
 
 const router = createRouter({
   history: createWebHistory(),
   routes: constantRoutes,
   scrollBehavior(to, from, savedPosition) {
     if (savedPosition) {
-      return savedPosition
+      return savedPosition;
     } else {
-      return { top: 0 }
+      return { top: 0 };
     }
-  },
+  }
 });
 
 export default router;
