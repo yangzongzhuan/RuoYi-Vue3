@@ -8,7 +8,6 @@ export function useDict(...args) {
   const res = ref({});
   return (() => {
     args.forEach((dictType, index) => {
-      debugger;
       res.value[dictType] = [];
       const dicts = useDictStore().getDict(dictType);
       if (dicts) {
