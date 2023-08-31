@@ -280,7 +280,7 @@ function handleScroll() {
           height: 8px;
           border-radius: 50%;
           position: relative;
-          margin-right: 2px;
+          margin-right: 5px;
         }
       }
     }
