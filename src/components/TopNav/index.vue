@@ -202,4 +202,12 @@ onMounted(() => {
 .topmenu-container .svg-icon {
   margin-right: 4px;
 }
+
+/* topmenu more arrow */
+.topmenu-container .el-sub-menu .el-sub-menu__icon-arrow {
+  position: static;
+  vertical-align: middle;
+  margin-left: 8px;
+  margin-top: 0px;
+}
 </style>
