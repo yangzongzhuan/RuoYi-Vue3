@@ -210,8 +210,8 @@ const data = reactive({
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    dictLabel: undefined,
     dictType: undefined,
+    dictLabel: undefined,
     status: undefined
   },
   rules: {
