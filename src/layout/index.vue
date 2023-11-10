@@ -9,7 +9,7 @@
       </div>
       <app-main />
       <settings ref="settingRef" />
-    </div> 
+    </div>
   </div>
 </template>
 
