@@ -149,7 +149,7 @@
       />
 
       <!-- 操作日志详细 -->
-      <el-dialog title="操作日志详细" v-model="open" width="700px" append-to-body>
+      <el-dialog title="操作日志详细" v-model="open" width="800px" append-to-body>
          <el-form :model="form" label-width="100px">
             <el-row>
                <el-col :span="12">
@@ -171,7 +171,7 @@
                <el-col :span="24">
                   <el-form-item label="返回参数：">{{ form.jsonResult }}</el-form-item>
                </el-col>
-               <el-col :span="6">
+               <el-col :span="8">
                   <el-form-item label="操作状态：">
                      <div v-if="form.status === 0">正常</div>
                      <div v-else-if="form.status === 1">失败</div>
@@ -180,7 +180,7 @@
                <el-col :span="8">
                   <el-form-item label="消耗时间：">{{ form.costTime }}毫秒</el-form-item>
                </el-col>
-               <el-col :span="10">
+               <el-col :span="8">
                   <el-form-item label="操作时间：">{{ parseTime(form.operTime) }}</el-form-item>
                </el-col>
                <el-col :span="24">
