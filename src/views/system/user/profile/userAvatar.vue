@@ -73,13 +73,14 @@ const title = ref("修改头像");
 
 //图片裁剪数据
 const options = reactive({
-  img: userStore.avatar, // 裁剪图片的地址
-  autoCrop: true, // 是否默认生成截图框
-  autoCropWidth: 200, // 默认生成截图框宽度
-  autoCropHeight: 200, // 默认生成截图框高度
-  fixedBox: true, // 固定截图框大小 不允许改变
-  outputType: "png", // 默认生成截图为PNG格式
-  previews: {} //预览数据
+  img: userStore.avatar,     // 裁剪图片的地址
+  autoCrop: true,            // 是否默认生成截图框
+  autoCropWidth: 200,        // 默认生成截图框宽度
+  autoCropHeight: 200,       // 默认生成截图框高度
+  fixedBox: true,            // 固定截图框大小 不允许改变
+  outputType: "png",         // 默认生成截图为PNG格式
+  filename: 'avatar',        // 文件名称
+  previews: {}               //预览数据
 });
 
 /** 编辑头像 */
@@ -114,6 +115,7 @@ function beforeUpload(file) {
     reader.readAsDataURL(file);
     reader.onload = () => {
       options.img = reader.result;
+      options.filename = file.name;
     };
   }
 }
@@ -121,7 +123,7 @@ function beforeUpload(file) {
 function uploadImg() {
   proxy.$refs.cropper.getCropBlob(data => {
     let formData = new FormData();
-    formData.append("avatarfile", data);
+    formData.append("avatarfile", data, options.filename);
     uploadAvatar(formData).then(response => {
       open.value = false;
       options.img = import.meta.env.VITE_APP_BASE_API + response.imgUrl;
