@@ -98,7 +98,6 @@ function getList() {
         }
       ]
     });
-
     const usedmemoryInstance = echarts.init(usedmemory.value, "macarons");
     usedmemoryInstance.setOption({
       tooltip: {
@@ -122,6 +121,10 @@ function getList() {
         }
       ]
     })
+    window.addEventListener("resize", () => {
+      commandstatsIntance.resize();
+      usedmemoryInstance.resize();
+    });
   })
 }
 
