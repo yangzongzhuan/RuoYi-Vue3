@@ -1,11 +1,12 @@
-import axios from 'axios'
-import { ElMessage } from 'element-plus'
+﻿import axios from 'axios'
+import { ElLoading, ElMessage } from 'element-plus'
 import { saveAs } from 'file-saver'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { blobValidate } from '@/utils/ruoyi'
 
 const baseURL = import.meta.env.VITE_APP_BASE_API
+let downloadLoadingInstance;
 
 export default {
   name(name, isDelete = true) {
@@ -44,6 +45,7 @@ export default {
   },
   zip(url, name) {
     var url = baseURL + url
+    downloadLoadingInstance = ElLoading.service({ text: "正在下载数据，请稍候", background: "rgba(0, 0, 0, 0.7)", })
     axios({
       method: 'get',
       url: url,
@@ -57,6 +59,11 @@ export default {
       } else {
         this.printErrMsg(res.data);
       }
+      downloadLoadingInstance.close();
+    }).catch((r) => {
+      console.error(r)
+      ElMessage.error('下载文件出现错误，请联系管理员！')
+      downloadLoadingInstance.close();
     })
   },
   saveAs(text, name, opts) {
