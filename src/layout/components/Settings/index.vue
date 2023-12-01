@@ -38,7 +38,7 @@
     <div class="drawer-item">
       <span>开启 TopNav</span>
       <span class="comp-style">
-        <el-switch v-model="settingsStore.topNav" class="drawer-switch" />
+        <el-switch v-model="settingsStore.topNav" @change="topNavChange" class="drawer-switch" />
       </span>
     </div>
 
@@ -97,6 +97,14 @@ const theme = ref(settingsStore.theme);
 const sideTheme = ref(settingsStore.sideTheme);
 const storeSettings = computed(() => settingsStore);
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
+
+/** 是否需要topnav */
+function topNavChange(val) {
+  if (!val) {
+    appStore.toggleSideBarHide(false);
+    permissionStore.setSidebarRouters(permissionStore.defaultRoutes);
+  }
+}
 
 function themeChange(val) {
   settingsStore.theme = val;
