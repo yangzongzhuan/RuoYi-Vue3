@@ -10,7 +10,7 @@
       <el-tooltip class="item" effect="dark" content="显隐列" placement="top" v-if="columns">
         <el-button circle icon="Menu" @click="showColumn()" v-if="showColumnsType == 'transfer'"/>
         <el-dropdown trigger="click" :hide-on-click="false" style="padding-left: 12px" v-if="showColumnsType == 'checkbox'">
-          <el-button size="mini" circle icon="Menu" />
+          <el-button circle icon="Menu" />
           <template #dropdown>
             <el-dropdown-menu>
               <template v-for="item in columns" :key="item.key">

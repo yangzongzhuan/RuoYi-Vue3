@@ -4,6 +4,7 @@
   "description": "若依管理系统",
   "author": "若依",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
@@ -15,30 +16,30 @@
     "url": "https://gitee.com/y_project/RuoYi-Vue.git"
   },
   "dependencies": {
-    "@element-plus/icons-vue": "2.0.10",
+    "@element-plus/icons-vue": "2.3.1",
     "@vueup/vue-quill": "1.2.0",
-    "@vueuse/core": "9.5.0",
+    "@vueuse/core": "10.6.1",
     "axios": "0.27.2",
-    "echarts": "5.4.0",
-    "element-plus": "2.2.27",
+    "echarts": "5.4.3",
+    "element-plus": "2.4.3",
     "file-saver": "2.0.5",
     "fuse.js": "6.6.2",
-    "js-cookie": "3.0.1",
-    "jsencrypt": "3.3.1",
+    "js-cookie": "3.0.5",
+    "jsencrypt": "3.3.2",
     "nprogress": "0.2.0",
-    "pinia": "2.0.22",
-    "vue": "3.2.45",
-    "vue-cropper": "1.0.3",
-    "vue-router": "4.1.4"
+    "pinia": "2.1.7",
+    "vue": "3.3.9",
+    "vue-cropper": "1.1.1",
+    "vue-router": "4.2.5"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "3.1.0",
-    "@vue/compiler-sfc": "3.2.45",
-    "sass": "1.56.1",
-    "unplugin-auto-import": "0.11.4",
-    "vite": "3.2.3",
+    "@vitejs/plugin-vue": "4.5.0",
+    "@vue/compiler-sfc": "3.3.9",
+    "sass": "1.69.5",
+    "unplugin-auto-import": "0.17.1",
+    "vite": "5.0.4",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1",
-    "unplugin-vue-setup-extend-plus": "0.4.9"
+    "unplugin-vue-setup-extend-plus": "1.0.0"
   }
 }

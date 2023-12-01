@@ -1,5 +1,5 @@
 <template>
-    <el-form size="small">
+    <el-form>
         <el-form-item>
             <el-radio v-model='radioValue' :label="1">
                 日，允许的通配符[, - * ? / L W]
