@@ -148,6 +148,49 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.7 - 2023-12-08">
+              <ol>
+                <li>操作日志记录部门名称</li>
+                <li>全局数据存储用户编号</li>
+                <li>新增编程式判断资源访问权限</li>
+                <li>操作日志列表新增IP地址查询</li>
+                <li>定时任务新增页去除状态选项</li>
+                <li>代码生成支持选择前端模板类型</li>
+                <li>显隐列组件支持复选框弹出类型</li>
+                <li>通用排序属性orderBy参数限制长度</li>
+                <li>Excel自定义数据处理器增加单元格/工作簿对象</li>
+                <li>升级oshi到最新版本6.4.8</li>
+                <li>升级druid到最新版本1.2.20</li>
+                <li>升级fastjson到最新版2.0.43</li>
+                <li>升级pagehelper到最新版1.4.7</li>
+                <li>升级commons.io到最新版本2.13.0</li>
+                <li>升级element-ui到最新版本2.15.14</li>
+                <li>修复五级路由缓存无效问题</li>
+                <li>修复外链带端口出现的异常</li>
+                <li>修复树模板父级编码变量错误</li>
+                <li>修复字典表详情页面搜索问题</li>
+                <li>修复内链iframe没有传递参数问题</li>
+                <li>修复自定义字典样式不生效的问题</li>
+                <li>修复字典缓存删除方法参数错误问题</li>
+                <li>修复Excel导入数据临时文件无法删除问题</li>
+                <li>修复未登录带参数访问成功后参数丢失问题</li>
+                <li>修复HeaderSearch组件跳转query参数丢失问题</li>
+                <li>修复代码生成导入后必填项与数据库不匹配问题</li>
+                <li>修复Excels导入时无法获取到dictType字典值问题</li>
+                <li>优化下载zip方法新增遮罩层</li>
+                <li>优化头像上传参数新增文件名称</li>
+                <li>优化字典标签支持自定义分隔符</li>
+                <li>优化菜单管理类型为按钮状态可选</li>
+                <li>优化前端防重复提交数据大小限制</li>
+                <li>优化TopNav菜单没有图标svg不显示</li>
+                <li>优化数字金额大写转换精度丢失问题</li>
+                <li>优化富文本Editor组件检验图片格式</li>
+                <li>优化页签在Firefox浏览器被遮挡的问题</li>
+                <li>优化个人中心/基本资料修改时数据显示问题</li>
+                <li>优化缓存监控图表支持跟随屏幕大小自适应调整</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.6 - 2023-06-30">
               <ol>
                 <li>支持登录IP黑名单限制</li>
@@ -945,7 +988,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.6')
+const version = ref('3.8.7')
 
 function goTarget(url) {
   window.open(url, '__blank')
