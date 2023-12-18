@@ -147,7 +147,7 @@
             <el-form-item label="所属分类" prop="categoryId">
               <el-select v-model="form.categoryId" placeholder="请选择所属分类" @change="changeSelect"  >
                 <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id"
-                           :disabled="item.commonStatus == 0"></el-option>
+                           :disabled="item.commonStatus === 0"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -409,7 +409,12 @@ function handleExport() {
  * 修改所属分类，赋值categoryName到表单
  */
 function changeSelect(event) {
-  form.value.categoryName = categoryList.value[event - 1].name;
+  for (let i in categoryList.value) {
+    if (categoryList.value[i].id === event) {
+      form.value.categoryName = categoryList.value[i].name;
+      break;
+    }
+  }
 }
 
 onMounted(()=>{
