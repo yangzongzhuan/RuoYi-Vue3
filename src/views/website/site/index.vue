@@ -16,10 +16,10 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="网站标题" prop="title">
+      <el-form-item label="网站副标题" prop="subTitle">
         <el-input
-          v-model="queryParams.title"
-          placeholder="请输入网站标题"
+          v-model="queryParams.subTitle"
+          placeholder="请输入网站副标题"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -96,8 +96,8 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="所属分类" align="center" prop="categoryName" />
-      <el-table-column label="网站简称" align="center" prop="name" />
-      <el-table-column label="网站标题" align="center" prop="title" />
+      <el-table-column label="网站名称" align="center" prop="name" />
+      <el-table-column label="网站副标题" align="center" prop="subTitle" />
       <el-table-column label="网站地址" align="center" prop="url" />
       <el-table-column label="颜色" align="center" prop="color" />
       <el-table-column label="网站logo图" align="center" prop="logo" width="100">
@@ -159,20 +159,20 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站简称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入网站简称" />
+            <el-form-item label="网站名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入网站名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="简称颜色" prop="color">
+            <el-form-item label="名称颜色" prop="color">
                 <el-color-picker v-model="form.color" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站标题" prop="title">
-              <el-input v-model="form.title" placeholder="请输入网站标题" />
+            <el-form-item label="网站副标题" prop="subTitle">
+              <el-input v-model="form.subTitle" placeholder="请输入网站副标题" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -266,7 +266,7 @@ const data = reactive({
     pageSize: 10,
     categoryId: null,
     name: null,
-    title: null,
+    subTitle: null,
     indexShow: null,
     commonStatus: null,
     orderByColumn: 'create_time',
@@ -274,8 +274,8 @@ const data = reactive({
   },
   rules: {
     categoryId: [{ required: true, message: "所属分类不能为空", trigger: "blur" }],
-    name: [{ required: true, message: "网站简称不能为空", trigger: "blur" }],
-    title: [{ required: true, message: "网站标题不能为空", trigger: "blur" }],
+    name: [{ required: true, message: "网站名称不能为空", trigger: "blur" }],
+    subTitle: [{ required: true, message: "网站副标题不能为空", trigger: "blur" }],
     url: [{ required: true, message: "网站地址不能为空", trigger: "blur" }],
     logo: [{ required: true, message: "网站logo图不能为空", trigger: "blur" }],
     icon: [{ required: true, message: "网站icon图不能为空", trigger: "blur" }],
@@ -308,7 +308,7 @@ function reset() {
     categoryName: null,
     name: null,
     color: null,
-    title: null,
+    subTitle: null,
     url: null,
     logo: null,
     icon: null,

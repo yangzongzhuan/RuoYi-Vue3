@@ -1,18 +1,18 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文章分类id" prop="articleCategoryId">
+      <el-form-item label="文章分类" prop="articleCategoryId">
         <el-input
           v-model="queryParams.articleCategoryId"
-          placeholder="请输入文章分类id"
+          placeholder="请输入文章分类"
           clearable
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文章分类名称" prop="articleCategoryName">
+      <el-form-item label="分类名称" prop="articleCategoryName">
         <el-input
           v-model="queryParams.articleCategoryName"
-          placeholder="请输入文章分类名称"
+          placeholder="请输入分类名称"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -25,8 +25,8 @@
           @keyup.enter="handleQuery"
         />
       </el-form-item>
-      <el-form-item label="文章类型【0：资源下载  1：技术文章】" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择文章类型【0：资源下载  1：技术文章】" clearable>
+      <el-form-item label="文章类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择文章类型" clearable>
           <el-option
             v-for="dict in na_article_type"
             :key="dict.value"
@@ -35,8 +35,8 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="状态【1：启用  0：停用】" prop="commonStatus">
-        <el-select v-model="queryParams.commonStatus" placeholder="请选择状态【1：启用  0：停用】" clearable>
+      <el-form-item label="状态" prop="commonStatus">
+        <el-select v-model="queryParams.commonStatus" placeholder="请选择状态" clearable>
           <el-option
             v-for="dict in na_common_status"
             :key="dict.value"
@@ -96,13 +96,13 @@
     <el-table v-loading="loading" :data="articleDetailList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-      <el-table-column label="文章分类id" align="center" prop="articleCategoryId" />
+<!--      <el-table-column label="文章分类id" align="center" prop="articleCategoryId" />-->
       <el-table-column label="文章分类名称" align="center" prop="articleCategoryName" />
       <el-table-column label="文章标题" align="center" prop="title" />
       <el-table-column label="标题颜色" align="center" prop="color" />
       <el-table-column label="内容" align="center" prop="content" />
       <el-table-column label="浏览量" align="center" prop="view" />
-      <el-table-column label="文章类型【0：资源下载  1：技术文章】" align="center" prop="type">
+      <el-table-column label="文章类型" align="center" prop="type">
         <template #default="scope">
           <dict-tag :options="na_article_type" :value="scope.row.type"/>
         </template>
@@ -113,7 +113,7 @@
         </template>
       </el-table-column>
       <el-table-column label="下载地址" align="center" prop="downloadAddr" />
-      <el-table-column label="状态【1：启用  0：停用】" align="center" prop="commonStatus">
+      <el-table-column label="状态" align="center" prop="commonStatus">
         <template #default="scope">
           <dict-tag :options="na_common_status" :value="scope.row.commonStatus"/>
         </template>
@@ -141,7 +141,7 @@
           <el-input v-model="form.articleCategoryId" placeholder="请输入文章分类id" />
         </el-form-item>
         <el-form-item label="文章分类名称" prop="articleCategoryName">
-          <el-input v-model="form.articleCategoryName" placeholder="请输入文章分类名称" />
+          <el-input v-model="form.articleCategoryName" placeholder="请输入分类名称" />
         </el-form-item>
         <el-form-item label="文章标题" prop="title">
           <el-input v-model="form.title" placeholder="请输入文章标题" />
@@ -155,8 +155,8 @@
         <el-form-item label="浏览量" prop="view">
           <el-input v-model="form.view" placeholder="请输入浏览量" />
         </el-form-item>
-        <el-form-item label="文章类型【0：资源下载  1：技术文章】" prop="type">
-          <el-select v-model="form.type" placeholder="请选择文章类型【0：资源下载  1：技术文章】">
+        <el-form-item label="文章类型" prop="type">
+          <el-select v-model="form.type" placeholder="请选择文章类型">
             <el-option
               v-for="dict in na_article_type"
               :key="dict.value"
@@ -171,7 +171,7 @@
         <el-form-item label="下载地址" prop="downloadAddr">
           <el-input v-model="form.downloadAddr" placeholder="请输入下载地址" />
         </el-form-item>
-        <el-form-item label="状态【1：启用  0：停用】" prop="commonStatus">
+        <el-form-item label="状态" prop="commonStatus">
           <el-radio-group v-model="form.commonStatus">
             <el-radio
               v-for="dict in na_common_status"
@@ -222,16 +222,13 @@ const data = reactive({
   },
   rules: {
     articleCategoryId: [
-      { required: true, message: "文章分类id不能为空", trigger: "blur" }
+      { required: true, message: "文章分类不能为空", trigger: "blur" }
     ],
     title: [
       { required: true, message: "文章标题不能为空", trigger: "blur" }
     ],
     type: [
-      { required: true, message: "文章类型【0：资源下载  1：技术文章】不能为空", trigger: "change" }
-    ],
-    commonStatus: [
-      { required: true, message: "状态【1：启用  0：停用】不能为空", trigger: "change" }
+      { required: true, message: "文章类型不能为空", trigger: "change" }
     ],
   }
 });
