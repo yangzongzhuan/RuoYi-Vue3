@@ -147,7 +147,7 @@
             <el-form-item label="所属分类" prop="categoryId">
               <el-select v-model="form.categoryId" placeholder="请选择所属分类" @change="changeSelect"  >
                 <el-option v-for="item in categoryList" :key="item.id" :label="item.name" :value="item.id"
-                           :disabled="item.commonStatus === 0"></el-option>
+                           :disabled="item.commonStatus == 0"></el-option>
               </el-select>
             </el-form-item>
           </el-col>

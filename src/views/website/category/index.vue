@@ -112,7 +112,7 @@
           <el-input v-model="form.description" placeholder="请输入SEO描述" />
         </el-form-item>
         <el-form-item label="分类排序" prop="sort">
-          <el-input v-model="form.sort" placeholder="请输入分类排序" />
+          <el-input-number v-model="form.sort" :min="1"/>
         </el-form-item>
         <el-form-item label="状态" prop="commonStatus">
           <el-radio-group v-model="form.commonStatus">
