@@ -251,6 +251,9 @@ const data = reactive({
     title: [
       { required: true, message: "文章标题不能为空", trigger: "blur" }
     ],
+    color: [
+      { required: true, message: "标题颜色不能为空", trigger: "blur" }
+    ],
     type: [
       { required: true, message: "文章类型不能为空", trigger: "change" }
     ],
