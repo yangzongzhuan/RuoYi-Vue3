@@ -420,7 +420,6 @@ function changeSelect(event) {
 onMounted(()=>{
   listCategory().then(response =>{
     categoryList.value = response.rows;
-    console.log(categoryList.value)
   })
 })
 

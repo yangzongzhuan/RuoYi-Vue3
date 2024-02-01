@@ -2,20 +2,21 @@
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="文章分类" prop="articleCategoryId">
-        <el-input
-          v-model="queryParams.articleCategoryId"
-          placeholder="请输入文章分类"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+        <el-select v-model="queryParams.articleCategoryId" placeholder="请选择文章分类" clearable>
+          <el-option v-for="item in articleCategoryList" :key="item.id" :label="item.name" :value="item.id"
+                     :disabled="item.commonStatus == 0">
+          </el-option>
+        </el-select>
       </el-form-item>
-      <el-form-item label="分类名称" prop="articleCategoryName">
-        <el-input
-          v-model="queryParams.articleCategoryName"
-          placeholder="请输入分类名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
+      <el-form-item label="文章类型" prop="type">
+        <el-select v-model="queryParams.type" placeholder="请选择文章类型" clearable>
+          <el-option
+              v-for="dict in na_article_type"
+              :key="dict.value"
+              :label="dict.label"
+              :value="dict.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item label="文章标题" prop="title">
         <el-input
@@ -24,16 +25,6 @@
           clearable
           @keyup.enter="handleQuery"
         />
-      </el-form-item>
-      <el-form-item label="文章类型" prop="type">
-        <el-select v-model="queryParams.type" placeholder="请选择文章类型" clearable>
-          <el-option
-            v-for="dict in na_article_type"
-            :key="dict.value"
-            :label="dict.label"
-            :value="dict.value"
-          />
-        </el-select>
       </el-form-item>
       <el-form-item label="状态" prop="commonStatus">
         <el-select v-model="queryParams.commonStatus" placeholder="请选择状态" clearable>
@@ -97,10 +88,15 @@
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
 <!--      <el-table-column label="文章分类id" align="center" prop="articleCategoryId" />-->
-      <el-table-column label="文章分类名称" align="center" prop="articleCategoryName" />
-      <el-table-column label="文章标题" align="center" prop="title" />
-      <el-table-column label="标题颜色" align="center" prop="color" />
-      <el-table-column label="内容" align="center" prop="content" />
+      <el-table-column label="文章分类" align="center" prop="articleCategoryName" />
+      <el-table-column label="文章标题" align="center" prop="title" show-overflow-tooltip/>
+<!--      <el-table-column label="标题颜色" align="center" prop="color" />-->
+      <el-table-column label="标题颜色" align="center" prop="color">
+        <template #default="scope">
+          <el-tag class="ml-2" :color="scope.row.color" style="border: none"><span style="color: white">{{scope.row.color}}</span></el-tag>
+        </template>
+      </el-table-column>
+<!--      <el-table-column label="内容" align="center" prop="content" />-->
       <el-table-column label="浏览量" align="center" prop="view" />
       <el-table-column label="文章类型" align="center" prop="type">
         <template #default="scope">
@@ -137,49 +133,74 @@
     <!-- 添加或修改文章对话框 -->
     <el-dialog :title="title" v-model="open" width="650px" append-to-body>
       <el-form ref="articleDetailRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="文章分类id" prop="articleCategoryId">
-          <el-input v-model="form.articleCategoryId" placeholder="请输入文章分类id" />
-        </el-form-item>
-        <el-form-item label="文章分类名称" prop="articleCategoryName">
-          <el-input v-model="form.articleCategoryName" placeholder="请输入分类名称" />
-        </el-form-item>
-        <el-form-item label="文章标题" prop="title">
-          <el-input v-model="form.title" placeholder="请输入文章标题" />
-        </el-form-item>
-        <el-form-item label="标题颜色" prop="color">
-          <el-input v-model="form.color" placeholder="请输入标题颜色" />
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="文章分类" prop="articleCategoryId">
+              <el-select v-model="form.articleCategoryId" placeholder="请选择文章分类" @change="changeSelect">
+                <el-option v-for="item in articleCategoryList" :key="item.id" :label="item.name" :value="item.id"
+                           :disabled="item.commonStatus == 0">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="文章类型" prop="type">
+              <el-select v-model="form.type" placeholder="请选择文章类型">
+                <el-option
+                    v-for="dict in na_article_type"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="文章标题" prop="title">
+              <el-input v-model="form.title" placeholder="请输入文章标题" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="标题颜色" prop="color">
+              <el-color-picker v-model="form.color" />
+            </el-form-item>
+          </el-col>
+        </el-row>
         <el-form-item label="内容">
           <editor v-model="form.content" :min-height="192"/>
         </el-form-item>
-        <el-form-item label="浏览量" prop="view">
-          <el-input v-model="form.view" placeholder="请输入浏览量" />
-        </el-form-item>
-        <el-form-item label="文章类型" prop="type">
-          <el-select v-model="form.type" placeholder="请选择文章类型">
-            <el-option
-              v-for="dict in na_article_type"
-              :key="dict.value"
-              :label="dict.label"
-              :value="dict.value"
-            ></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="首图" prop="indexImg">
-          <image-upload v-model="form.indexImg"/>
-        </el-form-item>
-        <el-form-item label="下载地址" prop="downloadAddr">
-          <el-input v-model="form.downloadAddr" placeholder="请输入下载地址" />
-        </el-form-item>
-        <el-form-item label="状态" prop="commonStatus">
-          <el-radio-group v-model="form.commonStatus">
-            <el-radio
-              v-for="dict in na_common_status"
-              :key="dict.value"
-              :label="dict.value"
-            >{{dict.label}}</el-radio>
-          </el-radio-group>
-        </el-form-item>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="首图" prop="indexImg">
+              <image-upload v-model="form.indexImg" :limit="1" :isShowTip="false"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="下载地址" prop="downloadAddr">
+              <el-input v-model="form.downloadAddr" placeholder="待开发功能" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="浏览量" prop="view">
+              <el-input-number v-model="form.view" :min="0"/>
+            </el-form-item>
+          </el-col>
+          <el-col :span="12">
+            <el-form-item label="状态" prop="commonStatus">
+              <el-radio-group v-model="form.commonStatus">
+                <el-radio
+                    v-for="dict in na_common_status"
+                    :key="dict.value"
+                    :label="dict.value"
+                >{{dict.label}}</el-radio>
+              </el-radio-group>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
       <template #footer>
         <div class="dialog-footer">
@@ -193,6 +214,8 @@
 
 <script setup name="ArticleDetail">
 import { listArticleDetail, getArticleDetail, delArticleDetail, addArticleDetail, updateArticleDetail } from "@/api/article/articleDetail";
+import {listCategory} from "@/api/article/category.js"
+import {onMounted} from "vue";
 
 const { proxy } = getCurrentInstance();
 const { na_common_status, na_article_type } = proxy.useDict('na_common_status', 'na_article_type');
@@ -206,6 +229,7 @@ const single = ref(true);
 const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
+const articleCategoryList = ref([])
 
 const data = reactive({
   form: {},
@@ -296,6 +320,12 @@ function handleAdd() {
   reset();
   open.value = true;
   title.value = "添加文章";
+  form.value.view = 0;
+  form.value.color = '#000000';
+  form.value.commonStatus = "1";
+  listCategory().then(response =>{
+    articleCategoryList.value = response.rows;
+  })
 }
 
 /** 修改按钮操作 */
@@ -348,5 +378,22 @@ function handleExport() {
   }, `articleDetail_${new Date().getTime()}.xlsx`)
 }
 
+/**
+ * 修改所属分类，赋值categoryName到表单
+ */
+function changeSelect(event) {
+  for (let i in articleCategoryList.value) {
+    if (articleCategoryList.value[i].id === event) {
+      form.value.articleCategoryName = articleCategoryList.value[i].name;
+      break;
+    }
+  }
+}
+
+onMounted(()=>{
+  listCategory().then(response =>{
+    articleCategoryList.value = response.rows;
+  })
+})
 getList();
 </script>
