@@ -87,17 +87,14 @@
     <el-table v-loading="loading" :data="articleDetailList" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="id" align="center" prop="id" />
-<!--      <el-table-column label="文章分类id" align="center" prop="articleCategoryId" />-->
       <el-table-column label="文章分类" align="center" prop="articleCategoryName" />
       <el-table-column label="文章标题" align="center" prop="title" show-overflow-tooltip/>
-<!--      <el-table-column label="标题颜色" align="center" prop="color" />-->
+      <el-table-column label="浏览量" align="center" prop="view" />
       <el-table-column label="标题颜色" align="center" prop="color">
         <template #default="scope">
           <el-tag class="ml-2" :color="scope.row.color" style="border: none"><span style="color: white">{{scope.row.color}}</span></el-tag>
         </template>
       </el-table-column>
-<!--      <el-table-column label="内容" align="center" prop="content" />-->
-      <el-table-column label="浏览量" align="center" prop="view" />
       <el-table-column label="文章类型" align="center" prop="type">
         <template #default="scope">
           <dict-tag :options="na_article_type" :value="scope.row.type"/>
