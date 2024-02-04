@@ -1,137 +1,54 @@
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="分组" prop="group">
-        <el-input
-          v-model="queryParams.group"
-          placeholder="请输入分组"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="键" prop="key">
-        <el-input
-          v-model="queryParams.key"
-          placeholder="请输入键"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="值" prop="value">
-        <el-input
-          v-model="queryParams.value"
-          placeholder="请输入值"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="键名称" prop="keyName">
-        <el-input
-          v-model="queryParams.keyName"
-          placeholder="请输入键名称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-      </el-form-item>
-    </el-form>
-
-    <el-row :gutter="10" class="mb8">
-      <el-col :span="1.5">
-        <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="handleAdd"
-          v-hasPermi="['config:mainConfig:add']"
-        >新增</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="success"
-          plain
-          icon="Edit"
-          :disabled="single"
-          @click="handleUpdate"
-          v-hasPermi="['config:mainConfig:edit']"
-        >修改</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="danger"
-          plain
-          icon="Delete"
-          :disabled="multiple"
-          @click="handleDelete"
-          v-hasPermi="['config:mainConfig:remove']"
-        >删除</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
-          type="warning"
-          plain
-          icon="Download"
-          @click="handleExport"
-          v-hasPermi="['config:mainConfig:export']"
-        >导出</el-button>
-      </el-col>
-      <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row>
-
-    <el-table v-loading="loading" :data="mainConfigList" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="${comment}" align="center" prop="id" />
-      <el-table-column label="分组" align="center" prop="group" />
-      <el-table-column label="键" align="center" prop="key" />
-      <el-table-column label="值" align="center" prop="value" />
-      <el-table-column label="键名称" align="center" prop="keyName" />
-      <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
-        <template #default="scope">
-          <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['config:mainConfig:edit']">修改</el-button>
-          <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['config:mainConfig:remove']">删除</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-
-    <pagination
-      v-show="total>0"
-      :total="total"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
-      @pagination="getList"
-    />
-
-    <!-- 添加或修改网站配置对话框 -->
-    <el-dialog :title="title" v-model="open" width="650px" append-to-body>
-      <el-form ref="mainConfigRef" :model="form" :rules="rules" label-width="100px">
-        <el-form-item label="分组" prop="group">
-          <el-input v-model="form.group" placeholder="请输入分组" />
-        </el-form-item>
-        <el-form-item label="键" prop="key">
-          <el-input v-model="form.key" placeholder="请输入键" />
-        </el-form-item>
-        <el-form-item label="值" prop="value">
-          <el-input v-model="form.value" placeholder="请输入值" />
-        </el-form-item>
-        <el-form-item label="键名称" prop="keyName">
-          <el-input v-model="form.keyName" placeholder="请输入键名称" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">确 定</el-button>
-          <el-button @click="cancel">取 消</el-button>
+    <el-tabs type="border-card">
+      <el-tab-pane label="网站设置">
+        <el-form ref="mainConfigRef" :model="form" :rules="rules" label-width="100px">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="站点标题" prop="site_title">
+                <el-input v-model="form.site_title" placeholder="请输入站点标题" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="站点副标题" prop="site_subtitle">
+                <el-input v-model="form.site_subtitle" placeholder="请输入站点副标题" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-form-item label="站点关键字" prop="key_words">
+            <el-input v-model="form.key_words" placeholder="请输入站点关键字" />
+          </el-form-item>
+          <el-form-item label="站点描述" prop="description">
+            <el-input v-model="form.description" placeholder="请输入站点描述" />
+          </el-form-item>
+          <el-form-item label="备案号" prop="record_num">
+            <el-input v-model="form.record_num" placeholder="请输入备案号" />
+          </el-form-item>
+          <el-form-item label="底部版权" prop="copyright">
+            <editor v-model="form.copyright" :min-height="100" placeholder="请输入底部版权" />
+          </el-form-item>
+          <el-form-item label="统计代码" prop="js_code">
+            <el-input v-model="form.js_code" :autosize="{ minRows: 2, maxRows: 4 }"
+                      type="textarea" placeholder="请输入统计代码" />
+          </el-form-item>
+        </el-form>
+        <div class="dialog-footer" style="text-align: right">
+          <el-button type="primary" @click="submitForm">保 存</el-button>
+          <el-button @click="rest">重 置</el-button>
         </div>
-      </template>
-    </el-dialog>
+      </el-tab-pane>
+      <el-tab-pane label="Logo配置">
+        Logo配置
+      </el-tab-pane>
+      <el-tab-pane label="功能开关">
+        功能开关
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
 <script setup name="MainConfig">
-import { listMainConfig, getMainConfig, delMainConfig, addMainConfig, updateMainConfig } from "@/api/config/mainConfig";
+import { listMainConfig, updateMainConfig } from "@/api/config/mainConfig";
 
 const { proxy } = getCurrentInstance();
 
@@ -147,126 +64,35 @@ const title = ref("");
 
 const data = reactive({
   form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    group: null,
-    key: null,
-    value: null,
-    keyName: null,
-    orderByColumn: 'create_time',
-    isAsc: 'desc'
-  },
   rules: {
   }
 });
+const { form, rules } = toRefs(data);
 
-const { queryParams, form, rules } = toRefs(data);
+function rest() {
+  getList();
+}
 
-/** 查询网站配置列表 */
+/** 查询网站配置 */
 function getList() {
   loading.value = true;
-  listMainConfig(queryParams.value).then(response => {
-    mainConfigList.value = response.rows;
-    total.value = response.total;
+  listMainConfig().then(response => {
+    form.value = response.data;
     loading.value = false;
   });
 }
 
-// 取消按钮
-function cancel() {
-  open.value = false;
-  reset();
-}
-
-// 表单重置
-function reset() {
-  form.value = {
-    id: null,
-    group: null,
-    key: null,
-    value: null,
-    keyName: null,
-    createTime: null,
-    updateTime: null
-  };
-  proxy.resetForm("mainConfigRef");
-}
-
-/** 搜索按钮操作 */
-function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
-}
-
-/** 重置按钮操作 */
-function resetQuery() {
-  proxy.resetForm("queryRef");
-  handleQuery();
-}
-
-// 多选框选中数据
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.id);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
-}
-
-/** 新增按钮操作 */
-function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加网站配置";
-}
-
-/** 修改按钮操作 */
-function handleUpdate(row) {
-  reset();
-  const _id = row.id || ids.value
-  getMainConfig(_id).then(response => {
-    form.value = response.data;
-    open.value = true;
-    title.value = "修改网站配置";
-  });
-}
-
-/** 提交按钮 */
+/** 保存按钮 */
 function submitForm() {
   proxy.$refs["mainConfigRef"].validate(valid => {
     if (valid) {
-      if (form.value.id != null) {
-        updateMainConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
-      } else {
-        addMainConfig(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
-      }
+      updateMainConfig(form.value).then(response => {
+        proxy.$modal.msgSuccess("保存成功");
+        open.value = false;
+        getList();
+      });
     }
   });
-}
-
-/** 删除按钮操作 */
-function handleDelete(row) {
-  const _ids = row.id || ids.value;
-  proxy.$modal.confirm('是否确认删除网站配置编号为"' + _ids + '"的数据项？').then(function() {
-    return delMainConfig(_ids);
-  }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
-}
-
-/** 导出按钮操作 */
-function handleExport() {
-  proxy.download('config/mainConfig/export', {
-    ...queryParams.value
-  }, `mainConfig_${new Date().getTime()}.xlsx`)
 }
 
 getList();
