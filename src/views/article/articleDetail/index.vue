@@ -286,7 +286,7 @@ function reset() {
     articleCategoryName: null,
     title: null,
     color: null,
-    content: null,
+    content: undefined,
     view: null,
     type: null,
     indexImg: null,
