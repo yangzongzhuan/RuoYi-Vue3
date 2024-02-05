@@ -254,6 +254,9 @@ const data = reactive({
     type: [
       { required: true, message: "文章类型不能为空", trigger: "change" }
     ],
+    view: [
+      { required: true, message: "浏览量不能为空", trigger: "change" }
+    ],
   }
 });
 
