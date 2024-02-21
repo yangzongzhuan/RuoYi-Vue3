@@ -46,7 +46,7 @@
               </el-form-item>
             </el-col>
             <el-col :span="12">
-              <el-form-item label="网站Icon" prop="site_subtitleicon_img">
+              <el-form-item label="网站Icon" prop="icon_img">
                 <image-upload v-model="form.icon_img" :limit="1" :isShowTip="false"/>
               </el-form-item>
             </el-col>
