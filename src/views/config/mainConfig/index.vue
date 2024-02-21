@@ -38,7 +38,24 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="Logo配置">
-        Logo配置
+        <el-form ref="mainConfigRef" :model="form" :rules="rules" label-width="100px">
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="网站Logo" prop="logo_img">
+                <image-upload v-model="form.logo_img" :limit="1" :isShowTip="false"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="网站Icon" prop="site_subtitleicon_img">
+                <image-upload v-model="form.icon_img" :limit="1" :isShowTip="false"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+        <div class="dialog-footer" style="text-align: right">
+          <el-button type="primary" @click="submitForm">保 存</el-button>
+          <el-button @click="rest">重 置</el-button>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="功能开关">
         功能开关
@@ -52,15 +69,7 @@ import { listMainConfig, updateMainConfig } from "@/api/config/mainConfig";
 
 const { proxy } = getCurrentInstance();
 
-const mainConfigList = ref([]);
-const open = ref(false);
 const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
 
 const data = reactive({
   form: {},
@@ -79,6 +88,7 @@ function getList() {
   listMainConfig().then(response => {
     form.value = response.data;
     loading.value = false;
+    console.log(form.value);
   });
 }
 
@@ -88,7 +98,6 @@ function submitForm() {
     if (valid) {
       updateMainConfig(form.value).then(response => {
         proxy.$modal.msgSuccess("保存成功");
-        open.value = false;
         getList();
       });
     }
