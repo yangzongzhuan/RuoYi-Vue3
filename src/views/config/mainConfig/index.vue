@@ -88,7 +88,6 @@ function getList() {
   listMainConfig().then(response => {
     form.value = response.data;
     loading.value = false;
-    console.log(form.value);
   });
 }
 
