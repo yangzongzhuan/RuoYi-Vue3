@@ -3,7 +3,7 @@
  * @Author: Panda
  * @Date: 2024-02-27 15:19:26
  * @LastEditors: Panda
- * @LastEditTime: 2024-02-29 09:56:11
+ * @LastEditTime: 2024-02-29 16:11:50
  * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\components\SvgIcon\index.vue
 -->
 <template>
@@ -17,7 +17,7 @@ import { computed, defineComponent } from 'vue'
 export default defineComponent({
   props: {
     iconClass: {
-      type: Object,
+      type: String,
       required: true
     },
     className: {
