@@ -28,14 +28,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import { computed, ref } from 'vue'
 // 记录未匹配的项
-const unmatchArray = ref([])
+const unmatchArray = ref<any[]>([])
 
 const props = defineProps({
   // 数据
   options: {
-    type: Array,
+    type: Array as () => Array<any>,
     default: null
   },
   // 当前的值
@@ -63,7 +64,7 @@ const unmatch = computed(() => {
     return false
   // 传入值为数组
   let unmatch = false // 添加一个标志来判断是否有未匹配项
-  values.value.forEach(item => {
+  values.value.forEach((item: any) => {
     if (!props.options.some(v => v.value === item)) {
       unmatchArray.value.push(item)
       unmatch = true // 如果有未匹配项，将标志设置为true
@@ -73,8 +74,8 @@ const unmatch = computed(() => {
 })
 
 const handleArray = computed(() => {
-  if (unmatchArray.length === 0) return ''
-  return unmatchArray.reduce((pre, cur) => {
+  if (unmatchArray.value.length === 0) return ''
+  return unmatchArray.value.reduce((pre, cur) => {
     return pre + ' ' + cur
   })
 })

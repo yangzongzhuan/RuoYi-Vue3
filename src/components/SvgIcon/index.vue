@@ -1,14 +1,23 @@
+<!--
+ * @Description: 
+ * @Author: Panda
+ * @Date: 2024-02-27 15:19:26
+ * @LastEditors: Panda
+ * @LastEditTime: 2024-02-29 09:56:11
+ * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\components\SvgIcon\index.vue
+-->
 <template>
   <svg :class="svgClass" aria-hidden="true">
     <use :xlink:href="iconName" :fill="color" />
   </svg>
 </template>
 
-<script>
+<script lang="ts">
+import { computed, defineComponent } from 'vue'
 export default defineComponent({
   props: {
     iconClass: {
-      type: String,
+      type: Object,
       required: true
     },
     className: {
@@ -18,9 +27,9 @@ export default defineComponent({
     color: {
       type: String,
       default: ''
-    },
+    }
   },
-  setup(props) {
+  setup(props: any) {
     return {
       iconName: computed(() => `#icon-${props.iconClass}`),
       svgClass: computed(() => {

@@ -126,7 +126,7 @@
         </el-form-item>
       </el-col>
     </el-row>
-    
+
     <template v-if="info.tplCategory == 'tree'">
       <h4 class="form-header">其他信息</h4>
       <el-row v-show="info.tplCategory == 'tree'">
@@ -228,16 +228,15 @@
         </el-col>
       </el-row>
     </template>
-
   </el-form>
 </template>
 
-<script setup>
-import { listMenu } from "@/api/system/menu";
-
-const subColumns = ref([]);
-const menuOptions = ref([]);
-const { proxy } = getCurrentInstance();
+<script setup lang="ts">
+import { listMenu } from '@/api/system/menu'
+import { getCurrentInstance, ref, watch } from 'vue'
+const subColumns = ref<any[]>([])
+const menuOptions = ref<any[]>([])
+const { proxy } = getCurrentInstance() as any
 
 const props = defineProps({
   info: {
@@ -245,53 +244,59 @@ const props = defineProps({
     default: null
   },
   tables: {
-    type: Array,
+    type: Array as () => any[],
     default: null
   }
-});
+})
 
 // 表单校验
 const rules = ref({
-  tplCategory: [{ required: true, message: "请选择生成模板", trigger: "blur" }],
-  packageName: [{ required: true, message: "请输入生成包路径", trigger: "blur" }],
-  moduleName: [{ required: true, message: "请输入生成模块名", trigger: "blur" }],
-  businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
-  functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
-});
-function subSelectChange(value) {
-  props.info.subTableFkName = "";
+  tplCategory: [{ required: true, message: '请选择生成模板', trigger: 'blur' }],
+  packageName: [{ required: true, message: '请输入生成包路径', trigger: 'blur' }],
+  moduleName: [{ required: true, message: '请输入生成模块名', trigger: 'blur' }],
+  businessName: [{ required: true, message: '请输入生成业务名', trigger: 'blur' }],
+  functionName: [{ required: true, message: '请输入生成功能名', trigger: 'blur' }]
+})
+function subSelectChange(value?: any) {
+  props.info.subTableFkName = ''
 }
-function tplSelectChange(value) {
-  if (value !== "sub") {
-    props.info.subTableName = "";
-    props.info.subTableFkName = "";
+function tplSelectChange(value: any) {
+  if (value !== 'sub') {
+    props.info.subTableName = ''
+    props.info.subTableFkName = ''
   }
 }
-function setSubTableColumns(value) {
+function setSubTableColumns(value: any) {
   for (var item in props.tables) {
-    const name = props.tables[item].tableName;
+    const name = (props.tables as any)[item].tableName
     if (value === name) {
-      subColumns.value = props.tables[item].columns;
-      break;
+      subColumns.value = (props.tables as any)[item].columns
+      break
     }
   }
 }
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {
   listMenu().then(response => {
-    menuOptions.value = proxy.handleTree(response.data, "menuId");
-  });
+    menuOptions.value = proxy.handleTree(response.data, 'menuId')
+  })
 }
 
-watch(() => props.info.subTableName, val => {
-  setSubTableColumns(val);
-});
-
-watch(() => props.info.tplWebType, val => {
-  if (val === '') {
-    props.info.tplWebType = "element-plus";
+watch(
+  () => props.info.subTableName,
+  val => {
+    setSubTableColumns(val)
   }
-});
+)
 
-getMenuTreeselect();
+watch(
+  () => props.info.tplWebType,
+  val => {
+    if (val === '') {
+      props.info.tplWebType = 'element-plus'
+    }
+  }
+)
+
+getMenuTreeselect()
 </script>

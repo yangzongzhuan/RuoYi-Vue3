@@ -6,7 +6,7 @@
         :key="tag.path"
         :data-path="tag.path"
         :class="isActive(tag) ? 'active' : ''"
-        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
+        :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath } as any"
         class="tags-view-item"
         :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
@@ -14,60 +14,53 @@
       >
         {{ tag.title }}
         <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
-          <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
+          <close class="el-icon-close" style="width: 1em; height: 1em; vertical-align: middle" />
         </span>
       </router-link>
     </scroll-pane>
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
-      </li>
+      <li @click="refreshSelectedTag(selectedTag)"><refresh-right style="width: 1em; height: 1em" /> 刷新页面</li>
       <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <close style="width: 1em; height: 1em;" /> 关闭当前
+        <close style="width: 1em; height: 1em" /> 关闭当前
       </li>
-      <li @click="closeOthersTags">
-        <circle-close style="width: 1em; height: 1em;" /> 关闭其他
-      </li>
-      <li v-if="!isFirstView()" @click="closeLeftTags">
-        <back style="width: 1em; height: 1em;" /> 关闭左侧
-      </li>
-      <li v-if="!isLastView()" @click="closeRightTags">
-        <right style="width: 1em; height: 1em;" /> 关闭右侧
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        <circle-close style="width: 1em; height: 1em;" /> 全部关闭
-      </li>
+      <li @click="closeOthersTags"><circle-close style="width: 1em; height: 1em" /> 关闭其他</li>
+      <li v-if="!isFirstView()" @click="closeLeftTags"><back style="width: 1em; height: 1em" /> 关闭左侧</li>
+      <li v-if="!isLastView()" @click="closeRightTags"><right style="width: 1em; height: 1em" /> 关闭右侧</li>
+      <li @click="closeAllTags(selectedTag)"><circle-close style="width: 1em; height: 1em" /> 全部关闭</li>
     </ul>
   </div>
 </template>
 
-<script setup>
-import ScrollPane from './ScrollPane'
+<script setup lang="ts">
+import ScrollPane from './ScrollPane.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import useTagsViewStore from '@/store/modules/tagsView'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
-const visible = ref(false);
-const top = ref(0);
-const left = ref(0);
-const selectedTag = ref({});
-const affixTags = ref([]);
-const scrollPaneRef = ref(null);
+import { ref, getCurrentInstance, computed, onMounted, watch, nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
-const { proxy } = getCurrentInstance();
-const route = useRoute();
-const router = useRouter();
+const visible = ref(false)
+const top = ref(0)
+const left = ref(0)
+const selectedTag = ref<any>({})
+const affixTags = ref<any[]>([])
+const scrollPaneRef = ref<any>(null)
 
-const visitedViews = computed(() => useTagsViewStore().visitedViews);
-const routes = computed(() => usePermissionStore().routes);
-const theme = computed(() => useSettingsStore().theme);
+const { proxy } = getCurrentInstance() as any
+const route = useRoute()
+const router = useRouter()
+
+const visitedViews = computed(() => useTagsViewStore().visitedViews)
+const routes = computed(() => usePermissionStore().routes)
+const theme = computed(() => useSettingsStore().theme)
 
 watch(route, () => {
   addTags()
   moveToCurrentTag()
 })
-watch(visible, (value) => {
+watch(visible, value => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
   } else {
@@ -79,17 +72,17 @@ onMounted(() => {
   addTags()
 })
 
-function isActive(r) {
+function isActive(r: any) {
   return r.path === route.path
 }
-function activeStyle(tag) {
-  if (!isActive(tag)) return {};
+function activeStyle(tag: any) {
+  if (!isActive(tag)) return {}
   return {
-    "background-color": theme.value,
-    "border-color": theme.value
-  };
+    'background-color': theme.value,
+    'border-color': theme.value
+  }
 }
-function isAffix(tag) {
+function isAffix(tag: any) {
   return tag.meta && tag.meta.affix
 }
 function isFirstView() {
@@ -106,8 +99,8 @@ function isLastView() {
     return false
   }
 }
-function filterAffixTags(routes, basePath = '') {
-  let tags = []
+function filterAffixTags(routes: any[], basePath = '') {
+  let tags: any[] = []
   routes.forEach(route => {
     if (route.meta && route.meta.affix) {
       const tagPath = getNormalPath(basePath + '/' + route.path)
@@ -128,12 +121,12 @@ function filterAffixTags(routes, basePath = '') {
   return tags
 }
 function initTags() {
-  const res = filterAffixTags(routes.value);
-  affixTags.value = res;
+  const res = filterAffixTags(routes.value)
+  affixTags.value = res
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
-       useTagsViewStore().addVisitedView(tag)
+      useTagsViewStore().addVisitedView(tag)
     }
   }
 }
@@ -142,7 +135,7 @@ function addTags() {
   if (name) {
     useTagsViewStore().addView(route)
     if (route.meta.link) {
-      useTagsViewStore().addIframeView(route);
+      useTagsViewStore().addIframeView(route)
     }
   }
   return false
@@ -151,7 +144,7 @@ function moveToCurrentTag() {
   nextTick(() => {
     for (const r of visitedViews.value) {
       if (r.path === route.path) {
-        scrollPaneRef.value.moveToTarget(r);
+        scrollPaneRef.value!.moveToTarget(r)
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
           useTagsViewStore().updateVisitedView(route)
@@ -160,48 +153,50 @@ function moveToCurrentTag() {
     }
   })
 }
-function refreshSelectedTag(view) {
-  proxy.$tab.refreshPage(view);
+function refreshSelectedTag(view: any) {
+  proxy!.$tab.refreshPage(view)
   if (route.meta.link) {
-    useTagsViewStore().delIframeView(route);
+    useTagsViewStore().delIframeView(route)
   }
 }
-function closeSelectedTag(view) {
-  proxy.$tab.closePage(view).then(({ visitedViews }) => {
+function closeSelectedTag(view: any) {
+  proxy!.$tab.closePage(view).then(({ visitedViews }: any) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
     }
   })
 }
 function closeRightTags() {
-  proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
+  proxy!.$tab.closeRightPage(selectedTag.value).then((visitedViews: any) => {
+    if (!visitedViews.find((i: any) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 function closeLeftTags() {
-  proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
+  proxy!.$tab.closeLeftPage(selectedTag.value).then((visitedViews: any) => {
+    if (!visitedViews.find((i: any) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 function closeOthersTags() {
-  router.push(selectedTag.value).catch(() => { });
-  proxy.$tab.closeOtherPage(selectedTag.value).then(() => {
+  router.push(selectedTag.value).catch(e => {
+    console.log(e)
+  })
+  proxy!.$tab.closeOtherPage(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
-function closeAllTags(view) {
-  proxy.$tab.closeAllPage().then(({ visitedViews }) => {
+function closeAllTags(view: any) {
+  proxy!.$tab.closeAllPage().then(({ visitedViews }: any) => {
     if (affixTags.value.some(tag => tag.path === route.path)) {
       return
     }
     toLastView(visitedViews, view)
   })
 }
-function toLastView(visitedViews, view) {
+function toLastView(visitedViews: any, view?: any) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
@@ -216,10 +211,10 @@ function toLastView(visitedViews, view) {
     }
   }
 }
-function openMenu(tag, e) {
+function openMenu(tag: any, e: any) {
   const menuMinWidth = 105
-  const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
-  const offsetWidth = proxy.$el.offsetWidth // container width
+  const offsetLeft = proxy!.$el.getBoundingClientRect().left // container margin left
+  const offsetWidth = proxy!.$el.offsetWidth // container width
   const maxLeft = offsetWidth - menuMinWidth // left boundary
   const l = e.clientX - offsetLeft + 15 // 15: margin right
 
@@ -241,7 +236,7 @@ function handleScroll() {
 }
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .tags-view-container {
   height: 34px;
   width: 100%;
@@ -273,14 +268,14 @@ function handleScroll() {
         color: #fff;
         border-color: #42b983;
         &::before {
-          content: "";
+          content: '';
           background: #fff;
           display: inline-block;
           width: 8px;
           height: 8px;
           border-radius: 50%;
           position: relative;
-          margin-right: 5px;
+          margin-right: 2px;
         }
       }
     }

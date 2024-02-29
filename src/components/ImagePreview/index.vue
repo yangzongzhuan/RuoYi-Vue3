@@ -1,3 +1,11 @@
+<!--
+ * @Description: 
+ * @Author: Panda
+ * @Date: 2024-02-27 15:19:26
+ * @LastEditors: Panda
+ * @LastEditTime: 2024-02-28 18:21:55
+ * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\components\ImagePreview\index.vue
+-->
 <template>
   <el-image
     :src="`${realSrc}`"
@@ -14,57 +22,53 @@
   </el-image>
 </template>
 
-<script setup>
-import { isExternal } from "@/utils/validate";
-
+<script setup lang="ts">
+import { isExternal } from '@/utils/validate'
+import { computed } from 'vue'
 const props = defineProps({
   src: {
     type: String,
-    default: ""
+    default: ''
   },
   width: {
     type: [Number, String],
-    default: ""
+    default: ''
   },
   height: {
     type: [Number, String],
-    default: ""
+    default: ''
   }
-});
+})
 
 const realSrc = computed(() => {
   if (!props.src) {
-    return;
+    return
   }
-  let real_src = props.src.split(",")[0];
+  let real_src = props.src.split(',')[0]
   if (isExternal(real_src)) {
-    return real_src;
+    return real_src
   }
-  return import.meta.env.VITE_APP_BASE_API + real_src;
-});
+  return import.meta.env.VITE_APP_BASE_API + real_src
+})
 
 const realSrcList = computed(() => {
   if (!props.src) {
-    return;
+    return
   }
-  let real_src_list = props.src.split(",");
-  let srcList = [];
+  let real_src_list = props.src.split(',')
+  let srcList:any[] = []
   real_src_list.forEach(item => {
     if (isExternal(item)) {
-      return srcList.push(item);
+      return srcList.push(item)
     }
-    return srcList.push(import.meta.env.VITE_APP_BASE_API + item);
-  });
-  return srcList;
-});
+    return srcList.push(import.meta.env.VITE_APP_BASE_API + item)
+  })
+  return srcList
+})
 
-const realWidth = computed(() =>
-  typeof props.width == "string" ? props.width : `${props.width}px`
-);
+const realWidth = computed(() => (typeof props.width == 'string' ? props.width : `${props.width}px`))
 
-const realHeight = computed(() =>
-  typeof props.height == "string" ? props.height : `${props.height}px`
-);
+const realHeight = computed(() => (typeof props.height == 'string' ? props.height : `${props.height}px`))
 </script>
 
 <style lang="scss" scoped>
