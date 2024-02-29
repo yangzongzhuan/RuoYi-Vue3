@@ -3,7 +3,7 @@
  * @Author: Panda
  * @Date: 2024-02-27 15:19:26
  * @LastEditors: Panda
- * @LastEditTime: 2024-02-29 14:04:07
+ * @LastEditTime: 2024-02-29 16:44:23
  * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\main.ts
  */
 import { createApp } from 'vue'
@@ -11,7 +11,6 @@ import { createApp } from 'vue'
 import Cookies from 'js-cookie'
 
 import ElementPlus from 'element-plus'
-import locale from 'element-plus/lib/locale/lang/zh-cn' // 中文语言
 
 import '@/assets/styles/index.scss' // global css
 // element css
@@ -24,7 +23,7 @@ import App from './App.vue'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
-
+import { useI18n } from './plugins/i18n'
 // 注册指令
 import plugins from './plugins' // plugins
 import { download } from '@/utils/request'
@@ -82,6 +81,7 @@ app
   .use(store)
   .use(plugins)
   .use(elementIcons)
+  .use(useI18n)
   .use(ElementPlus, {
     // 支持 large、default、small
     size: (Cookies.get('size') as 'small' | 'default' | 'large' | undefined) || 'default'
