@@ -11,12 +11,12 @@ import { App } from 'vue'
 import { type I18n, createI18n } from 'vue-i18n'
 import Cookies from 'js-cookie'
 
-import zhCN from '../lang/zh-cn'
+import zh from '../lang/zh'
 import en from '../lang/en'
 
 export const localesConfigs = {
   zh: {
-    ...zhCN
+    ...zh
   },
   en: {
     ...en
