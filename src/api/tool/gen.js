@@ -43,6 +43,15 @@ export function importTable(data) {
   })
 }
 
+// 创建表
+export function createTable(data) {
+  return request({
+    url: '/tool/gen/createTable',
+    method: 'post',
+    params: data
+  })
+}
+
 // 预览生成代码
 export function previewTable(tableId) {
   return request({
