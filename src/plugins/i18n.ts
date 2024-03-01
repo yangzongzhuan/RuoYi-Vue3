@@ -3,15 +3,15 @@
  * @Author: Panda
  * @Date: 2024-02-29 16:38:12
  * @LastEditors: Panda
- * @LastEditTime: 2024-02-29 17:08:19
- * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\plugins\i18n.ts
+ * @LastEditTime: 2024-03-01 10:14:52
+ * @FilePath: \RuoYi-Vue3\src\plugins\i18n.ts
  */
 // 多组件库的国际化和本地项目国际化兼容
 import { App } from 'vue'
 import { type I18n, createI18n } from 'vue-i18n'
 import Cookies from 'js-cookie'
 
-import zh from '../lang/zh'
+import zh from '../lang/zh-CN'
 import en from '../lang/en'
 
 export const localesConfigs = {
