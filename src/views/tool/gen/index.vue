@@ -224,7 +224,7 @@ onActivated(() => {
     uniqueId.value = time
     queryParams.value.pageNum = Number(route.query.pageNum)
     dateRange.value = []
-    proxy?.resetForm('queryForm')
+    proxy?.resetForm(proxy, 'queryForm')
     getList()
   }
 })
@@ -275,12 +275,12 @@ function handleSynchDb(row: any) {
 }
 /** 打开导入表弹窗 */
 function openImportTable() {
-  ;(proxy?.$refs['importRef'] as any).show()
+  proxy.$refs['importRef'].show()
 }
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy?.resetForm('queryRef')
+  proxy?.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 /** 预览按钮 */

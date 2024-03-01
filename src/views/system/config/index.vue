@@ -225,7 +225,7 @@ function reset() {
     configType: 'Y',
     remark: undefined
   }
-  proxy?.resetForm('configRef')
+  proxy?.resetForm(proxy, 'configRef')
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -235,7 +235,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy?.resetForm('queryRef')
+  proxy?.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 /** 多选框选中数据 */

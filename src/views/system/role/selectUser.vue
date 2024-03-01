@@ -129,7 +129,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 const emit = defineEmits(['ok'])

@@ -501,7 +501,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   queryParams.value.deptId = undefined
   deptTreeRef.value?.setCurrentKey(null as any)
   handleQuery()
@@ -635,7 +635,7 @@ function reset() {
     postIds: [],
     roleIds: []
   }
-  proxy!.resetForm('userRef')
+  proxy!.resetForm(proxy, 'userRef')
 }
 /** 取消按钮 */
 function cancel() {

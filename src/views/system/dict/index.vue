@@ -222,7 +222,7 @@ function reset() {
     status: '0',
     remark: undefined
   }
-  proxy!.resetForm('dictRef')
+  proxy!.resetForm(proxy, 'dictRef')
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -232,7 +232,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 /** 新增按钮操作 */

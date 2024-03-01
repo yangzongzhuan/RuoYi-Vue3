@@ -371,7 +371,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
-  proxy!.resetForm('queryRef');
+  proxy!.resetForm(proxy, 'queryRef');
   handleQuery();
 }
 /** 删除按钮操作 */
@@ -474,7 +474,7 @@ function reset() {
       deptCheckStrictly: true,
       remark: undefined,
   };
-  proxy!.resetForm('roleRef');
+  proxy!.resetForm(proxy, 'roleRef');
 }
 /** 添加角色 */
 function handleAdd() {

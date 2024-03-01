@@ -259,7 +259,7 @@ function reset() {
     status: '0',
     remark: undefined
   }
-  proxy!.resetForm('dataRef')
+  proxy!.resetForm(proxy, 'dataRef')
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -273,7 +273,7 @@ function handleClose() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   queryParams.value.dictType = defaultDictType
   handleQuery()
 }

@@ -178,7 +178,7 @@ function handleQuery() {
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = []
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   queryParams.value.pageNum = 1
   ;(proxy!.$refs['logininforRef'] as any).sort(defaultSort.value.prop, defaultSort.value.order)
 }

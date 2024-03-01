@@ -5,8 +5,6 @@
 
 import { getCurrentInstance } from 'vue'
 
-const { proxy } = getCurrentInstance() as any
-
 // 日期格式化
 export function parseTime(time: any, pattern?: string): string {
   if (arguments.length === 0 || !time) {
@@ -54,7 +52,7 @@ export function parseTime(time: any, pattern?: string): string {
 }
 
 // 表单重置
-export function resetForm(refName: string) {
+export function resetForm(proxy: any, refName: string) {
   if (proxy.$refs[refName]) {
     proxy.$refs[refName].resetFields()
   }

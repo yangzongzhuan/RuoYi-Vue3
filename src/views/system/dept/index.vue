@@ -198,7 +198,7 @@ function reset() {
     email: undefined,
     status: '0'
   }
-  proxy!.resetForm('deptRef')
+  proxy!.resetForm(proxy, 'deptRef')
 }
 /** 搜索按钮操作 */
 function handleQuery() {
@@ -206,7 +206,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 /** 新增按钮操作 */

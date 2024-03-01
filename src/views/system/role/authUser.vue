@@ -143,7 +143,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 // 多选框选中数据

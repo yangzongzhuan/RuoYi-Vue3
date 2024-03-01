@@ -362,7 +362,7 @@ function reset() {
     visible: '0',
     status: '0'
   }
-  proxy!.resetForm('menuRef')
+  proxy!.resetForm(proxy, 'menuRef')
 }
 /** 展示下拉图标 */
 function showSelectIcon() {
@@ -388,7 +388,7 @@ function handleQuery() {
 }
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy!.resetForm('queryRef')
+  proxy!.resetForm(proxy, 'queryRef')
   handleQuery()
 }
 /** 新增按钮操作 */
