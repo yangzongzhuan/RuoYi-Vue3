@@ -70,7 +70,7 @@ function show() {
 }
 /** 单击选择行 */
 function clickRow(row: any) {
-  ;(proxy?.$refs.table as any).toggleRowSelection(row)
+  proxy.$refs.table.toggleRowSelection(row)
 }
 /** 多选框选中数据 */
 function handleSelectionChange(selection: any[]) {
