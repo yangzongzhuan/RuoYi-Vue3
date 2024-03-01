@@ -88,6 +88,11 @@
       <el-table-column label="id" align="center" prop="id" />
       <el-table-column label="网站标题" align="center" prop="title" />
       <el-table-column label="网站链接" align="center" prop="url" />
+      <el-table-column label="创建时间" align="center" prop="createTime" width="180">
+        <template #default="scope">
+          <span>{{ parseTime(scope.row.createTime,'{y}-{m}-{d} {h}:{i}') }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="状态" align="center" prop="commonStatus">
         <template #default="scope">
           <dict-tag :options="na_common_status" :value="scope.row.commonStatus"/>
