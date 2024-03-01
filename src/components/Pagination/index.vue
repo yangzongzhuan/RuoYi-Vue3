@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'hidden': hidden }" class="pagination-container">
+  <div :class="{ hidden: hidden }" class="pagination-container">
     <el-pagination
       :background="background"
       v-model:current-page="currentPage"
@@ -14,9 +14,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { scrollTo } from '@/utils/scroll-to'
-
+import { computed } from 'vue'
 const props = defineProps({
   total: {
     required: true,
@@ -31,7 +31,7 @@ const props = defineProps({
     default: 20
   },
   pageSizes: {
-    type: Array,
+    type: Array as () => Array<number>,
     default() {
       return [10, 20, 30, 50]
     }
@@ -59,12 +59,12 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits();
+const emit = defineEmits()
 const currentPage = computed({
   get() {
     return props.page
   },
-  set(val) {
+  set(val: number) {
     emit('update:page', val)
   }
 })
@@ -72,11 +72,11 @@ const pageSize = computed({
   get() {
     return props.limit
   },
-  set(val){
+  set(val) {
     emit('update:limit', val)
   }
 })
-function handleSizeChange(val) {
+function handleSizeChange(val: number) {
   if (currentPage.value * val > props.total) {
     currentPage.value = 1
   }
@@ -85,13 +85,12 @@ function handleSizeChange(val) {
     scrollTo(0, 800)
   }
 }
-function handleCurrentChange(val) {
+function handleCurrentChange(val: number) {
   emit('pagination', { page: val, limit: pageSize.value })
   if (props.autoScroll) {
     scrollTo(0, 800)
   }
 }
-
 </script>
 
 <style scoped>

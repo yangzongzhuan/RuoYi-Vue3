@@ -1,21 +1,17 @@
 <template>
-  <el-scrollbar
-    ref="scrollContainer"
-    :vertical="false"
-    class="scroll-container"
-    @wheel.prevent="handleScroll"
-  >
+  <el-scrollbar ref="scrollContainer" :vertical="false" class="scroll-container" @wheel.prevent="handleScroll">
     <slot />
   </el-scrollbar>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useTagsViewStore from '@/store/modules/tagsView'
+import { ref, getCurrentInstance, ComponentInternalInstance, computed, onMounted, onBeforeUnmount } from 'vue'
 
-const tagAndTagSpacing = ref(4);
-const { proxy } = getCurrentInstance();
+const tagAndTagSpacing = ref(4)
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
-const scrollWrapper = computed(() => proxy.$refs.scrollContainer.$refs.wrapRef);
+const scrollWrapper = computed(() => (proxy!.$refs.scrollContainer as any).$refs.wrapRef)
 
 onMounted(() => {
   scrollWrapper.value.addEventListener('scroll', emitScroll, true)
@@ -24,23 +20,23 @@ onBeforeUnmount(() => {
   scrollWrapper.value.removeEventListener('scroll', emitScroll)
 })
 
-function handleScroll(e) {
+function handleScroll(e: any) {
   const eventDelta = e.wheelDelta || -e.deltaY * 40
-  const $scrollWrapper = scrollWrapper.value;
+  const $scrollWrapper = scrollWrapper.value
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
 }
-const emits = defineEmits()
+const emits = defineEmits(['scroll'])
 const emitScroll = () => {
   emits('scroll')
 }
 
 const tagsViewStore = useTagsViewStore()
-const visitedViews = computed(() => tagsViewStore.visitedViews);
+const visitedViews = computed(() => tagsViewStore.visitedViews)
 
-function moveToTarget(currentTag) {
-  const $container = proxy.$refs.scrollContainer.$el
+function moveToTarget(currentTag: any) {
+  const $container = (proxy!.$refs.scrollContainer as any).$el
   const $containerWidth = $container.offsetWidth
-  const $scrollWrapper = scrollWrapper.value;
+  const $scrollWrapper = scrollWrapper.value
 
   let firstTag = null
   let lastTag = null
@@ -56,17 +52,17 @@ function moveToTarget(currentTag) {
   } else if (lastTag === currentTag) {
     $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
   } else {
-    const tagListDom = document.getElementsByClassName('tags-view-item');
+    const tagListDom = document.getElementsByClassName('tags-view-item')
     const currentIndex = visitedViews.value.findIndex(item => item === currentTag)
-    let prevTag = null
-    let nextTag = null
+    let prevTag: any = null
+    let nextTag: any = null
     for (const k in tagListDom) {
       if (k !== 'length' && Object.hasOwnProperty.call(tagListDom, k)) {
-        if (tagListDom[k].dataset.path === visitedViews.value[currentIndex - 1].path) {
-          prevTag = tagListDom[k];
+        if ((tagListDom[k] as any).dataset.path === visitedViews.value[currentIndex - 1].path) {
+          prevTag = tagListDom[k]
         }
-        if (tagListDom[k].dataset.path === visitedViews.value[currentIndex + 1].path) {
-          nextTag = tagListDom[k];
+        if ((tagListDom[k] as any).dataset.path === visitedViews.value[currentIndex + 1].path) {
+          nextTag = tagListDom[k]
         }
       }
     }
@@ -85,11 +81,11 @@ function moveToTarget(currentTag) {
 }
 
 defineExpose({
-  moveToTarget,
+  moveToTarget
 })
 </script>
 
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .scroll-container {
   white-space: nowrap;
   position: relative;
@@ -99,7 +95,7 @@ defineExpose({
     bottom: 0px;
   }
   :deep(.el-scrollbar__wrap) {
-    height: 39px;
+    height: 49px;
   }
 }
 </style>
