@@ -3,7 +3,9 @@
  * Copyright (c) 2019 ruoyi
  */
 
-import { AxiosResponse } from 'axios'
+import { getCurrentInstance } from 'vue'
+
+const { proxy } = getCurrentInstance() as any
 
 // 日期格式化
 export function parseTime(time: any, pattern?: string): string {
@@ -49,6 +51,13 @@ export function parseTime(time: any, pattern?: string): string {
     return value || 0
   })
   return time_str
+}
+
+// 表单重置
+export function resetForm(refName: string) {
+  if (proxy.$refs[refName]) {
+    proxy.$refs[refName].resetFields()
+  }
 }
 
 // 添加日期范围

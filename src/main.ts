@@ -3,7 +3,7 @@
  * @Author: Panda
  * @Date: 2024-02-27 15:19:26
  * @LastEditors: Panda
- * @LastEditTime: 2024-02-29 16:44:23
+ * @LastEditTime: 2024-03-01 10:33:17
  * @FilePath: \shop-admind:\vueworkspace\RuoYi-Vue3\src\main.ts
  */
 import { createApp } from 'vue'
@@ -36,7 +36,7 @@ import elementIcons from '@/components/SvgIcon/svgicon'
 import './permission' // permission control
 
 import { useDict } from '@/utils/dict'
-import { parseTime, addDateRange, handleTree, selectDictLabel, selectDictLabels } from '@/utils/ruoyi'
+import { parseTime, addDateRange, handleTree, selectDictLabel, selectDictLabels, resetForm } from '@/utils/ruoyi'
 
 // 分页组件
 import Pagination from '@/components/Pagination/index.vue'
@@ -61,6 +61,7 @@ const app = createApp(App)
 app.config.globalProperties.useDict = useDict
 app.config.globalProperties.download = download
 app.config.globalProperties.parseTime = parseTime
+app.config.globalProperties.resetForm = resetForm
 app.config.globalProperties.handleTree = handleTree
 app.config.globalProperties.addDateRange = addDateRange
 app.config.globalProperties.selectDictLabel = selectDictLabel

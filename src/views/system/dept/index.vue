@@ -243,7 +243,7 @@ function handleUpdate(row: any) {
 }
 /** 提交按钮 */
 function submitForm() {
-  ;(proxy?.$refs['deptRef'] as any).validate((valid: any) => {
+  proxy.$refs['deptRef'].validate((valid: any) => {
     if (valid) {
       if (form.value.deptId !== undefined) {
         updateDept(form.value).then(response => {
