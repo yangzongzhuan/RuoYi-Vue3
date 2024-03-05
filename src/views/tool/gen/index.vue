@@ -41,9 +41,19 @@
           type="primary"
           plain
           icon="Download"
+          :disabled="multiple"
           @click="handleGenTable"
           v-hasPermi="['tool:gen:code']"
         >生成</el-button>
+      </el-col>
+      <el-col :span="1.5">
+        <el-button
+          type="primary"
+          plain
+          icon="Plus"
+          @click="openCreateTable"
+          v-hasRole="['admin']"
+        >创建</el-button>
       </el-col>
       <el-col :span="1.5">
         <el-button
@@ -146,6 +156,7 @@
       </el-tabs>
     </el-dialog>
     <import-table ref="importRef" @ok="handleQuery" />
+    <create-table ref="createRef" @ok="handleQuery" />
   </div>
 </template>
 
@@ -153,6 +164,7 @@
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen";
 import router from "@/router";
 import importTable from "./importTable";
+import createTable from "./createTable";
 
 const route = useRoute();
 const { proxy } = getCurrentInstance();
@@ -237,6 +249,10 @@ function handleSynchDb(row) {
 /** 打开导入表弹窗 */
 function openImportTable() {
   proxy.$refs["importRef"].show();
+}
+/** 打开创建表弹窗 */
+function openCreateTable() {
+  proxy.$refs["createRef"].show();
 }
 /** 重置按钮操作 */
 function resetQuery() {
