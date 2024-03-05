@@ -126,7 +126,7 @@
           <el-input v-model="form.url" placeholder="请输入网站链接" />
         </el-form-item>
         <el-form-item label="排序" prop="sort">
-          <el-input v-model="form.sort" placeholder="请输入排序" />
+          <el-input-number v-model="form.sort" :min="1"/>
         </el-form-item>
         <el-form-item label="状态" prop="commonStatus">
           <el-radio-group v-model="form.commonStatus">
@@ -242,6 +242,8 @@ function handleSelectionChange(selection) {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
+  form.value.commonStatus = "1";
+  form.value.sort = 1;
   open.value = true;
   title.value = "添加友链管理";
 }

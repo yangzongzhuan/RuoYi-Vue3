@@ -105,7 +105,6 @@
           <image-preview :src="scope.row.indexImg" :width="50" :height="50"/>
         </template>
       </el-table-column>
-      <el-table-column label="下载地址" align="center" prop="downloadAddr" />
       <el-table-column label="状态" align="center" prop="commonStatus">
         <template #default="scope">
           <dict-tag :options="na_common_status" :value="scope.row.commonStatus"/>
@@ -175,9 +174,14 @@
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item label="下载地址" prop="downloadAddr">
-              <el-input v-model="form.downloadAddr" placeholder="待开发功能" />
-            </el-form-item>
+              <el-form-item label="网盘类型" prop="downloadAddr">
+                <el-select v-model="form.downType" placeholder="选择网盘类型"  clearable>
+                  <el-option v-for="item in downloadOptions" :key="item.value" :label="item.label" :value="item.value"  />
+                </el-select>
+              </el-form-item>
+              <el-form-item label="下载地址">
+                <el-input  v-model="form.download" placeholder="请输入下载地址" />
+              </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -227,6 +231,17 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const articleCategoryList = ref([])
+const downloadOptions = [
+  {
+    value: 'baidu',
+    label: '百度网盘',
+  },
+  {
+    value: 'ali',
+    label: '阿里云盘',
+  }
+]
+
 
 const data = reactive({
   form: {},
@@ -294,7 +309,9 @@ function reset() {
     commonStatus: null,
     createBy: null,
     createTime: null,
-    updateTime: null
+    updateTime: null,
+    downType: null,
+    download: null
   };
   proxy.resetForm("articleDetailRef");
 }
@@ -337,6 +354,15 @@ function handleUpdate(row) {
   const _id = row.id || ids.value
   getArticleDetail(_id).then(response => {
     form.value = response.data;
+    if (form.value.downloadAddr !== null && form.value.downloadAddr.length > 0) {
+      let downloadJsonArray = JSON.parse(form.value.downloadAddr);
+      for (let key in downloadJsonArray) {
+        let downJson = downloadJsonArray[key];
+        form.value.downType = downJson.type;
+        form.value.download = downJson.download;
+      }
+    }
+
     open.value = true;
     title.value = "修改文章";
   });
@@ -346,6 +372,13 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["articleDetailRef"].validate(valid => {
     if (valid) {
+      if (form.value.type === "0") {
+        let jsonArray = [];
+        jsonArray.push({ type: form.value.downType, download: form.value.download });
+        form.value.downloadAddr = JSON.stringify(jsonArray);
+      }else {
+        form.value.downloadAddr = "";
+      }
       if (form.value.id != null) {
         updateArticleDetail(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
