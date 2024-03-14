@@ -361,12 +361,13 @@ function handleUpdate(row) {
 function submitForm() {
   proxy.$refs["articleDetailRef"].validate(valid => {
     if (valid) {
-      if (form.value.type === "0") {
-        let jsonArray = [];
-        jsonArray.push({ type: form.value.downType, download: form.value.download });
-        form.value.downloadAddr = JSON.stringify(jsonArray);
+      if (form.value.downType !== undefined && form.value.downType.length > 0
+          && form.value.download !== undefined && form.value.download.length >0) {
+          let jsonArray = [];
+          jsonArray.push({ type: form.value.downType, download: form.value.download });
+          form.value.downloadAddr = JSON.stringify(jsonArray);
       }else {
-        form.value.downloadAddr = "";
+        form.value.downloadAddr = "[]";
       }
       if (form.value.id != null) {
         updateArticleDetail(form.value).then(response => {
