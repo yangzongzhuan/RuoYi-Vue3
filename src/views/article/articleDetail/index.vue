@@ -176,7 +176,7 @@
           <el-col :span="12">
               <el-form-item label="网盘类型" prop="downloadAddr">
                 <el-select v-model="form.downType" placeholder="选择网盘类型"  clearable>
-                  <el-option v-for="item in downloadOptions" :key="item.value" :label="item.label" :value="item.value"  />
+                  <el-option v-for="item in na_down_type" :key="item.value" :label="item.label" :value="item.value"  />
                 </el-select>
               </el-form-item>
               <el-form-item label="下载地址">
@@ -219,7 +219,7 @@ import {listCategory} from "@/api/article/category.js"
 import {onMounted} from "vue";
 
 const { proxy } = getCurrentInstance();
-const { na_common_status, na_article_type } = proxy.useDict('na_common_status', 'na_article_type');
+const { na_common_status, na_article_type,na_down_type } = proxy.useDict('na_common_status', 'na_article_type','na_down_type');
 
 const articleDetailList = ref([]);
 const open = ref(false);
@@ -231,17 +231,6 @@ const multiple = ref(true);
 const total = ref(0);
 const title = ref("");
 const articleCategoryList = ref([])
-const downloadOptions = [
-  {
-    value: 'baidu',
-    label: '百度网盘',
-  },
-  {
-    value: 'ali',
-    label: '阿里云盘',
-  }
-]
-
 
 const data = reactive({
   form: {},
