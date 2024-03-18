@@ -51,6 +51,18 @@
               </el-form-item>
             </el-col>
           </el-row>
+          <el-row>
+            <el-col :span="12">
+              <el-form-item label="默认icon图" prop="default_icon_img">
+                <image-upload v-model="form.default_icon_img" :limit="1" :isShowTip="false"/>
+              </el-form-item>
+            </el-col>
+            <el-col :span="12">
+              <el-form-item label="文章首图404" prop="article_404_img">
+                <image-upload v-model="form.article_404_img" :limit="1" :isShowTip="false"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-form>
         <div class="dialog-footer" style="text-align: right">
           <el-button type="primary" @click="submitForm">保 存</el-button>
