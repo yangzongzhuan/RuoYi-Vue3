@@ -371,6 +371,9 @@ function submitForm() {
   proxy.$refs["siteRef"].validate(valid => {
     if (valid) {
       if (form.value.id != null) {
+        if (form.value.color === null) {
+          form.value.color = '';
+        }
         updateSite(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;

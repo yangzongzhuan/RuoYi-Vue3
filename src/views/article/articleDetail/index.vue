@@ -252,9 +252,6 @@ const data = reactive({
     title: [
       { required: true, message: "文章标题不能为空", trigger: "blur" }
     ],
-    color: [
-      { required: true, message: "标题颜色不能为空", trigger: "blur" }
-    ],
     type: [
       { required: true, message: "文章类型不能为空", trigger: "change" }
     ],
@@ -330,7 +327,6 @@ function handleAdd() {
   open.value = true;
   title.value = "添加文章";
   form.value.view = 0;
-  form.value.color = '#000000';
   form.value.commonStatus = "1";
   listCategory().then(response =>{
     articleCategoryList.value = response.rows;
@@ -370,6 +366,9 @@ function submitForm() {
         form.value.downloadAddr = "[]";
       }
       if (form.value.id != null) {
+        if (form.value.color === null) {
+          form.value.color = '';
+        }
         updateArticleDetail(form.value).then(response => {
           proxy.$modal.msgSuccess("修改成功");
           open.value = false;
