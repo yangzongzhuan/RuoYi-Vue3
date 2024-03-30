@@ -71,7 +71,6 @@ app.use(store)
 app.use(plugins)
 app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
-
 directive(app)
 
 // 使用element-plus 并且设置全局的大小
@@ -81,4 +80,6 @@ app.use(ElementPlus, {
   size: Cookies.get('size') || 'default'
 })
 
+//模态框点击空白不消失
+app._context.components.ElDialog.props.closeOnClickModal.default = false
 app.mount('#app')

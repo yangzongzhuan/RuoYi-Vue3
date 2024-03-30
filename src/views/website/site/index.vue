@@ -159,11 +159,14 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入网站名称" />
+            <el-form-item label="网站地址" prop="url">
+              <el-input v-model="form.url" placeholder="请输入网站地址" />
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="4">
+              <el-button type="primary" plain style="margin-left: 20px;" @click="spider" :loading="spiderLoading">一键采集</el-button>
+          </el-col>
+          <el-col :span="6">
             <el-form-item label="名称颜色" prop="color">
                 <el-color-picker v-model="form.color" />
             </el-form-item>
@@ -183,8 +186,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站地址" prop="url">
-              <el-input v-model="form.url" placeholder="请输入网站地址" />
+            <el-form-item label="网站名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入网站名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -241,7 +244,7 @@
 </template>
 
 <script setup name="Site">
-import { listSite, getSite, delSite, addSite, updateSite } from "@/api/website/site";
+import { listSite, getSite, delSite, addSite, updateSite, spiderSite } from "@/api/website/site";
 import {listCategory} from "@/api/website/category";
 import {onMounted} from "vue";
 
@@ -251,6 +254,7 @@ const { na_common_status, na_index_show } = proxy.useDict('na_common_status', 'n
 const siteList = ref([]);
 const open = ref(false);
 const loading = ref(true);
+const spiderLoading = ref(false);
 const showSearch = ref(true);
 const ids = ref([]);
 const single = ref(true);
@@ -270,7 +274,10 @@ const data = reactive({
     indexShow: null,
     commonStatus: null,
     orderByColumn: 'create_time',
-    isAsc: 'desc'
+    isAsc: 'desc',
+  },
+  spiderParam:{
+    spiderDoMain: null
   },
   rules: {
     categoryId: [{ required: true, message: "所属分类不能为空", trigger: "blur" }],
@@ -282,7 +289,7 @@ const data = reactive({
   }
 });
 
-const { queryParams, form, rules } = toRefs(data);
+const {queryParams, form, rules, spiderParam} = toRefs(data);
 
 /** 查询站点管理列表 */
 function getList() {
@@ -417,6 +424,28 @@ function changeSelect(event) {
       form.value.categoryName = categoryList.value[i].name;
       break;
     }
+  }
+}
+
+function spider() {
+  if (form.value.url === null || form.value.url === '') {
+    proxy.$modal.msgWarning("请先输入网站地址");
+  }else {
+    spiderLoading.value = true;
+    spiderParam.value.spiderDoMain = form.value.url;
+      spiderSite(spiderParam.value).then(response => {
+        if (response.code === 666) {
+          spiderLoading.value = false;
+          proxy.$modal.msgError(response.msg);
+        }else {
+          form.value.icon = response.data.icon;
+          form.value.title = response.data.title;
+          form.value.keywords = response.data.keywords;
+          form.value.description = response.data.description;
+          spiderLoading.value = false;
+          proxy.$modal.msgSuccess("抓取完成");
+        }
+      });
   }
 }
 

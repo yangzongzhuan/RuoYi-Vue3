@@ -42,3 +42,10 @@ export function delSite(id) {
     method: 'delete'
   })
 }
+export function spiderSite(param) {
+  return request({
+    url: '/website/site/spiderSite',
+    method: 'get',
+    params: param
+  })
+}
