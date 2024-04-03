@@ -69,6 +69,23 @@
           <el-button @click="rest">重 置</el-button>
         </div>
       </el-tab-pane>
+      <el-tab-pane label="Seo配置">
+        <el-form ref="mainConfigRef" :model="form" :rules="rules" label-width="100px">
+            <el-form-item label="站点域名" prop="site_url">
+              <el-input v-model="form.site_url" placeholder="请输入站点域名" />
+            </el-form-item>
+            <el-form-item label="百度token" prop="baidu_token">
+              <el-input v-model="form.baidu_token" placeholder="请输入百度token" />
+            </el-form-item>
+            <el-form-item label="必应api秘钥" prop="bing_token">
+              <el-input v-model="form.bing_token" placeholder="请输入必应api秘钥" />
+            </el-form-item>
+        </el-form>
+        <div class="dialog-footer" style="text-align: right">
+          <el-button type="primary" @click="submitForm">保 存</el-button>
+          <el-button @click="rest">重 置</el-button>
+        </div>
+      </el-tab-pane>
       <el-tab-pane label="功能开关">
         功能开关
       </el-tab-pane>
