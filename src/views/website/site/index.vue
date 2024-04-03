@@ -8,18 +8,10 @@
           </el-option>
         </el-select>
       </el-form-item>
-      <el-form-item label="网站简称" prop="name">
+      <el-form-item label="网站名称" prop="name">
         <el-input
           v-model="queryParams.name"
-          placeholder="请输入网站简称"
-          clearable
-          @keyup.enter="handleQuery"
-        />
-      </el-form-item>
-      <el-form-item label="网站副标题" prop="subTitle">
-        <el-input
-          v-model="queryParams.subTitle"
-          placeholder="请输入网站副标题"
+          placeholder="请输入网站名称"
           clearable
           @keyup.enter="handleQuery"
         />
@@ -174,8 +166,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站副标题" prop="subTitle">
-              <el-input v-model="form.subTitle" placeholder="请输入网站副标题" />
+            <el-form-item label="网站名称" prop="name">
+              <el-input v-model="form.name" placeholder="请输入网站名称" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -186,8 +178,8 @@
         </el-row>
         <el-row>
           <el-col :span="12">
-            <el-form-item label="网站名称" prop="name">
-              <el-input v-model="form.name" placeholder="请输入网站名称" />
+            <el-form-item label="网站副标题" prop="subTitle">
+              <el-input v-model="form.subTitle" placeholder="请输入网站副标题" />
             </el-form-item>
           </el-col>
           <el-col :span="12">
@@ -439,7 +431,8 @@ function spider() {
           proxy.$modal.msgError(response.msg);
         }else {
           form.value.icon = response.data.icon;
-          form.value.title = response.data.title;
+          form.value.name = response.data.title;
+          form.value.subTitle = response.data.title;
           form.value.keywords = response.data.keywords;
           form.value.description = response.data.description;
           spiderLoading.value = false;
