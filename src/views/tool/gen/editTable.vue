@@ -114,7 +114,7 @@
         </el-table>
       </el-tab-pane>
       <el-tab-pane label="生成信息" name="genInfo">
-        <gen-info-form ref="genInfo" :info="info" :tables="tables" />
+        <gen-info-form ref="genInfo" :info="info" :tables="tables" @update:parentMenuId="handleParentMenuIdUpdate"/>
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
@@ -175,6 +175,11 @@ function getFormPromise(form) {
     });
   });
 }
+
+function handleParentMenuIdUpdate(newValue) {
+  info.value.parentMenuId = newValue;
+}
+
 function close() {
   const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } };
   proxy.$tab.closeOpenPage(obj);

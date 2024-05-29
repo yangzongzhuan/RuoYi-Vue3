@@ -92,9 +92,10 @@
             </el-tooltip>
           </template>
           <tree-select
-            v-model:value="info.parentMenuId"
+            v-model:value="parentMenuName"
             :options="menuOptions"
             :objMap="{ value: 'menuId', label: 'menuName', children: 'children' }"
+            @update:value="handleUpdate"
             placeholder="请选择系统菜单"
           />
         </el-form-item>
@@ -237,6 +238,7 @@ import { listMenu } from "@/api/system/menu";
 
 const subColumns = ref([]);
 const menuOptions = ref([]);
+const parentMenuName = ref("");
 const { proxy } = getCurrentInstance();
 
 const props = defineProps({
@@ -276,10 +278,39 @@ function setSubTableColumns(value) {
     }
   }
 }
+const emit = defineEmits(["update:parentMenuId"]);
+
+function handleUpdate(newValue) {
+  emit('update:parentMenuId', newValue);
+}
+
+/** 递归根据menuId查询menuName */
+function findMenuNameByMenuId(tree, parentMenuId) {
+  for (const node of tree) {
+    if (node["menuId"] == parentMenuId) {
+      return node["menuName"];
+    }
+    const children = node["children"];
+    if (children && children.length > 0) {
+      const label = findMenuNameByMenuId(children, parentMenuId);
+      if (label) {
+        return label;
+      }
+    }
+  }
+  return parentMenuId;
+}
+
+function setMenuName() {
+  const tree = menuOptions.value;
+  parentMenuName.value = findMenuNameByMenuId(tree, props.info.parentMenuId);
+}
+
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {
   listMenu().then(response => {
     menuOptions.value = proxy.handleTree(response.data, "menuId");
+    setMenuName();
   });
 }
 
