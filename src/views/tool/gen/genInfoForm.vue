@@ -258,15 +258,18 @@ const rules = ref({
   businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
 });
+
 function subSelectChange(value) {
   props.info.subTableFkName = "";
 }
+
 function tplSelectChange(value) {
   if (value !== "sub") {
     props.info.subTableName = "";
     props.info.subTableFkName = "";
   }
 }
+
 function setSubTableColumns(value) {
   for (var item in props.tables) {
     const name = props.tables[item].tableName;
@@ -276,6 +279,7 @@ function setSubTableColumns(value) {
     }
   }
 }
+
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {
   listMenu().then(response => {

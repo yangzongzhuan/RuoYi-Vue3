@@ -331,15 +331,18 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 任务组名字典翻译 */
 function jobGroupFormat(row, column) {
   return proxy.selectDictLabel(sys_job_group.value, row.jobGroup);
 }
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
   reset();
 }
+
 /** 表单重置 */
 function reset() {
   form.value = {
@@ -354,22 +357,26 @@ function reset() {
   };
   proxy.resetForm("jobRef");
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 // 多选框选中数据
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.jobId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
+
 // 更多操作触发
 function handleCommand(command, row) {
   switch (command) {
@@ -386,6 +393,7 @@ function handleCommand(command, row) {
       break;
   }
 }
+
 // 任务状态修改
 function handleStatusChange(row) {
   let text = row.status === "0" ? "启用" : "停用";
@@ -397,6 +405,7 @@ function handleStatusChange(row) {
     row.status = row.status === "0" ? "1" : "0";
   });
 }
+
 /* 立即执行一次 */
 function handleRun(row) {
   proxy.$modal.confirm('确认要立即执行一次"' + row.jobName + '"任务吗?').then(function () {
@@ -405,6 +414,7 @@ function handleRun(row) {
     proxy.$modal.msgSuccess("执行成功");})
   .catch(() => {});
 }
+
 /** 任务详细信息 */
 function handleView(row) {
   getJob(row.jobId).then(response => {
@@ -412,26 +422,31 @@ function handleView(row) {
     openView.value = true;
   });
 }
+
 /** cron表达式按钮操作 */
 function handleShowCron() {
   expression.value = form.value.cronExpression;
   openCron.value = true;
 }
+
 /** 确定后回传值 */
 function crontabFill(value) {
   form.value.cronExpression = value;
 }
+
 /** 任务日志列表查询 */
 function handleJobLog(row) {
   const jobId = row.jobId || 0;
   router.push('/monitor/job-log/index/' + jobId)
 }
+
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
   open.value = true;
   title.value = "添加任务";
 }
+
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
@@ -442,6 +457,7 @@ function handleUpdate(row) {
     title.value = "修改任务";
   });
 }
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["jobRef"].validate(valid => {
@@ -462,6 +478,7 @@ function submitForm() {
     }
   });
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   const jobIds = row.jobId || ids.value;
@@ -472,6 +489,7 @@ function handleDelete(row) {
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 }
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("monitor/job/export", {

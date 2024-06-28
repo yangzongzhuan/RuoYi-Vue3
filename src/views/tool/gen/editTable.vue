@@ -168,6 +168,7 @@ function submitForm() {
     }
   });
 }
+
 function getFormPromise(form) {
   return new Promise(resolve => {
     form.validate(res => {
@@ -175,6 +176,7 @@ function getFormPromise(form) {
     });
   });
 }
+
 function close() {
   const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } };
   proxy.$tab.closeOpenPage(obj);

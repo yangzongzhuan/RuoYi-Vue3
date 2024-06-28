@@ -316,6 +316,7 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 查询菜单下拉树结构 */
 function getTreeselect() {
   menuOptions.value = [];
@@ -325,11 +326,13 @@ function getTreeselect() {
     menuOptions.value.push(menu);
   });
 }
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
   reset();
 }
+
 /** 表单重置 */
 function reset() {
   form.value = {
@@ -346,23 +349,28 @@ function reset() {
   };
   proxy.resetForm("menuRef");
 }
+
 /** 展示下拉图标 */
 function showSelectIcon() {
   iconSelectRef.value.reset();
 }
+
 /** 选择图标 */
 function selected(name) {
   form.value.icon = name;
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 /** 新增按钮操作 */
 function handleAdd(row) {
   reset();
@@ -375,6 +383,7 @@ function handleAdd(row) {
   open.value = true;
   title.value = "添加菜单";
 }
+
 /** 展开/折叠操作 */
 function toggleExpandAll() {
   refreshTable.value = false;
@@ -383,6 +392,7 @@ function toggleExpandAll() {
     refreshTable.value = true;
   });
 }
+
 /** 修改按钮操作 */
 async function handleUpdate(row) {
   reset();
@@ -393,6 +403,7 @@ async function handleUpdate(row) {
     title.value = "修改菜单";
   });
 }
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["menuRef"].validate(valid => {
@@ -413,6 +424,7 @@ function submitForm() {
     }
   });
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?').then(function() {

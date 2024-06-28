@@ -87,25 +87,31 @@ const options = reactive({
 function editCropper() {
   open.value = true;
 }
+
 /** 打开弹出层结束时的回调 */
 function modalOpened() {
   visible.value = true;
 }
+
 /** 覆盖默认上传行为 */
 function requestUpload() {}
+
 /** 向左旋转 */
 function rotateLeft() {
   proxy.$refs.cropper.rotateLeft();
 }
+
 /** 向右旋转 */
 function rotateRight() {
   proxy.$refs.cropper.rotateRight();
 }
+
 /** 图片缩放 */
 function changeScale(num) {
   num = num || 1;
   proxy.$refs.cropper.changeScale(num);
 }
+
 /** 上传预处理 */
 function beforeUpload(file) {
   if (file.type.indexOf("image/") == -1) {
@@ -119,6 +125,7 @@ function beforeUpload(file) {
     };
   }
 }
+
 /** 上传图片 */
 function uploadImg() {
   proxy.$refs.cropper.getCropBlob(data => {
@@ -133,10 +140,12 @@ function uploadImg() {
     });
   });
 }
+
 /** 实时预览 */
 function realTime(data) {
   options.previews = data;
 }
+
 /** 关闭窗口 */
 function closeDialog() {
   options.img = userStore.avatar;

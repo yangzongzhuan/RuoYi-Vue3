@@ -67,6 +67,7 @@ watch(route, () => {
   addTags()
   moveToCurrentTag()
 })
+
 watch(visible, (value) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
@@ -74,6 +75,7 @@ watch(visible, (value) => {
     document.body.removeEventListener('click', closeMenu)
   }
 })
+
 onMounted(() => {
   initTags()
   addTags()
@@ -82,6 +84,7 @@ onMounted(() => {
 function isActive(r) {
   return r.path === route.path
 }
+
 function activeStyle(tag) {
   if (!isActive(tag)) return {};
   return {
@@ -89,9 +92,11 @@ function activeStyle(tag) {
     "border-color": theme.value
   };
 }
+
 function isAffix(tag) {
   return tag.meta && tag.meta.affix
 }
+
 function isFirstView() {
   try {
     return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
@@ -99,6 +104,7 @@ function isFirstView() {
     return false
   }
 }
+
 function isLastView() {
   try {
     return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
@@ -106,6 +112,7 @@ function isLastView() {
     return false
   }
 }
+
 function filterAffixTags(routes, basePath = '') {
   let tags = []
   routes.forEach(route => {
@@ -127,6 +134,7 @@ function filterAffixTags(routes, basePath = '') {
   })
   return tags
 }
+
 function initTags() {
   const res = filterAffixTags(routes.value);
   affixTags.value = res;
@@ -137,6 +145,7 @@ function initTags() {
     }
   }
 }
+
 function addTags() {
   const { name } = route
   if (name) {
@@ -147,6 +156,7 @@ function addTags() {
   }
   return false
 }
+
 function moveToCurrentTag() {
   nextTick(() => {
     for (const r of visitedViews.value) {
@@ -160,12 +170,14 @@ function moveToCurrentTag() {
     }
   })
 }
+
 function refreshSelectedTag(view) {
   proxy.$tab.refreshPage(view);
   if (route.meta.link) {
     useTagsViewStore().delIframeView(route);
   }
 }
+
 function closeSelectedTag(view) {
   proxy.$tab.closePage(view).then(({ visitedViews }) => {
     if (isActive(view)) {
@@ -173,6 +185,7 @@ function closeSelectedTag(view) {
     }
   })
 }
+
 function closeRightTags() {
   proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
@@ -180,6 +193,7 @@ function closeRightTags() {
     }
   })
 }
+
 function closeLeftTags() {
   proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
@@ -187,12 +201,14 @@ function closeLeftTags() {
     }
   })
 }
+
 function closeOthersTags() {
   router.push(selectedTag.value).catch(() => { });
   proxy.$tab.closeOtherPage(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
+
 function closeAllTags(view) {
   proxy.$tab.closeAllPage().then(({ visitedViews }) => {
     if (affixTags.value.some(tag => tag.path === route.path)) {
@@ -201,6 +217,7 @@ function closeAllTags(view) {
     toLastView(visitedViews, view)
   })
 }
+
 function toLastView(visitedViews, view) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
@@ -216,6 +233,7 @@ function toLastView(visitedViews, view) {
     }
   }
 }
+
 function openMenu(tag, e) {
   const menuMinWidth = 105
   const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
@@ -233,9 +251,11 @@ function openMenu(tag, e) {
   visible.value = true
   selectedTag.value = tag
 }
+
 function closeMenu() {
   visible.value = false
 }
+
 function handleScroll() {
   closeMenu()
 }

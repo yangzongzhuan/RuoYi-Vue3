@@ -209,32 +209,38 @@ function getList() {
     loading.value = false;
   });
 }
+
 // 返回按钮
 function handleClose() {
   const obj = { path: "/monitor/job" };
   proxy.$tab.closeOpenPage(obj);
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 // 多选框选中数据
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.jobLogId);
   multiple.value = !selection.length;
 }
+
 /** 详细按钮操作 */
 function handleView(row) {
   open.value = true;
   form.value = row;
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除调度日志编号为"' + ids.value + '"的数据项?').then(function () {
@@ -244,6 +250,7 @@ function handleDelete(row) {
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 }
+
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有调度日志数据项?").then(function () {
@@ -253,6 +260,7 @@ function handleClean() {
     proxy.$modal.msgSuccess("清空成功");
   }).catch(() => {});
 }
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("monitor/jobLog/export", {

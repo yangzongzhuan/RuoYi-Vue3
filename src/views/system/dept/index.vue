@@ -180,11 +180,13 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
   reset();
 }
+
 /** 表单重置 */
 function reset() {
   form.value = {
@@ -199,15 +201,18 @@ function reset() {
   };
   proxy.resetForm("deptRef");
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 /** 新增按钮操作 */
 function handleAdd(row) {
   reset();
@@ -220,6 +225,7 @@ function handleAdd(row) {
   open.value = true;
   title.value = "添加部门";
 }
+
 /** 展开/折叠操作 */
 function toggleExpandAll() {
   refreshTable.value = false;
@@ -228,6 +234,7 @@ function toggleExpandAll() {
     refreshTable.value = true;
   });
 }
+
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
@@ -240,6 +247,7 @@ function handleUpdate(row) {
     title.value = "修改部门";
   });
 }
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["deptRef"].validate(valid => {
@@ -260,6 +268,7 @@ function submitForm() {
     }
   });
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   proxy.$modal.confirm('是否确认删除名称为"' + row.deptName + '"的数据项?').then(function() {

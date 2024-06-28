@@ -404,16 +404,19 @@ const filterNode = (value, data) => {
   if (!value) return true;
   return data.label.indexOf(value) !== -1;
 };
+
 /** 根据名称筛选部门树 */
 watch(deptName, val => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
+
 /** 查询部门下拉树结构 */
 function getDeptTree() {
   deptTreeSelect().then(response => {
     deptOptions.value = response.data;
   });
 };
+
 /** 查询用户列表 */
 function getList() {
   loading.value = true;
@@ -423,16 +426,19 @@ function getList() {
     total.value = res.total;
   });
 };
+
 /** 节点单击事件 */
 function handleNodeClick(data) {
   queryParams.value.deptId = data.id;
   handleQuery();
 };
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 };
+
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
@@ -441,6 +447,7 @@ function resetQuery() {
   proxy.$refs.deptTreeRef.setCurrentKey(null);
   handleQuery();
 };
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   const userIds = row.userId || ids.value;
@@ -451,12 +458,14 @@ function handleDelete(row) {
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 };
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("system/user/export", {
     ...queryParams.value,
   },`user_${new Date().getTime()}.xlsx`);
 };
+
 /** 用户状态修改  */
 function handleStatusChange(row) {
   let text = row.status === "0" ? "启用" : "停用";
@@ -468,6 +477,7 @@ function handleStatusChange(row) {
     row.status = row.status === "0" ? "1" : "0";
   });
 };
+
 /** 更多操作 */
 function handleCommand(command, row) {
   switch (command) {
@@ -481,11 +491,13 @@ function handleCommand(command, row) {
       break;
   }
 };
+
 /** 跳转角色分配 */
 function handleAuthRole(row) {
   const userId = row.userId;
   router.push("/system/user-auth/role/" + userId);
 };
+
 /** 重置密码按钮操作 */
 function handleResetPwd(row) {
   proxy.$prompt('请输入"' + row.userName + '"的新密码', "提示", {
@@ -505,26 +517,31 @@ function handleResetPwd(row) {
     });
   }).catch(() => {});
 };
+
 /** 选择条数  */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.userId);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 };
+
 /** 导入按钮操作 */
 function handleImport() {
   upload.title = "用户导入";
   upload.open = true;
 };
+
 /** 下载模板操作 */
 function importTemplate() {
   proxy.download("system/user/importTemplate", {
   }, `user_template_${new Date().getTime()}.xlsx`);
 };
+
 /**文件上传中处理 */
 const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true;
 };
+
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false;
@@ -533,10 +550,12 @@ const handleFileSuccess = (response, file, fileList) => {
   proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
   getList();
 };
+
 /** 提交上传文件 */
 function submitFileForm() {
   proxy.$refs["uploadRef"].submit();
 };
+
 /** 重置操作表单 */
 function reset() {
   form.value = {
@@ -555,11 +574,13 @@ function reset() {
   };
   proxy.resetForm("userRef");
 };
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
   reset();
 };
+
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
@@ -571,6 +592,7 @@ function handleAdd() {
     form.value.password = initPassword.value;
   });
 };
+
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
@@ -586,6 +608,7 @@ function handleUpdate(row) {
     form.password = "";
   });
 };
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["userRef"].validate(valid => {

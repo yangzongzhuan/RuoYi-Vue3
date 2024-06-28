@@ -7,6 +7,7 @@
           v-model="queryParams.tableName"
           placeholder="请输入表名称"
           clearable
+          style="width: 180px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -15,6 +16,7 @@
           v-model="queryParams.tableComment"
           placeholder="请输入表描述"
           clearable
+          style="width: 180px"
           @keyup.enter="handleQuery"
         />
       </el-form-item>
@@ -71,14 +73,17 @@ function show() {
   getList();
   visible.value = true;
 }
+
 /** 单击选择行 */
 function clickRow(row) {
   proxy.$refs.table.toggleRowSelection(row);
 }
+
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
   tables.value = selection.map(item => item.tableName);
 }
+
 /** 查询表数据 */
 function getList() {
   listDbTable(queryParams).then(res => {
@@ -86,16 +91,19 @@ function getList() {
     total.value = res.total;
   });
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.pageNum = 1;
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 /** 导入按钮操作 */
 function handleImportTable() {
   const tableNames = tables.value.join(",");

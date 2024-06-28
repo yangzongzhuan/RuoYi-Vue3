@@ -238,6 +238,7 @@ function getTypeList() {
     typeOptions.value = response.data;
   });
 }
+
 /** 查询字典数据列表 */
 function getList() {
   loading.value = true;
@@ -247,11 +248,13 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 取消按钮 */
 function cancel() {
   open.value = false;
   reset();
 }
+
 /** 表单重置 */
 function reset() {
   form.value = {
@@ -266,22 +269,26 @@ function reset() {
   };
   proxy.resetForm("dataRef");
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+
 /** 返回按钮操作 */
 function handleClose() {
   const obj = { path: "/system/dict" };
   proxy.$tab.closeOpenPage(obj);
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   queryParams.value.dictType = defaultDictType.value;
   handleQuery();
 }
+
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
@@ -289,12 +296,14 @@ function handleAdd() {
   title.value = "添加字典数据";
   form.value.dictType = queryParams.value.dictType;
 }
+
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.dictCode);
   single.value = selection.length != 1;
   multiple.value = !selection.length;
 }
+
 /** 修改按钮操作 */
 function handleUpdate(row) {
   reset();
@@ -305,6 +314,7 @@ function handleUpdate(row) {
     title.value = "修改字典数据";
   });
 }
+
 /** 提交按钮 */
 function submitForm() {
   proxy.$refs["dataRef"].validate(valid => {
@@ -327,6 +337,7 @@ function submitForm() {
     }
   });
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   const dictCodes = row.dictCode || ids.value;
@@ -338,6 +349,7 @@ function handleDelete(row) {
     useDictStore().removeDict(queryParams.value.dictType);
   }).catch(() => {});
 }
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("system/dict/data/export", {

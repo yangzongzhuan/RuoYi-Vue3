@@ -239,15 +239,18 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 操作日志类型字典翻译 */
 function typeFormat(row, column) {
   return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1;
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   dateRange.value = [];
@@ -255,22 +258,26 @@ function resetQuery() {
   queryParams.value.pageNum = 1;
   proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
 }
+
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
   ids.value = selection.map(item => item.operId);
   multiple.value = !selection.length;
 }
+
 /** 排序触发事件 */
 function handleSortChange(column, prop, order) {
   queryParams.value.orderByColumn = column.prop;
   queryParams.value.isAsc = column.order;
   getList();
 }
+
 /** 详细按钮操作 */
 function handleView(row) {
   open.value = true;
   form.value = row;
 }
+
 /** 删除按钮操作 */
 function handleDelete(row) {
   const operIds = row.operId || ids.value;
@@ -281,6 +288,7 @@ function handleDelete(row) {
     proxy.$modal.msgSuccess("删除成功");
   }).catch(() => {});
 }
+
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
@@ -290,6 +298,7 @@ function handleClean() {
     proxy.$modal.msgSuccess("清空成功");
   }).catch(() => {});
 }
+
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("monitor/operlog/export",{

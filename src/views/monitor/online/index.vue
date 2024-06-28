@@ -82,16 +82,19 @@ function getList() {
     loading.value = false;
   });
 }
+
 /** 搜索按钮操作 */
 function handleQuery() {
   pageNum.value = 1;
   getList();
 }
+
 /** 重置按钮操作 */
 function resetQuery() {
   proxy.resetForm("queryRef");
   handleQuery();
 }
+
 /** 强退按钮操作 */
 function handleForceLogout(row) {
     proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
