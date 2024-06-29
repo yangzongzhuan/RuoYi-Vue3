@@ -10,7 +10,6 @@
         >{{ item.label + " " }}</span>
         <el-tag
           v-else
-          type="primary"
           :disable-transitions="true"
           :key="item.value + ''"
           :index="index"
