@@ -78,8 +78,8 @@
               <el-icon><question-filled /></el-icon>
             </el-tooltip>
           </template>
-          <el-radio v-model="info.genType" label="0">zip压缩包</el-radio>
-          <el-radio v-model="info.genType" label="1">自定义路径</el-radio>
+          <el-radio v-model="info.genType" value="0">zip压缩包</el-radio>
+          <el-radio v-model="info.genType" value="1">自定义路径</el-radio>
         </el-form-item>
       </el-col>
 
