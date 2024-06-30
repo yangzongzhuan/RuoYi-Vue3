@@ -149,6 +149,36 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.8 - 2024-06-30">
+              <ol>
+                <li>菜单管理新增路由名称</li>
+                <li>新增数据脱敏过滤注解</li>
+                <li>用户密码新增非法字符验证</li>
+                <li>限制用户操作数据权限范围</li>
+                <li>代码生成新增创建表结构功能</li>
+                <li>定时任务白名单配置范围缩小</li>
+                <li>优化代码生成主子表关联查询方式</li>
+                <li>Excel注解新增属性comboReadDict</li>
+                <li>Excel注解ColumnType类型新增文本</li>
+                <li>新增国际化资源文件配置</li>
+                <li>升级oshi到最新版本6.6.1</li>
+                <li>升级druid到最新版本1.2.23</li>
+                <li>升级core-js到最新版本3.37.1</li>
+                <li>更新HttpUtils中的User-Agent</li>
+                <li>更新compressionPlugin到6.1.2以兼容node18+</li>
+                <li>升级spring-security到安全版本，防止漏洞风险</li>
+                <li>升级spring-framework到安全版本，防止漏洞风险</li>
+                <li>优化自定义XSS注解匹配方式</li>
+                <li>优化缓存监控键名列表排序显示</li>
+                <li>优化定时任务日志默认按时间排序</li>
+                <li>优化默认文件大小超过2G无效的问题</li>
+                <li>优化查表特殊字符使用反斜杠进行转义</li>
+                <li>优化定时任务cron表达式小时配置显示错误问题</li>
+                <li>优化多个自定数据权限使用in查询,避免多次拼接</li>
+                <li>优化导入Excel时设置dictType属性重复查缓存问题</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.7 - 2023-12-08">
               <ol>
                 <li>操作日志记录部门名称</li>
@@ -989,7 +1019,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.7')
+const version = ref('3.8.8')
 
 function goTarget(url) {
   window.open(url, '__blank')
