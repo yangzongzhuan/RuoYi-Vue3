@@ -82,7 +82,7 @@ const defaultExpandedKey = ref([]);
 function initHandle() {
   nextTick(() => {
     const selectedValue = valueId.value;
-    if(selectedValue !== null && typeof (selectedValue) !== 'undefined') {
+    if(selectedValue !== null && selectedValue !== '' && typeof (selectedValue) !== 'undefined') {
       const node = proxy.$refs.selectTree.getNode(selectedValue)
       if (node) {
         valueTitle.value = node.data[props.objMap.label]
@@ -119,13 +119,17 @@ function clearSelected() {
   allNode.forEach((element) => element.classList.remove('is-current'))
 }
 
-onMounted(() => {
-  initHandle()
-})
-
 watch(valueId, () => {
   initHandle();
+}, {
+  immediate: true
 })
+
+watch(() => props.options, val => {
+  initHandle();
+}, {
+  immediate: true
+});
 </script>
 
 <style lang='scss' scoped>
