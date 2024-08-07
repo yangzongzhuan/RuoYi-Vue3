@@ -84,7 +84,7 @@ const checkboxString = computed(() => {
     return checkboxList.value.join(',')
 })
 watch(() => props.cron.year, value => changeRadioValue(value))
-watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange())
+
 function changeRadioValue(value) {
     if (value === '') {
         radioValue.value = 1
@@ -97,8 +97,8 @@ function changeRadioValue(value) {
         radioValue.value = 3
     } else if (value.indexOf("/") > -1) {
         const indexArr = value.split('/')
-        average01.value = Number(indexArr[1])
-        average02.value = Number(indexArr[0])
+        average01.value = Number(indexArr[0])
+        average02.value = Number(indexArr[1])
         radioValue.value = 4
     } else {
         checkboxList.value = [...new Set(value.split(',').map(item => Number(item)))]
@@ -136,6 +136,8 @@ onMounted(() => {
     cycle02.value = cycle01.value + 1
     average01.value = fullYear.value
     checkCopy.value = [fullYear.value]
+
+    watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange())
 })
 </script>
 
