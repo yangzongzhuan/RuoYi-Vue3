@@ -185,16 +185,17 @@ export function handleTree(data, id, parentId, children) {
   }
 
   for (let t of tree) {
-    adaptToChildrenList(t);
+    adaptToChildrenList(t,0);
   }
 
-  function adaptToChildrenList(o) {
+  function adaptToChildrenList(o,depth) {
+    o.depth=depth
     if (childrenListMap[o[config.id]] !== null) {
       o[config.childrenList] = childrenListMap[o[config.id]];
     }
     if (o[config.childrenList]) {
       for (let c of o[config.childrenList]) {
-        adaptToChildrenList(c);
+        adaptToChildrenList(c,depth+1);
       }
     }
   }
