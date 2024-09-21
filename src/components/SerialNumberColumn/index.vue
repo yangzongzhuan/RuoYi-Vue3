@@ -1,5 +1,5 @@
 <template>
-    <el-table-column :label="label" align="center" width="80">
+    <el-table-column>
         <template #default="scope">
         {{ serialNumber(scope) }}
         </template>
@@ -8,8 +8,7 @@
   
 <script setup>
 const props = defineProps({
-  queryParams: Object,
-  label: String
+  queryParams: Object
 });
 const serialNumber = (scope) => {
   return (props.queryParams.pageNum - 1) * props.queryParams.pageSize + scope.$index + 1;
