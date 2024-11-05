@@ -104,9 +104,14 @@ function handleBeforeUpload(file) {
     const fileExt = fileName[fileName.length - 1];
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0;
     if (!isTypeOk) {
-      proxy.$modal.msgError(`文件格式不正确, 请上传${props.fileType.join("/")}格式文件!`);
+      proxy.$modal.msgError(`文件格式不正确，请上传${props.fileType.join("/")}格式文件!`);
       return false;
     }
+  }
+  // 校检文件名是否包含特殊字符
+  if (file.name.includes(',')) {
+    proxy.$modal.msgError('文件名不正确，不能包含英文逗号!');
+    return false;
   }
   // 校检文件大小
   if (props.fileSize) {
