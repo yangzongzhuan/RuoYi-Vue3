@@ -28,6 +28,7 @@
     "jsencrypt": "3.3.2",
     "nprogress": "0.2.0",
     "pinia": "2.1.7",
+    "splitpanes": "3.1.5",
     "vue": "3.4.31",
     "vue-cropper": "1.1.1",
     "vue-router": "4.4.0"
@@ -36,9 +37,9 @@
     "@vitejs/plugin-vue": "5.0.5",
     "sass": "1.77.5",
     "unplugin-auto-import": "0.17.6",
+    "unplugin-vue-setup-extend-plus": "1.0.1",
     "vite": "5.3.2",
     "vite-plugin-compression": "0.5.1",
-    "vite-plugin-svg-icons": "2.0.1",
-    "unplugin-vue-setup-extend-plus": "1.0.1"
+    "vite-plugin-svg-icons": "2.0.1"
   }
 }
