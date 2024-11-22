@@ -3,7 +3,7 @@
     <el-row :gutter="20">
       <splitpanes class="default-theme">
         <!--部门数据-->
-        <pane size="15">
+        <pane size="16">
           <el-col>
             <div class="head-container">
               <el-input v-model="deptName" placeholder="请输入部门名称" clearable prefix-icon="Search" style="margin-bottom: 20px" />
@@ -15,7 +15,7 @@
         </pane>
         <!--用户数据-->
         <pane>
-          <el-col size="85">
+          <el-col size="84">
             <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
               <el-form-item label="用户名称" prop="userName">
                 <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
