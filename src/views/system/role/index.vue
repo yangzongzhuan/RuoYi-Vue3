@@ -443,8 +443,8 @@ function handleUpdate(row) {
         });
       });
     });
-    title.value = "修改角色";
   });
+  title.value = "修改角色";
 }
 
 /** 根据角色ID查询菜单树结构 */
@@ -558,8 +558,8 @@ function handleDataScope(row) {
         });
       });
     });
-    title.value = "分配数据权限";
   });
+  title.value = "分配数据权限";
 }
 
 /** 提交按钮（数据权限） */

@@ -28,7 +28,7 @@ function getBreadcrumb() {
       if (index !== 0) item = item.slice(1)
       return item
     })
-    getMatched(pathList, permissionStore.sidebarRouters, matched)
+    getMatched(pathList, permissionStore.defaultRoutes, matched)
   } else {
     matched = route.matched.filter((item) => item.meta && item.meta.title)
   }
@@ -48,11 +48,13 @@ function findPathNum(str, char = "/") {
   return num
 }
 function getMatched(pathList, routeList, matched) {
-  let data = routeList.find((item) => item.path == pathList[0])
-  matched.push(data)
-  if (data.children && pathList.length) {
-    pathList.shift()
-    getMatched(pathList, data.children, matched)
+  let data = routeList.find(item => item.path == pathList[0] || (item.name += '').toLowerCase() == pathList[0])
+  if (data) {
+    matched.push(data)
+    if (data.children && pathList.length) {
+      pathList.shift()
+      getMatched(pathList, data.children, matched)
+    }
   }
 }
 function isDashboard(route) {
