@@ -1,7 +1,7 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <splitpanes class="default-theme">
+      <splitpanes :horizontal="appStore.device === 'mobile'" class="default-theme">
         <!--部门数据-->
         <pane size="16">
           <el-col>
@@ -14,8 +14,8 @@
           </el-col>
         </pane>
         <!--用户数据-->
-        <pane>
-          <el-col size="84">
+        <pane size="84">
+          <el-col>
             <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
               <el-form-item label="用户名称" prop="userName">
                 <el-input v-model="queryParams.userName" placeholder="请输入用户名称" clearable style="width: 240px" @keyup.enter="handleQuery" />
@@ -215,11 +215,13 @@
 
 <script setup name="User">
 import { getToken } from "@/utils/auth";
+import useAppStore from '@/store/modules/app'
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import { Splitpanes, Pane } from "splitpanes"
 import "splitpanes/dist/splitpanes.css"
 
 const router = useRouter();
+const appStore = useAppStore()
 const { proxy } = getCurrentInstance();
 const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex");
 
