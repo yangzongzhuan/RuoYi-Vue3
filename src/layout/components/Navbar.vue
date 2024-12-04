@@ -18,6 +18,13 @@
 
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
+        <el-tooltip content="主题模式" effect="dark" placement="bottom">
+          <div class="right-menu-item hover-effect theme-switch-wrapper" @click="toggleTheme">
+            <svg-icon v-if="settingsStore.isDark" icon-class="sunny" />
+            <svg-icon v-if="!settingsStore.isDark" icon-class="moon" />
+          </div>
+        </el-tooltip>
+
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -98,6 +105,10 @@ const emits = defineEmits(['setLayout'])
 function setLayout() {
   emits('setLayout');
 }
+
+function toggleTheme() {
+  settingsStore.toggleTheme()
+}
 </script>
 
 <style lang='scss' scoped>
@@ -105,7 +116,7 @@ function setLayout() {
   height: 50px;
   overflow: hidden;
   position: relative;
-  background: #fff;
+  background: var(--navbar-bg);
   box-shadow: 0 1px 4px rgba(0, 21, 41, 0.08);
 
   .hamburger-container {
@@ -150,7 +161,7 @@ function setLayout() {
       padding: 0 8px;
       height: 100%;
       font-size: 18px;
-      color: #5a5e66;
+      color: var(--navbar-text);
       vertical-align: text-bottom;
 
       &.hover-effect {
@@ -159,6 +170,19 @@ function setLayout() {
 
         &:hover {
           background: rgba(0, 0, 0, 0.025);
+        }
+      }
+
+      &.theme-switch-wrapper {
+        display: flex;
+        align-items: center;
+
+        svg {
+          transition: transform 0.3s;
+          
+          &:hover {
+            transform: scale(1.15);
+          }
         }
       }
     }

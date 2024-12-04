@@ -1,16 +1,17 @@
 <template>
-  <div :class="{ 'has-logo': showLogo }" :style="{ backgroundColor: sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground }">
+  <div :class="{ 'has-logo': showLogo }" class="sidebar-container">
     <logo v-if="showLogo" :collapse="isCollapse" />
-    <el-scrollbar :class="sideTheme" wrap-class="scrollbar-wrapper">
+    <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
         :collapse="isCollapse"
-        :background-color="sideTheme === 'theme-dark' ? variables.menuBackground : variables.menuLightBackground"
-        :text-color="sideTheme === 'theme-dark' ? variables.menuColor : variables.menuLightColor"
+        :background-color="getMenuBackground"
+        :text-color="getMenuTextColor"
         :unique-opened="true"
         :active-text-color="theme"
         :collapse-transition="false"
         mode="vertical"
+        :class="sideTheme"
       >
         <sidebar-item
           v-for="(route, index) in sidebarRouters"
@@ -36,19 +37,68 @@ const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
-const sidebarRouters =  computed(() => permissionStore.sidebarRouters);
+const sidebarRouters = computed(() => permissionStore.sidebarRouters);
 const showLogo = computed(() => settingsStore.sidebarLogo);
 const sideTheme = computed(() => settingsStore.sideTheme);
 const theme = computed(() => settingsStore.theme);
 const isCollapse = computed(() => !appStore.sidebar.opened);
 
+// 获取菜单背景色
+const getMenuBackground = computed(() => {
+  if (settingsStore.isDark) {
+    return 'var(--sidebar-bg)';
+  }
+  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg;
+});
+
+// 获取菜单文字颜色
+const getMenuTextColor = computed(() => {
+  if (settingsStore.isDark) {
+    return 'var(--sidebar-text)';
+  }
+  return sideTheme.value === 'theme-dark' ? variables.menuText : variables.menuLightText;
+});
+
 const activeMenu = computed(() => {
   const { meta, path } = route;
-  // if set path, the sidebar will highlight the path you set
   if (meta.activeMenu) {
     return meta.activeMenu;
   }
   return path;
-})
-
+});
 </script>
+
+<style lang="scss" scoped>
+.sidebar-container {
+  background-color: v-bind(getMenuBackground);
+  
+  .scrollbar-wrapper {
+    background-color: v-bind(getMenuBackground);
+  }
+
+  .el-menu {
+    border: none;
+    height: 100%;
+    width: 100% !important;
+    
+    .el-menu-item, .el-sub-menu__title {
+      &:hover {
+        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+      }
+    }
+
+    .el-menu-item {
+      color: v-bind(getMenuTextColor);
+      
+      &.is-active {
+        color: var(--menu-active-text, #409eff);
+        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+      }
+    }
+
+    .el-sub-menu__title {
+      color: v-bind(getMenuTextColor);
+    }
+  }
+}
+</style>

@@ -1,4 +1,4 @@
- /**
+/**
  * 通用css样式布局处理
  * Copyright (c) 2019 ruoyi
  */
@@ -102,38 +102,53 @@
 
 /** 表格布局 **/
 .pagination-container {
-    position: relative;
-    height: 32px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    padding: 10px 20px !important;
+  position: relative;
+  height: 25px;
+  margin-bottom: 10px;
+  margin-top: 15px;
+  padding: 10px 20px !important;
+  background-color: transparent !important;
 }
 
+/* 分页器定位 */
+.pagination-container .el-pagination {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* 弹窗中的分页器 */
 .el-dialog .pagination-container {
-    position: static !important;
+  position: static !important;
+  margin: 10px 0 0 0;
+  padding: 0 !important;
+  
+  .el-pagination {
+    position: static;
+  }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .pagination-container {
+    .el-pagination {
+      > .el-pagination__jump {
+        display: none !important;
+      }
+      > .el-pagination__sizes {
+        display: none !important;
+      }
+    }
+  }
 }
 
 /* tree border */
 .tree-border {
     margin-top: 5px;
-    border: 1px solid #e5e6e7;
-    background: #FFFFFF none;
+    border: 1px solid var(--el-border-color-light, #e5e6e7);
+    background: var(--el-bg-color, #FFFFFF) none;
     border-radius:4px;
     width: 100%;
-}
-
-.pagination-container .el-pagination {
-	right: 0;
-	position: absolute;
-}
-
-@media ( max-width : 768px) {
-  .pagination-container .el-pagination > .el-pagination__jump {
-    display: none !important;
-  }
-  .pagination-container .el-pagination > .el-pagination__sizes {
-    display: none !important;
-  }
 }
 
 .el-table .fixed-width .el-button--small {
@@ -282,6 +297,5 @@
 
 /* 分割面板样式 */
 .splitpanes.default-theme .splitpanes__pane {
-	background-color: #fff!important;
+  background-color: var(--splitpanes-default-bg) !important;
 }
-

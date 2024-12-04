@@ -1,7 +1,7 @@
 #app {
 
   .main-container {
-    height: 100%;
+    min-height: 100%;
     transition: margin-left .28s;
     margin-left: $base-sidebar-width;
     position: relative;
@@ -12,10 +12,8 @@
   }
 
   .sidebar-container {
-    -webkit-transition: width .28s;
     transition: width 0.28s;
     width: $base-sidebar-width !important;
-    background-color: $base-menu-background;
     height: 100%;
     position: fixed;
     font-size: 0px;
@@ -103,7 +101,7 @@
 
     & .theme-dark .nest-menu .el-sub-menu>.el-sub-menu__title,
     & .theme-dark .el-sub-menu .el-menu-item {
-      background-color: $base-sub-menu-background !important;
+      background-color: $base-sub-menu-background;
 
       &:hover {
         background-color: $base-sub-menu-hover !important;
