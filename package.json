@@ -20,10 +20,12 @@
     "@vueup/vue-quill": "1.2.0",
     "@vueuse/core": "10.11.0",
     "axios": "0.28.1",
+    "clipboard": "2.0.11",
     "echarts": "5.5.1",
     "element-plus": "2.7.6",
     "file-saver": "2.0.5",
     "fuse.js": "6.6.2",
+    "js-beautify": "1.14.11",
     "js-cookie": "3.0.5",
     "jsencrypt": "3.3.2",
     "nprogress": "0.2.0",
@@ -31,7 +33,8 @@
     "splitpanes": "3.1.5",
     "vue": "3.4.31",
     "vue-cropper": "1.1.1",
-    "vue-router": "4.4.0"
+    "vue-router": "4.4.0",
+    "vuedraggable": "4.1.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.0.5",
