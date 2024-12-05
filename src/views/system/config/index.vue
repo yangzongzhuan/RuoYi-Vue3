@@ -20,7 +20,7 @@
             />
          </el-form-item>
          <el-form-item label="系统内置" prop="configType">
-            <el-select v-model="queryParams.configType" placeholder="系统内置" clearable>
+            <el-select v-model="queryParams.configType" placeholder="系统内置" clearable style="width: 240px">
                <el-option
                   v-for="dict in sys_yes_no"
                   :key="dict.value"

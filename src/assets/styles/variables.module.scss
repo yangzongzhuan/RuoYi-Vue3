@@ -1,6 +1,6 @@
 // base color
 $blue: #324157;
-$light-blue: #3A71A8;
+$light-blue: #333c46;
 $red: #C03639;
 $pink: #E65D6E;
 $green: #30B08F;
@@ -128,6 +128,9 @@ html.dark {
 
   /* 侧边栏菜单覆盖 */
    .sidebar-container {
+    .el-menu-item, .menu-title {
+      color: var(--el-text-color-regular);
+    }
     & .theme-dark .nest-menu .el-sub-menu>.el-sub-menu__title,
     & .theme-dark .el-sub-menu .el-menu-item {
       background-color: var(--el-bg-color) !important;
