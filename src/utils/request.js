@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { ElNotification , ElMessageBox, ElMessage, ElLoading } from 'element-plus'
+import { ElNotification, ElMessageBox, ElMessage, ElLoading } from 'element-plus'
 import { getToken } from '@/utils/auth'
 import errorCode from '@/utils/errorCode'
 import { tansParams, blobValidate } from '@/utils/ruoyi'
@@ -67,8 +67,8 @@ service.interceptors.request.use(config => {
   }
   return config
 }, error => {
-    console.log(error)
-    Promise.reject(error)
+  console.log(error)
+  Promise.reject(error)
 })
 
 // 响应拦截器
@@ -87,26 +87,26 @@ service.interceptors.response.use(res => {
         ElMessageBox.confirm('登录状态已过期，您可以继续留在该页面，或者重新登录', '系统提示', { confirmButtonText: '重新登录', cancelButtonText: '取消', type: 'warning' }).then(() => {
           isRelogin.show = false;
           useUserStore().logOut().then(() => {
-            location.href = '/index';
-          })
+          location.href = import.meta.env.BASE_URL + 'index';
+        })
       }).catch(() => {
         isRelogin.show = false;
       });
     }
-      return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
-    } else if (code === 500) {
-      ElMessage({ message: msg, type: 'error' })
-      return Promise.reject(new Error(msg))
-    } else if (code === 601) {
-      ElMessage({ message: msg, type: 'warning' })
-      return Promise.reject(new Error(msg))
-    } else if (code !== 200) {
-      ElNotification.error({ title: msg })
-      return Promise.reject('error')
-    } else {
-      return  Promise.resolve(res.data)
-    }
-  },
+    return Promise.reject('无效的会话，或者会话已过期，请重新登录。')
+  } else if (code === 500) {
+    ElMessage({ message: msg, type: 'error' })
+    return Promise.reject(new Error(msg))
+  } else if (code === 601) {
+    ElMessage({ message: msg, type: 'warning' })
+    return Promise.reject(new Error(msg))
+  } else if (code !== 200) {
+    ElNotification.error({ title: msg })
+    return Promise.reject('error')
+  } else {
+    return Promise.resolve(res.data)
+  }
+},
   error => {
     console.log('err' + error)
     let { message } = error;
