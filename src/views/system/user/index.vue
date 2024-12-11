@@ -112,7 +112,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="归属部门" prop="deptId">
-              <el-tree-select v-model="form.deptId" :data="deptOptions" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门" check-strictly />
+              <el-tree-select v-model="form.deptId" :data="enabledDeptOptions" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门" check-strictly />
             </el-form-item>
           </el-col>
         </el-row>
@@ -237,6 +237,7 @@ const title = ref("");
 const dateRange = ref([]);
 const deptName = ref("");
 const deptOptions = ref(undefined);
+const enabledDeptOptions = ref(undefined);
 const initPassword = ref(undefined);
 const postOptions = ref([]);
 const roleOptions = ref([]);
@@ -298,13 +299,6 @@ watch(deptName, val => {
   proxy.$refs["deptTreeRef"].filter(val);
 });
 
-/** 查询部门下拉树结构 */
-function getDeptTree() {
-  deptTreeSelect().then(response => {
-    deptOptions.value = response.data;
-  });
-};
-
 /** 查询用户列表 */
 function getList() {
   loading.value = true;
@@ -312,6 +306,27 @@ function getList() {
     loading.value = false;
     userList.value = res.rows;
     total.value = res.total;
+  });
+};
+
+/** 查询部门下拉树结构 */
+function getDeptTree() {
+  deptTreeSelect().then(response => {
+    deptOptions.value = response.data;
+    enabledDeptOptions.value = filterDisabledDept(JSON.parse(JSON.stringify(response.data)));
+  });
+};
+
+/** 过滤禁用的部门 */
+function filterDisabledDept(deptList) {
+  return deptList.filter(dept => {
+    if (dept.disabled) {
+      return false;
+    }
+    if (dept.children && dept.children.length) {
+      dept.children = filterDisabledDept(dept.children);
+    }
+    return true;
   });
 };
 
