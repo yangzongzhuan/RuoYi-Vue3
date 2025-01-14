@@ -1,6 +1,6 @@
 {
   "name": "ruoyi",
-  "version": "3.8.9",
+  "version": "25.0114.1538",
   "description": "若依管理系统",
   "author": "若依",
   "license": "MIT",
@@ -40,6 +40,7 @@
     "@vitejs/plugin-vue": "5.0.5",
     "sass": "1.77.5",
     "unplugin-auto-import": "0.17.6",
+    "unplugin-vue-components": "^28.0.0",
     "unplugin-vue-setup-extend-plus": "1.0.1",
     "vite": "5.3.2",
     "vite-plugin-compression": "0.5.1",
