@@ -182,6 +182,7 @@ getCookie();
   background: #ffffff;
   width: 400px;
   padding: 25px 25px 5px 25px;
+  z-index: 1;
   .el-input {
     height: 40px;
     input {
