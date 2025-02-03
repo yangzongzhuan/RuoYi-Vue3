@@ -111,7 +111,7 @@
 
       <!-- 添加或修改公告对话框 -->
       <el-dialog :title="title" v-model="open" width="780px" append-to-body>
-         <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
+         <el-form label-position="top" ref="noticeRef" :model="form" :rules="rules" label-width="80px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="公告标题" prop="noticeTitle">

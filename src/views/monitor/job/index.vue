@@ -139,7 +139,7 @@
 
       <!-- 添加或修改定时任务对话框 -->
       <el-dialog :title="title" v-model="open" width="820px" append-to-body>
-         <el-form ref="jobRef" :model="form" :rules="rules" label-width="120px">
+         <el-form ref="jobRef" label-position="top" :model="form" :rules="rules" label-width="120px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="任务名称" prop="jobName">
@@ -234,7 +234,7 @@
 
       <!-- 任务日志详细 -->
       <el-dialog title="任务详细" v-model="openView" width="700px" append-to-body>
-         <el-form :model="form" label-width="120px">
+         <el-form label-position="top" :model="form" label-width="120px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="任务编号：">{{ form.jobId }}</el-form-item>
