@@ -1,14 +1,6 @@
 <template>
   <div class="app-container home">
     <el-row :gutter="20">
-      <el-col :sm="24" :lg="24">
-        <blockquote class="text-warning" style="font-size: 14px">
-          阿里云服务器折扣区<el-link href="http://aly.ruoyi.vip" type="primary" target="_blank">☛☛点我进入☚☚</el-link> &nbsp;&nbsp;&nbsp; 腾讯云服务器秒杀区<el-link href="http://txy.ruoyi.vip" type="primary" target="_blank">☛☛点我进入☚☚</el-link>
-        </blockquote>
-        <hr />
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>若依后台管理框架</h2>
         <p>
