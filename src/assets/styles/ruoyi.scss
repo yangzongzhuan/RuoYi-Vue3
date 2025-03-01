@@ -102,19 +102,10 @@
 
 /** 表格布局 **/
 .pagination-container {
-  position: relative;
-  height: 25px;
-  margin-bottom: 10px;
-  margin-top: 15px;
-  padding: 10px 20px !important;
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 20px;
   background-color: transparent !important;
-}
-
-/* 分页器定位 */
-.pagination-container .el-pagination {
-  position: absolute;
-  right: 0;
-  top: 0;
 }
 
 /* 弹窗中的分页器 */
