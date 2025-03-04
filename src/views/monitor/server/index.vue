@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row :gutter="10">
       <el-col :span="12" class="card-box">
         <el-card>
           <template #header><Cpu style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">CPU</span></template>

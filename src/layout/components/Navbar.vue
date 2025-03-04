@@ -1,8 +1,8 @@
 <template>
   <div class="navbar">
     <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb id="breadcrumb-container" class="breadcrumb-container" v-if="!settingsStore.topNav" />
-    <top-nav id="topmenu-container" class="topmenu-container" v-if="settingsStore.topNav" />
+    <breadcrumb v-if="!settingsStore.topNav" id="breadcrumb-container" class="breadcrumb-container" />
+    <top-nav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container" />
 
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">

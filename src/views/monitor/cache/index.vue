@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-row>
+    <el-row :gutter="10">
       <el-col :span="24" class="card-box">
         <el-card>
           <template #header><Monitor style="width: 1em; height: 1em; vertical-align: middle;" /> <span style="vertical-align: middle;">基本信息</span></template>
