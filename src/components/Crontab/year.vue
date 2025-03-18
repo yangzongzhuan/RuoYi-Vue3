@@ -61,22 +61,24 @@ const props = defineProps({
         }
     }
 })
-const fullYear = ref(0)
-const maxFullYear = ref(0)
+
+const fullYear = Number(new Date().getFullYear())
+const maxFullYear = fullYear + 10
 const radioValue = ref(1)
-const cycle01 = ref(0)
-const cycle02 = ref(0)
-const average01 = ref(0)
+const cycle01 = ref(fullYear)
+const cycle02 = ref(fullYear + 1)
+const average01 = ref(fullYear)
 const average02 = ref(1)
 const checkboxList = ref([])
-const checkCopy = ref([])
+const checkCopy = ref([fullYear])
+
 const cycleTotal = computed(() => {
-    cycle01.value = props.check(cycle01.value, fullYear.value, maxFullYear.value - 1)
-    cycle02.value = props.check(cycle02.value, cycle01.value + 1, maxFullYear.value)
+    cycle01.value = props.check(cycle01.value, fullYear, maxFullYear - 1)
+    cycle02.value = props.check(cycle02.value, cycle01.value + 1, maxFullYear)
     return cycle01.value + '-' + cycle02.value
 })
 const averageTotal = computed(() => {
-    average01.value = props.check(average01.value, fullYear.value, maxFullYear.value - 1)
+    average01.value = props.check(average01.value, fullYear, maxFullYear - 1)
     average02.value = props.check(average02.value, 1, 10)
     return average01.value + '/' + average02.value
 })
@@ -97,8 +99,8 @@ function changeRadioValue(value) {
         radioValue.value = 3
     } else if (value.indexOf("/") > -1) {
         const indexArr = value.split('/')
-        average01.value = Number(indexArr[1])
-        average02.value = Number(indexArr[0])
+        average01.value = Number(indexArr[0])
+        average02.value = Number(indexArr[1])
         radioValue.value = 4
     } else {
         checkboxList.value = [...new Set(value.split(',').map(item => Number(item)))]
@@ -129,14 +131,6 @@ function onRadioChange() {
             break
     }
 }
-onMounted(() => {
-    fullYear.value = Number(new Date().getFullYear())
-    maxFullYear.value = fullYear.value + 10
-    cycle01.value = fullYear.value
-    cycle02.value = cycle01.value + 1
-    average01.value = fullYear.value
-    checkCopy.value = [fullYear.value]
-})
 </script>
 
 <style lang="scss" scoped>
