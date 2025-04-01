@@ -18,6 +18,19 @@ export default {
       el.addEventListener("click", handler);
       el.$destroyCopy = () => el.removeEventListener("click", handler);
     }
+  },
+  beforeUpdate(el, {value, arg}) {
+    // 更新值
+    if (arg === "callback") {
+      el.$copyCallback = value;
+    } else {
+      el.$copyValue = value;
+    }
+  },
+  beforeUnmount(el) {
+    if(el.$destroyCopy) {
+      el.$destroyCopy()
+    }
   }
 }
 
