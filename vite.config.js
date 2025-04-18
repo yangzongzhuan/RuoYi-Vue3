@@ -23,6 +23,21 @@ export default defineConfig(({ mode, command }) => {
       // https://cn.vitejs.dev/config/#resolve-extensions
       extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
     },
+    // 打包配置
+    build: {
+      // https://vite.dev/config/build-options.html
+      sourcemap: command === 'build' ? false : 'inline',
+      outDir: 'dist',
+      assetsDir: 'assets',
+      chunkSizeWarningLimit: 2000,
+      rollupOptions: {
+        output: {
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: 'static/[ext]/[name]-[hash].[ext]'
+        }
+      }
+    },
     // vite 相关配置
     server: {
       port: 80,
