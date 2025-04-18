@@ -43,6 +43,6 @@
     "unplugin-vue-setup-extend-plus": "1.0.1",
     "vite": "5.3.2",
     "vite-plugin-compression": "0.5.1",
-    "vite-plugin-svg-icons": "2.0.1"
+    "vite-plugin-svg-icons-ng": "^1.2.2"
   }
 }
