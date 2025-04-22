@@ -427,28 +427,16 @@
           </el-form-item>
           <el-form-item label="表单尺寸">
             <el-radio-group v-model="formConf.size">
-              <el-radio-button label="large">
-                较大
-              </el-radio-button>
-              <el-radio-button label="default">
-                默认
-              </el-radio-button>
-              <el-radio-button label="small">
-                较小
-              </el-radio-button>
+              <el-radio-button label="large" value="较大" />
+              <el-radio-button label="default" value="默认" />
+              <el-radio-button label="small" value="较小" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="标签对齐">
             <el-radio-group v-model="formConf.labelPosition">
-              <el-radio-button label="left">
-                左对齐
-              </el-radio-button>
-              <el-radio-button label="right">
-                右对齐
-              </el-radio-button>
-              <el-radio-button label="top">
-                顶部对齐
-              </el-radio-button>
+              <el-radio-button label="left" value="左对齐" />
+              <el-radio-button label="right" value="右对齐" />
+              <el-radio-button label="top" value="顶部对齐" />
             </el-radio-group>
           </el-form-item>
           <el-form-item label="标签宽度">

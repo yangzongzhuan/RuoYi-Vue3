@@ -15,6 +15,7 @@
         @input="querySearch"
         prefix-icon="Search"
         placeholder="菜单搜索，支持标题、URL模糊查询"
+        clearable
       >
       </el-input>
 

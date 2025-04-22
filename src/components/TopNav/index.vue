@@ -63,7 +63,7 @@ const topMenus = computed(() => {
   routers.value.map((menu) => {
     if (menu.hidden !== true) {
       // 兼容顶部栏一级菜单内部跳转
-      if (menu.path === "/") {
+      if (menu.path === '/' && menu.children) {
           topMenus.push(menu.children[0]);
       } else {
           topMenus.push(menu);
