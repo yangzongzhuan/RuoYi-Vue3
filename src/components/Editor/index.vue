@@ -27,6 +27,7 @@
 </template>
 
 <script setup>
+import axios from 'axios';
 import { QuillEditor } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import { getToken } from "@/utils/auth";
@@ -124,6 +125,7 @@ onMounted(() => {
         quill.format("image", false);
       }
     });
+    quill.root.addEventListener('paste', handlePasteCapture, true);
   }
 });
 
@@ -167,6 +169,29 @@ function handleUploadSuccess(res, file) {
 // 上传失败处理
 function handleUploadError() {
   proxy.$modal.msgError("图片插入失败");
+}
+
+// 复制粘贴图片处理
+function handlePasteCapture(e) {
+  const clipboard = e.clipboardData || window.clipboardData;
+  if (clipboard && clipboard.items) {
+    for (let i = 0; i < clipboard.items.length; i++) {
+      const item = clipboard.items[i];
+      if (item.type.indexOf('image') !== -1) {
+        e.preventDefault();
+        const file = item.getAsFile();
+        insertImage(file);
+      }
+    }
+  }
+}
+
+function insertImage(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  axios.post(uploadUrl.value, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: headers.value.Authorization } }).then(res => {
+    handleUploadSuccess(res.data);
+  })
 }
 </script>
 
