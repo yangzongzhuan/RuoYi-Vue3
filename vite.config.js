@@ -2,6 +2,8 @@ import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
 import createVitePlugins from './vite/plugins'
 
+const baseUrl = 'http://localhost:8080' // 后端接口
+
 // https://vitejs.dev/config/
 export default defineConfig(({ mode, command }) => {
   const env = loadEnv(mode, process.cwd())
@@ -46,9 +48,14 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/dev-api': {
-          target: 'http://localhost:8080',
+          target: baseUrl,
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, '')
+        },
+         // springdoc proxy
+         '^/v3/api-docs/(.*)': {
+          target: baseUrl,
+          changeOrigin: true,
         }
       }
     },
