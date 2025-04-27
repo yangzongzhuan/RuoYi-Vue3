@@ -88,36 +88,36 @@ import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 import { handleThemeStyle } from '@/utils/theme'
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance()
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
-const showSettings = ref(false);
-const theme = ref(settingsStore.theme);
-const sideTheme = ref(settingsStore.sideTheme);
-const storeSettings = computed(() => settingsStore);
-const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"]);
+const showSettings = ref(false)
+const theme = ref(settingsStore.theme)
+const sideTheme = ref(settingsStore.sideTheme)
+const storeSettings = computed(() => settingsStore)
+const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
 
 /** 是否需要topnav */
 function topNavChange(val) {
   if (!val) {
-    appStore.toggleSideBarHide(false);
-    permissionStore.setSidebarRouters(permissionStore.defaultRoutes);
+    appStore.toggleSideBarHide(false)
+    permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
   }
 }
 
 function themeChange(val) {
-  settingsStore.theme = val;
-  handleThemeStyle(val);
+  settingsStore.theme = val
+  handleThemeStyle(val)
 }
 
 function handleTheme(val) {
-  settingsStore.sideTheme = val;
-  sideTheme.value = val;
+  settingsStore.sideTheme = val
+  sideTheme.value = val
 }
 
 function saveSetting() {
-  proxy.$modal.loading("正在保存到本地，请稍候...");
+  proxy.$modal.loading("正在保存到本地，请稍候...")
   let layoutSetting = {
     "topNav": storeSettings.value.topNav,
     "tagsView": storeSettings.value.tagsView,
@@ -126,23 +126,23 @@ function saveSetting() {
     "dynamicTitle": storeSettings.value.dynamicTitle,
     "sideTheme": storeSettings.value.sideTheme,
     "theme": storeSettings.value.theme
-  };
-  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting));
+  }
+  localStorage.setItem("layout-setting", JSON.stringify(layoutSetting))
   setTimeout(proxy.$modal.closeLoading(), 1000)
 }
 
 function resetSetting() {
-  proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...");
+  proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
   localStorage.removeItem("layout-setting")
   setTimeout("window.location.reload()", 1000)
 }
 
 function openSetting() {
-  showSettings.value = true;
+  showSettings.value = true
 }
 
 defineExpose({
-  openSetting,
+  openSetting
 })
 </script>
 

@@ -65,21 +65,21 @@
 </template>
 
 <script setup name="Cache">
-import { getCache } from '@/api/monitor/cache';
-import * as echarts from 'echarts';
+import { getCache } from '@/api/monitor/cache'
+import * as echarts from 'echarts'
 
-const cache = ref([]);
-const commandstats = ref(null);
-const usedmemory = ref(null);
-const { proxy } = getCurrentInstance();
+const cache = ref([])
+const commandstats = ref(null)
+const usedmemory = ref(null)
+const { proxy } = getCurrentInstance()
 
 function getList() {
-  proxy.$modal.loading("正在加载缓存监控数据，请稍候！");
+  proxy.$modal.loading("正在加载缓存监控数据，请稍候！")
   getCache().then(response => {
-    proxy.$modal.closeLoading();
-    cache.value = response.data;
+    proxy.$modal.closeLoading()
+    cache.value = response.data
 
-    const commandstatsIntance = echarts.init(commandstats.value, "macarons");
+    const commandstatsIntance = echarts.init(commandstats.value, "macarons")
     commandstatsIntance.setOption({
       tooltip: {
         trigger: "item",
@@ -97,8 +97,8 @@ function getList() {
           animationDuration: 1000
         }
       ]
-    });
-    const usedmemoryInstance = echarts.init(usedmemory.value, "macarons");
+    })
+    const usedmemoryInstance = echarts.init(usedmemory.value, "macarons")
     usedmemoryInstance.setOption({
       tooltip: {
         formatter: "{b} <br/>{a} : " + cache.value.info.used_memory_human
@@ -122,11 +122,11 @@ function getList() {
       ]
     })
     window.addEventListener("resize", () => {
-      commandstatsIntance.resize();
-      usedmemoryInstance.resize();
-    });
+      commandstatsIntance.resize()
+      usedmemoryInstance.resize()
+    })
   })
 }
 
-getList();
+getList()
 </script>

@@ -235,11 +235,11 @@
 </template>
 
 <script setup>
-import { listMenu } from "@/api/system/menu";
+import { listMenu } from "@/api/system/menu"
 
-const subColumns = ref([]);
-const menuOptions = ref([]);
-const { proxy } = getCurrentInstance();
+const subColumns = ref([])
+const menuOptions = ref([])
+const { proxy } = getCurrentInstance()
 
 const props = defineProps({
   info: {
@@ -250,7 +250,7 @@ const props = defineProps({
     type: Array,
     default: null
   }
-});
+})
 
 // 表单校验
 const rules = ref({
@@ -259,25 +259,25 @@ const rules = ref({
   moduleName: [{ required: true, message: "请输入生成模块名", trigger: "blur" }],
   businessName: [{ required: true, message: "请输入生成业务名", trigger: "blur" }],
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
-});
+})
 
 function subSelectChange(value) {
-  props.info.subTableFkName = "";
+  props.info.subTableFkName = ""
 }
 
 function tplSelectChange(value) {
   if (value !== "sub") {
-    props.info.subTableName = "";
-    props.info.subTableFkName = "";
+    props.info.subTableName = ""
+    props.info.subTableFkName = ""
   }
 }
 
 function setSubTableColumns(value) {
   for (var item in props.tables) {
-    const name = props.tables[item].tableName;
+    const name = props.tables[item].tableName
     if (value === name) {
-      subColumns.value = props.tables[item].columns;
-      break;
+      subColumns.value = props.tables[item].columns
+      break
     }
   }
 }
@@ -285,22 +285,21 @@ function setSubTableColumns(value) {
 /** 查询菜单下拉树结构 */
 function getMenuTreeselect() {
   listMenu().then(response => {
-    menuOptions.value = proxy.handleTree(response.data, "menuId");
-  });
+    menuOptions.value = proxy.handleTree(response.data, "menuId")
+  })
 }
 
 onMounted(() => {
-  getMenuTreeselect();
+  getMenuTreeselect()
 })
 
 watch(() => props.info.subTableName, val => {
-  setSubTableColumns(val);
-});
+  setSubTableColumns(val)
+})
 
 watch(() => props.info.tplWebType, val => {
   if (val === '') {
-    props.info.tplWebType = "element-plus";
+    props.info.tplWebType = "element-plus"
   }
-});
-
+})
 </script>

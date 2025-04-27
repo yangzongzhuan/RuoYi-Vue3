@@ -76,12 +76,12 @@
 </template>
 
 <script setup>
-import { ElMessageBox } from "element-plus";
-import { getCodeImg, register } from "@/api/login";
+import { ElMessageBox } from "element-plus"
+import { getCodeImg, register } from "@/api/login"
 
-const title = import.meta.env.VITE_APP_TITLE;
-const router = useRouter();
-const { proxy } = getCurrentInstance();
+const title = import.meta.env.VITE_APP_TITLE
+const router = useRouter()
+const { proxy } = getCurrentInstance()
 
 const registerForm = ref({
   username: "",
@@ -89,15 +89,15 @@ const registerForm = ref({
   confirmPassword: "",
   code: "",
   uuid: ""
-});
+})
 
 const equalToPassword = (rule, value, callback) => {
   if (registerForm.value.password !== value) {
-    callback(new Error("两次输入的密码不一致"));
+    callback(new Error("两次输入的密码不一致"))
   } else {
-    callback();
+    callback()
   }
-};
+}
 
 const registerRules = {
   username: [
@@ -114,45 +114,45 @@ const registerRules = {
     { required: true, validator: equalToPassword, trigger: "blur" }
   ],
   code: [{ required: true, trigger: "change", message: "请输入验证码" }]
-};
+}
 
-const codeUrl = ref("");
-const loading = ref(false);
-const captchaEnabled = ref(true);
+const codeUrl = ref("")
+const loading = ref(false)
+const captchaEnabled = ref(true)
 
 function handleRegister() {
   proxy.$refs.registerRef.validate(valid => {
     if (valid) {
-      loading.value = true;
+      loading.value = true
       register(registerForm.value).then(res => {
-        const username = registerForm.value.username;
+        const username = registerForm.value.username
         ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
           dangerouslyUseHTMLString: true,
           type: "success",
         }).then(() => {
-          router.push("/login");
-        }).catch(() => {});
+          router.push("/login")
+        }).catch(() => {})
       }).catch(() => {
-        loading.value = false;
+        loading.value = false
         if (captchaEnabled) {
-          getCode();
+          getCode()
         }
-      });
+      })
     }
-  });
+  })
 }
 
 function getCode() {
   getCodeImg().then(res => {
-    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled;
+    captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
     if (captchaEnabled.value) {
-      codeUrl.value = "data:image/gif;base64," + res.img;
-      registerForm.value.uuid = res.uuid;
+      codeUrl.value = "data:image/gif;base64," + res.img
+      registerForm.value.uuid = res.uuid
     }
-  });
+  })
 }
 
-getCode();
+getCode()
 </script>
 
 <style lang='scss' scoped>

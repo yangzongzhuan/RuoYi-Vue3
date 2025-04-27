@@ -198,22 +198,22 @@
 </template>
 
 <script setup name="Operlog">
-import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog";
+import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog"
 
-const { proxy } = getCurrentInstance();
-const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status");
+const { proxy } = getCurrentInstance()
+const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type","sys_common_status")
 
-const operlogList = ref([]);
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const dateRange = ref([]);
-const defaultSort = ref({ prop: "operTime", order: "descending" });
+const operlogList = ref([])
+const open = ref(false)
+const loading = ref(true)
+const showSearch = ref(true)
+const ids = ref([])
+const single = ref(true)
+const multiple = ref(true)
+const total = ref(0)
+const title = ref("")
+const dateRange = ref([])
+const defaultSort = ref({ prop: "operTime", order: "descending" })
 
 const data = reactive({
   form: {},
@@ -226,85 +226,85 @@ const data = reactive({
     businessType: undefined,
     status: undefined
   }
-});
+})
 
-const { queryParams, form } = toRefs(data);
+const { queryParams, form } = toRefs(data)
 
 /** 查询登录日志 */
 function getList() {
-  loading.value = true;
+  loading.value = true
   list(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    operlogList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+    operlogList.value = response.rows
+    total.value = response.total
+    loading.value = false
+  })
 }
 
 /** 操作日志类型字典翻译 */
 function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType);
+  return proxy.selectDictLabel(sys_oper_type.value, row.businessType)
 }
 
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  queryParams.value.pageNum = 1
+  getList()
 }
 
 /** 重置按钮操作 */
 function resetQuery() {
-  dateRange.value = [];
-  proxy.resetForm("queryRef");
-  queryParams.value.pageNum = 1;
-  proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order);
+  dateRange.value = []
+  proxy.resetForm("queryRef")
+  queryParams.value.pageNum = 1
+  proxy.$refs["operlogRef"].sort(defaultSort.value.prop, defaultSort.value.order)
 }
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.operId);
-  multiple.value = !selection.length;
+  ids.value = selection.map(item => item.operId)
+  multiple.value = !selection.length
 }
 
 /** 排序触发事件 */
 function handleSortChange(column, prop, order) {
-  queryParams.value.orderByColumn = column.prop;
-  queryParams.value.isAsc = column.order;
-  getList();
+  queryParams.value.orderByColumn = column.prop
+  queryParams.value.isAsc = column.order
+  getList()
 }
 
 /** 详细按钮操作 */
 function handleView(row) {
-  open.value = true;
-  form.value = row;
+  open.value = true
+  form.value = row
 }
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const operIds = row.operId || ids.value;
+  const operIds = row.operId || ids.value
   proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
-    return delOperlog(operIds);
+    return delOperlog(operIds)
   }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+    getList()
+    proxy.$modal.msgSuccess("删除成功")
+  }).catch(() => {})
 }
 
 /** 清空按钮操作 */
 function handleClean() {
   proxy.$modal.confirm("是否确认清空所有操作日志数据项?").then(function () {
-    return cleanOperlog();
+    return cleanOperlog()
   }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("清空成功");
-  }).catch(() => {});
+    getList()
+    proxy.$modal.msgSuccess("清空成功")
+  }).catch(() => {})
 }
 
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("monitor/operlog/export",{
     ...queryParams.value,
-  }, `config_${new Date().getTime()}.xlsx`);
+  }, `config_${new Date().getTime()}.xlsx`)
 }
 
-getList();
+getList()
 </script>

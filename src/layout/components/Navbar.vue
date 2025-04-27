@@ -79,13 +79,13 @@ function toggleSideBar() {
 function handleCommand(command) {
   switch (command) {
     case "setLayout":
-      setLayout();
-      break;
+      setLayout()
+      break
     case "logout":
-      logout();
-      break;
+      logout()
+      break
     default:
-      break;
+      break
   }
 }
 
@@ -96,14 +96,14 @@ function logout() {
     type: 'warning'
   }).then(() => {
     userStore.logOut().then(() => {
-      location.href = '/index';
+      location.href = '/index'
     })
-  }).catch(() => { });
+  }).catch(() => { })
 }
 
 const emits = defineEmits(['setLayout'])
 function setLayout() {
-  emits('setLayout');
+  emits('setLayout')
 }
 
 function toggleTheme() {

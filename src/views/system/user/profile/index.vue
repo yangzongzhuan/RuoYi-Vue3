@@ -63,25 +63,25 @@
 </template>
 
 <script setup name="Profile">
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+import userAvatar from "./userAvatar"
+import userInfo from "./userInfo"
+import resetPwd from "./resetPwd"
+import { getUserProfile } from "@/api/system/user"
 
-const activeTab = ref("userinfo");
+const activeTab = ref("userinfo")
 const state = reactive({
   user: {},
   roleGroup: {},
   postGroup: {}
-});
+})
 
 function getUser() {
   getUserProfile().then(response => {
-    state.user = response.data;
-    state.roleGroup = response.roleGroup;
-    state.postGroup = response.postGroup;
-  });
-};
+    state.user = response.data
+    state.roleGroup = response.roleGroup
+    state.postGroup = response.postGroup
+  })
+}
 
-getUser();
+getUser()
 </script>

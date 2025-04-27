@@ -48,11 +48,11 @@ const props = defineProps({
   }
 })
 
-const onlyOneChild = ref({});
+const onlyOneChild = ref({})
 
 function hasOneShowingChild(children = [], parent) {
   if (!children) {
-    children = [];
+    children = []
   }
   const showingChildren = children.filter(item => {
     if (item.hidden) {
@@ -74,7 +74,7 @@ function hasOneShowingChild(children = [], parent) {
   }
 
   return false
-};
+}
 
 function resolvePath(routePath, routeQuery) {
   if (isExternal(routePath)) {
@@ -84,7 +84,7 @@ function resolvePath(routePath, routeQuery) {
     return props.basePath
   }
   if (routeQuery) {
-    let query = JSON.parse(routeQuery);
+    let query = JSON.parse(routeQuery)
     return { path: getNormalPath(props.basePath + '/' + routePath), query: query }
   }
   return getNormalPath(props.basePath + '/' + routePath)
@@ -92,9 +92,9 @@ function resolvePath(routePath, routeQuery) {
 
 function hasTitle(title){
   if (title.length > 5) {
-    return title;
+    return title
   } else {
-    return "";
+    return ""
   }
 }
 </script>

@@ -24,7 +24,7 @@ defineProps({
 
 const emit = defineEmits()
 const toggleClick = () => {
-  emit('toggleClick');
+  emit('toggleClick')
 }
 </script>
 
