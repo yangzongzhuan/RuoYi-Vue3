@@ -59,8 +59,10 @@ export default {
     return useTagsViewStore().delOthersViews(obj || router.currentRoute.value)
   },
   // 打开tab页签
-  openPage(url) {
-    return router.push(url)
+  openPage(title, url, params) {
+    const obj = { path: url, meta: { title: title } }
+    useTagsViewStore().addView(obj)
+    return router.push({ path: url, query: params })
   },
   // 修改tab页签
   updatePage(obj) {

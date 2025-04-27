@@ -288,7 +288,9 @@ function handleSortChange(column, prop, order) {
 /** 修改按钮操作 */
 function handleEditTable(row) {
   const tableId = row.tableId || ids.value[0]
-  router.push({ path: "/tool/gen-edit/index/" + tableId, query: { pageNum: queryParams.value.pageNum } })
+  const tableName = row.tableName || tableNames.value[0]
+  const params = { pageNum: queryParams.value.pageNum }
+  proxy.$tab.openPage("修改[" + tableName + "]生成配置", '/tool/gen-edit/index/' + tableId, params)
 }
 
 /** 删除按钮操作 */
