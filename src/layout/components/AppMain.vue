@@ -15,7 +15,22 @@
 import iframeToggle from "./IframeToggle/index"
 import useTagsViewStore from '@/store/modules/tagsView'
 
+const route = useRoute()
 const tagsViewStore = useTagsViewStore()
+
+onMounted(() => {
+  addIframe()
+})
+
+watchEffect(() => {
+  addIframe()
+})
+
+function addIframe() {
+  if (route.meta.link) {
+    useTagsViewStore().addIframeView(route)
+  }
+}
 </script>
 
 <style lang="scss" scoped>

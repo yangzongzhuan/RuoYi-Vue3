@@ -30,11 +30,11 @@ const props = defineProps({
   activeIcon: {
     type: String
   }
-});
+})
 
-const iconName = ref('');
-const iconList = ref(icons);
-const emit = defineEmits(['selected']);
+const iconName = ref('')
+const iconList = ref(icons)
+const emit = defineEmits(['selected'])
 
 function filterIcons() {
   iconList.value = icons

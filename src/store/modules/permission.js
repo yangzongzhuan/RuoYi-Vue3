@@ -85,28 +85,13 @@ function filterAsyncRouter(asyncRouterMap, lastRouter = false, type = false) {
 
 function filterChildren(childrenMap, lastRouter = false) {
   var children = []
-  childrenMap.forEach((el, index) => {
-    if (el.children && el.children.length) {
-      if (el.component === 'ParentView' && !lastRouter) {
-        el.children.forEach(c => {
-          c.path = el.path + '/' + c.path
-          if (c.children && c.children.length) {
-            children = children.concat(filterChildren(c.children, c))
-            return
-          }
-          children.push(c)
-        })
-        return
-      }
+  childrenMap.forEach(el => {
+    el.path = lastRouter ? lastRouter.path + '/' + el.path : el.path
+    if (el.children && el.children.length && el.component === 'ParentView') {
+      children = children.concat(filterChildren(el.children, el))
+    } else {
+      children.push(el)
     }
-    if (lastRouter) {
-      el.path = lastRouter.path + '/' + el.path
-      if (el.children && el.children.length) {
-        children = children.concat(filterChildren(el.children, el))
-        return
-      }
-    }
-    children = children.concat(el)
   })
   return children
 }
@@ -129,14 +114,14 @@ export function filterDynamicRoutes(routes) {
 }
 
 export const loadView = (view) => {
-  let res;
+  let res
   for (const path in modules) {
-    const dir = path.split('views/')[1].split('.vue')[0];
+    const dir = path.split('views/')[1].split('.vue')[0]
     if (dir === view) {
-      res = () => modules[path]();
+      res = () => modules[path]()
     }
   }
-  return res;
+  return res
 }
 
 export default usePermissionStore

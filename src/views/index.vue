@@ -1,43 +1,6 @@
 <template>
   <div class="app-container home">
     <el-row :gutter="20">
-      <el-col :sm="24" :lg="24">
-        <blockquote class="text-warning" style="font-size: 14px">
-          领取阿里云通用云产品1888优惠券
-          <br />
-          <el-link
-            href="https://www.aliyun.com/minisite/goods?userCode=brki8iof"
-            type="primary"
-            target="_blank"
-            >https://www.aliyun.com/minisite/goods?userCode=brki8iof</el-link
-          >
-          <br />
-          领取腾讯云通用云产品2860优惠券
-          <br />
-          <el-link
-            href="https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console"
-            type="primary"
-            target="_blank"
-            >https://cloud.tencent.com/redirect.php?redirect=1025&cps_key=198c8df2ed259157187173bc7f4f32fd&from=console</el-link
-          >
-          <br />
-          阿里云服务器折扣区
-          <el-link href="http://aly.ruoyi.vip" type="primary" target="_blank"
-            >>☛☛点我进入☚☚</el-link
-          >
-          &nbsp;&nbsp;&nbsp; 腾讯云服务器秒杀区
-          <el-link href="http://txy.ruoyi.vip" type="primary" target="_blank"
-            >>☛☛点我进入☚☚</el-link
-          ><br />
-          <h4 class="text-danger">
-            云产品通用红包，可叠加官网常规优惠使用。(仅限新用户)
-          </h4>
-        </blockquote>
-
-        <hr />
-      </el-col>
-    </el-row>
-    <el-row :gutter="20">
       <el-col :sm="24" :lg="12" style="padding-left: 20px">
         <h2>若依后台管理框架</h2>
         <p>
@@ -123,7 +86,8 @@
               <s> 满101456076 </s> <s> 满101539465 </s> <s> 满264312783 </s> <s> 满167385320 </s> 
               <s> 满104748341 </s> <s> 满160110482 </s> <s> 满170801498 </s> <s> 满108482800 </s> 
               <s> 满101046199 </s> <s> 满136919097 </s> <s> 满143961921 </s> <s> 满174951577 </s> 
-              <s> 满161281055 </s> <s> 满138988063 </s> <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=SUc-msaypcqB2UTFif4eqGlBHkKcvMNP&authKey=JdQBouY2PG%2BS%2BCzAfIgbCGNgxyahpfh24IW%2F03rPxGilhqVbisLma%2FFFnt79DHNh&noverify=0&group_code=151450850" target="_blank">151450850</a>
+              <s> 满161281055 </s> <s> 满138988063 </s> <s> 满151450850 </s> <s> 满224622315 </s>
+              <s> 满287842588 </s> <s> 满187944233 </s> <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=G6r5KGCaa3pqdbUSXNIgYloyb8e0_L0D&authKey=4w8tF1eGW7%2FedWn%2FHAypQksdrML%2BDHolQSx7094Agm7Luakj9EbfPnSTxSi2T1LQ&noverify=0&group_code=228578329" target="_blank">228578329</a>
             </p>
             <p>
               <i class="el-icon-chat-dot-round"></i> 微信：<a
@@ -149,6 +113,45 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.8.9 - 2024-12-30">
+              <ol>
+                <li>用户管理支持分栏拖动</li>
+                <li>修改主题样式本地读取</li>
+                <li>用户头像http(s)链接支持</li>
+                <li>用户管理过滤掉已禁用部门</li>
+                <li>支持自定义显示Excel属性列</li>
+                <li>操作日志记录DELETE请求参数</li>
+                <li>白名单支持对通配符路径匹配</li>
+                <li>校检文件名是否包含特殊字符</li>
+                <li>代码生成创建表屏蔽违规的字符</li>
+                <li>菜单面包屑导航支持多层级显示</li>
+                <li>Excel注解支持wrapText是否允许内容换行</li>
+                <li>代码生成新增配置是否允许文件覆盖到本地</li>
+                <li>修复角色禁用权限不失效问题</li>
+                <li>修复代码生成上级菜单显示问题</li>
+                <li>修复导出子列表对象只能在最后的问题</li>
+                <li>修复TopNav无法正确获取active的问题</li>
+                <li>修复默认关闭Tags-Views内链页面打不开</li>
+                <li>升级oshi到最新版本6.6.5</li>
+                <li>升级tomcat到最新版本9.0.96</li>
+                <li>升级fastjson到最新版2.0.53</li>
+                <li>升级logback到最新版本1.2.13</li>
+                <li>升级spring-framework到最新版本5.3.39</li>
+                <li>升级quill到最新版本2.0.2</li>
+                <li>升级axios到最新版本0.28.1</li>
+                <li>优化身份证脱敏正则</li>
+                <li>优化权限更新后同步缓存</li>
+                <li>优化查询时间范围日期格式</li>
+                <li>优化参数键值更换为多行文本</li>
+                <li>优化导入带标题文件关闭清理</li>
+                <li>优化上传图片带域名不增加前缀</li>
+                <li>优化特殊字符密码修改失败问题</li>
+                <li>优化无用户编号不校验数据权限</li>
+                <li>优化TopNav内链菜单点击没有高亮</li>
+                <li>优化菜单管理切换Mini布局错乱问题</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.8.8 - 2024-06-30">
               <ol>
                 <li>菜单管理新增路由名称</li>
@@ -1019,7 +1022,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.8.8')
+const version = ref('3.8.9')
 
 function goTarget(url) {
   window.open(url, '__blank')

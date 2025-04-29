@@ -173,21 +173,21 @@
 
 <script setup name="Dict">
 import useDictStore from '@/store/modules/dict'
-import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type";
+import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type"
 
-const { proxy } = getCurrentInstance();
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable");
+const { proxy } = getCurrentInstance()
+const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const typeList = ref([]);
-const open = ref(false);
-const loading = ref(true);
-const showSearch = ref(true);
-const ids = ref([]);
-const single = ref(true);
-const multiple = ref(true);
-const total = ref(0);
-const title = ref("");
-const dateRange = ref([]);
+const typeList = ref([])
+const open = ref(false)
+const loading = ref(true)
+const showSearch = ref(true)
+const ids = ref([])
+const single = ref(true)
+const multiple = ref(true)
+const total = ref(0)
+const title = ref("")
+const dateRange = ref([])
 
 const data = reactive({
   form: {},
@@ -202,24 +202,24 @@ const data = reactive({
     dictName: [{ required: true, message: "字典名称不能为空", trigger: "blur" }],
     dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }]
   },
-});
+})
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams, form, rules } = toRefs(data)
 
 /** 查询字典类型列表 */
 function getList() {
-  loading.value = true;
+  loading.value = true
   listType(proxy.addDateRange(queryParams.value, dateRange.value)).then(response => {
-    typeList.value = response.rows;
-    total.value = response.total;
-    loading.value = false;
-  });
+    typeList.value = response.rows
+    total.value = response.total
+    loading.value = false
+  })
 }
 
 /** 取消按钮 */
 function cancel() {
-  open.value = false;
-  reset();
+  open.value = false
+  reset()
 }
 
 /** 表单重置 */
@@ -230,46 +230,46 @@ function reset() {
     dictType: undefined,
     status: "0",
     remark: undefined
-  };
-  proxy.resetForm("dictRef");
+  }
+  proxy.resetForm("dictRef")
 }
 
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1;
-  getList();
+  queryParams.value.pageNum = 1
+  getList()
 }
 
 /** 重置按钮操作 */
 function resetQuery() {
-  dateRange.value = [];
-  proxy.resetForm("queryRef");
-  handleQuery();
+  dateRange.value = []
+  proxy.resetForm("queryRef")
+  handleQuery()
 }
 
 /** 新增按钮操作 */
 function handleAdd() {
-  reset();
-  open.value = true;
-  title.value = "添加字典类型";
+  reset()
+  open.value = true
+  title.value = "添加字典类型"
 }
 
 /** 多选框选中数据 */
 function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictId);
-  single.value = selection.length != 1;
-  multiple.value = !selection.length;
+  ids.value = selection.map(item => item.dictId)
+  single.value = selection.length != 1
+  multiple.value = !selection.length
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  reset();
-  const dictId = row.dictId || ids.value;
+  reset()
+  const dictId = row.dictId || ids.value
   getType(dictId).then(response => {
-    form.value = response.data;
-    open.value = true;
-    title.value = "修改字典类型";
-  });
+    form.value = response.data
+    open.value = true
+    title.value = "修改字典类型"
+  })
 }
 
 /** 提交按钮 */
@@ -278,46 +278,46 @@ function submitForm() {
     if (valid) {
       if (form.value.dictId != undefined) {
         updateType(form.value).then(response => {
-          proxy.$modal.msgSuccess("修改成功");
-          open.value = false;
-          getList();
-        });
+          proxy.$modal.msgSuccess("修改成功")
+          open.value = false
+          getList()
+        })
       } else {
         addType(form.value).then(response => {
-          proxy.$modal.msgSuccess("新增成功");
-          open.value = false;
-          getList();
-        });
+          proxy.$modal.msgSuccess("新增成功")
+          open.value = false
+          getList()
+        })
       }
     }
-  });
+  })
 }
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const dictIds = row.dictId || ids.value;
+  const dictIds = row.dictId || ids.value
   proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
-    return delType(dictIds);
+    return delType(dictIds)
   }).then(() => {
-    getList();
-    proxy.$modal.msgSuccess("删除成功");
-  }).catch(() => {});
+    getList()
+    proxy.$modal.msgSuccess("删除成功")
+  }).catch(() => {})
 }
 
 /** 导出按钮操作 */
 function handleExport() {
   proxy.download("system/dict/type/export", {
     ...queryParams.value
-  }, `dict_${new Date().getTime()}.xlsx`);
+  }, `dict_${new Date().getTime()}.xlsx`)
 }
 
 /** 刷新缓存按钮操作 */
 function handleRefreshCache() {
   refreshCache().then(() => {
-    proxy.$modal.msgSuccess("刷新成功");
-    useDictStore().cleanDict();
-  });
+    proxy.$modal.msgSuccess("刷新成功")
+    useDictStore().cleanDict()
+  })
 }
 
-getList();
+getList()
 </script>

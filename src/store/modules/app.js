@@ -15,7 +15,7 @@ const useAppStore = defineStore(
     actions: {
       toggleSideBar(withoutAnimation) {
         if (this.sidebar.hide) {
-          return false;
+          return false
         }
         this.sidebar.opened = !this.sidebar.opened
         this.sidebar.withoutAnimation = withoutAnimation
@@ -34,7 +34,7 @@ const useAppStore = defineStore(
         this.device = device
       },
       setSize(size) {
-        this.size = size;
+        this.size = size
         Cookies.set('size', size)
       },
       toggleSideBarHide(status) {

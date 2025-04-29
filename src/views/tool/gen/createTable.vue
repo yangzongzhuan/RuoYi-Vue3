@@ -13,34 +13,34 @@
 </template>
 
 <script setup>
-import { createTable } from "@/api/tool/gen";
+import { createTable } from "@/api/tool/gen"
 
-const visible = ref(false);
-const content = ref("");
-const { proxy } = getCurrentInstance();
-const emit = defineEmits(["ok"]);
+const visible = ref(false)
+const content = ref("")
+const { proxy } = getCurrentInstance()
+const emit = defineEmits(["ok"])
 
 /** 显示弹框 */
 function show() {
-  visible.value = true;
+  visible.value = true
 }
 
 /** 导入按钮操作 */
 function handleImportTable() {
   if (content.value === "") {
-    proxy.$modal.msgError("请输入建表语句");
-    return;
+    proxy.$modal.msgError("请输入建表语句")
+    return
   }
   createTable({ sql: content.value }).then(res => {
-    proxy.$modal.msgSuccess(res.msg);
+    proxy.$modal.msgSuccess(res.msg)
     if (res.code === 200) {
-      visible.value = false;
-      emit("ok");
+      visible.value = false
+      emit("ok")
     }
-  });
+  })
 }
 
 defineExpose({
   show,
-});
+})
 </script>

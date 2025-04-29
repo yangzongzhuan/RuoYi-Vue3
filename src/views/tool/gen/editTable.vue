@@ -127,74 +127,74 @@
 </template>
 
 <script setup name="GenEdit">
-import { getGenTable, updateGenTable } from "@/api/tool/gen";
-import { optionselect as getDictOptionselect } from "@/api/system/dict/type";
-import basicInfoForm from "./basicInfoForm";
-import genInfoForm from "./genInfoForm";
+import { getGenTable, updateGenTable } from "@/api/tool/gen"
+import { optionselect as getDictOptionselect } from "@/api/system/dict/type"
+import basicInfoForm from "./basicInfoForm"
+import genInfoForm from "./genInfoForm"
 
-const route = useRoute();
-const { proxy } = getCurrentInstance();
+const route = useRoute()
+const { proxy } = getCurrentInstance()
 
-const activeName = ref("columnInfo");
-const tableHeight = ref(document.documentElement.scrollHeight - 245 + "px");
-const tables = ref([]);
-const columns = ref([]);
-const dictOptions = ref([]);
-const info = ref({});
+const activeName = ref("columnInfo")
+const tableHeight = ref(document.documentElement.scrollHeight - 245 + "px")
+const tables = ref([])
+const columns = ref([])
+const dictOptions = ref([])
+const info = ref({})
 
 /** 提交按钮 */
 function submitForm() {
-  const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm;
-  const genForm = proxy.$refs.genInfo.$refs.genInfoForm;
+  const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm
+  const genForm = proxy.$refs.genInfo.$refs.genInfoForm
   Promise.all([basicForm, genForm].map(getFormPromise)).then(res => {
-    const validateResult = res.every(item => !!item);
+    const validateResult = res.every(item => !!item)
     if (validateResult) {
-      const genTable = Object.assign({}, info.value);
-      genTable.columns = columns.value;
+      const genTable = Object.assign({}, info.value)
+      genTable.columns = columns.value
       genTable.params = {
         treeCode: info.value.treeCode,
         treeName: info.value.treeName,
         treeParentCode: info.value.treeParentCode,
         parentMenuId: info.value.parentMenuId
-      };
+      }
       updateGenTable(genTable).then(res => {
-        proxy.$modal.msgSuccess(res.msg);
+        proxy.$modal.msgSuccess(res.msg)
         if (res.code === 200) {
-          close();
+          close()
         }
-      });
+      })
     } else {
-      proxy.$modal.msgError("表单校验未通过，请重新检查提交内容");
+      proxy.$modal.msgError("表单校验未通过，请重新检查提交内容")
     }
-  });
+  })
 }
 
 function getFormPromise(form) {
   return new Promise(resolve => {
     form.validate(res => {
-      resolve(res);
-    });
-  });
+      resolve(res)
+    })
+  })
 }
 
 function close() {
-  const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } };
-  proxy.$tab.closeOpenPage(obj);
+  const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } }
+  proxy.$tab.closeOpenPage(obj)
 }
 
 (() => {
-  const tableId = route.params && route.params.tableId;
+  const tableId = route.params && route.params.tableId
   if (tableId) {
     // 获取表详细信息
     getGenTable(tableId).then(res => {
-      columns.value = res.data.rows;
-      info.value = res.data.info;
-      tables.value = res.data.tables;
-    });
+      columns.value = res.data.rows
+      info.value = res.data.info
+      tables.value = res.data.tables
+    })
     /** 查询字典下拉列表 */
     getDictOptionselect().then(response => {
-      dictOptions.value = response.data;
-    });
+      dictOptions.value = response.data
+    })
   }
-})();
+})()
 </script>

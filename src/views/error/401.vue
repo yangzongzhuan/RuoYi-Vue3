@@ -26,17 +26,17 @@
 </template>
 
 <script setup>
-import errImage from "@/assets/401_images/401.gif";
+import errImage from "@/assets/401_images/401.gif"
 
-let { proxy } = getCurrentInstance();
+let { proxy } = getCurrentInstance()
 
-const errGif = ref(errImage + "?" + +new Date());
+const errGif = ref(errImage + "?" + +new Date())
 
 function back() {
   if (proxy.$route.query.noGoBack) {
-    proxy.$router.push({ path: "/" });
+    proxy.$router.push({ path: "/" })
   } else {
-    proxy.$router.go(-1);
+    proxy.$router.go(-1)
   }
 }
 </script>

@@ -27,17 +27,18 @@
 </template>
 
 <script setup>
-import { QuillEditor } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import { getToken } from "@/utils/auth";
+import axios from 'axios'
+import { QuillEditor } from "@vueup/vue-quill"
+import "@vueup/vue-quill/dist/vue-quill.snow.css"
+import { getToken } from "@/utils/auth"
 
-const { proxy } = getCurrentInstance();
+const { proxy } = getCurrentInstance()
 
-const quillEditorRef = ref();
-const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload"); // 上传的图片服务器地址
+const quillEditorRef = ref()
+const uploadUrl = ref(import.meta.env.VITE_APP_BASE_API + "/common/upload") // 上传的图片服务器地址
 const headers = ref({
   Authorization: "Bearer " + getToken()
-});
+})
 
 const props = defineProps({
   /* 编辑器的内容 */
@@ -69,7 +70,7 @@ const props = defineProps({
     type: String,
     default: "url",
   }
-});
+})
 
 const options = ref({
   theme: "snow",
@@ -92,59 +93,60 @@ const options = ref({
   },
   placeholder: "请输入内容",
   readOnly: props.readOnly
-});
+})
 
 const styles = computed(() => {
-  let style = {};
+  let style = {}
   if (props.minHeight) {
-    style.minHeight = `${props.minHeight}px`;
+    style.minHeight = `${props.minHeight}px`
   }
   if (props.height) {
-    style.height = `${props.height}px`;
+    style.height = `${props.height}px`
   }
-  return style;
-});
+  return style
+})
 
-const content = ref("");
+const content = ref("")
 watch(() => props.modelValue, (v) => {
   if (v !== content.value) {
-    content.value = v === undefined ? "<p></p>" : v;
+    content.value = v == undefined ? "<p></p>" : v
   }
-}, { immediate: true });
+}, { immediate: true })
 
 // 如果设置了上传地址则自定义图片上传事件
 onMounted(() => {
   if (props.type == 'url') {
-    let quill = quillEditorRef.value.getQuill();
-    let toolbar = quill.getModule("toolbar");
+    let quill = quillEditorRef.value.getQuill()
+    let toolbar = quill.getModule("toolbar")
     toolbar.addHandler("image", (value) => {
       if (value) {
-        proxy.$refs.uploadRef.click();
+        proxy.$refs.uploadRef.click()
       } else {
-        quill.format("image", false);
+        quill.format("image", false)
       }
-    });
+    })
+    quill.root.addEventListener('paste', handlePasteCapture, true)
   }
-});
+})
 
 // 上传前校检格式和大小
 function handleBeforeUpload(file) {
-  const type = ["image/jpeg", "image/jpg", "image/png", "image/svg"];
-  const isJPG = type.includes(file.type);
+  const type = ["image/jpeg", "image/jpg", "image/png", "image/svg"]
+  const isJPG = type.includes(file.type)
   //检验文件格式
   if (!isJPG) {
-    proxy.$modal.msgError(`图片格式错误!`);
-    return false;
+    proxy.$modal.msgError(`图片格式错误!`)
+    return false
   }
   // 校检文件大小
   if (props.fileSize) {
-    const isLt = file.size / 1024 / 1024 < props.fileSize;
+    const isLt = file.size / 1024 / 1024 < props.fileSize
     if (!isLt) {
-      proxy.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`);
-      return false;
+      proxy.$modal.msgError(`上传文件大小不能超过 ${props.fileSize} MB!`)
+      return false
     }
   }
-  return true;
+  return true
 }
 
 // 上传成功处理
@@ -152,21 +154,44 @@ function handleUploadSuccess(res, file) {
   // 如果上传成功
   if (res.code == 200) {
     // 获取富文本实例
-    let quill = toRaw(quillEditorRef.value).getQuill();
+    let quill = toRaw(quillEditorRef.value).getQuill()
     // 获取光标位置
-    let length = quill.selection.savedRange.index;
+    let length = quill.selection.savedRange.index
     // 插入图片，res.url为服务器返回的图片链接地址
-    quill.insertEmbed(length, "image", import.meta.env.VITE_APP_BASE_API + res.fileName);
+    quill.insertEmbed(length, "image", import.meta.env.VITE_APP_BASE_API + res.fileName)
     // 调整光标到最后
-    quill.setSelection(length + 1);
+    quill.setSelection(length + 1)
   } else {
-    proxy.$modal.msgError("图片插入失败");
+    proxy.$modal.msgError("图片插入失败")
   }
 }
 
 // 上传失败处理
 function handleUploadError() {
-  proxy.$modal.msgError("图片插入失败");
+  proxy.$modal.msgError("图片插入失败")
+}
+
+// 复制粘贴图片处理
+function handlePasteCapture(e) {
+  const clipboard = e.clipboardData || window.clipboardData
+  if (clipboard && clipboard.items) {
+    for (let i = 0; i < clipboard.items.length; i++) {
+      const item = clipboard.items[i]
+      if (item.type.indexOf('image') !== -1) {
+        e.preventDefault()
+        const file = item.getAsFile()
+        insertImage(file)
+      }
+    }
+  }
+}
+
+function insertImage(file) {
+  const formData = new FormData()
+  formData.append("file", file)
+  axios.post(uploadUrl.value, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: headers.value.Authorization } }).then(res => {
+    handleUploadSuccess(res.data)
+  })
 }
 </script>
 

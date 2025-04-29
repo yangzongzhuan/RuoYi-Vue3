@@ -26,9 +26,10 @@ const sessionCache = {
     if (value != null) {
       return JSON.parse(value)
     }
+    return null
   },
   remove (key) {
-    sessionStorage.removeItem(key);
+    sessionStorage.removeItem(key)
   }
 }
 const localCache = {
@@ -59,9 +60,10 @@ const localCache = {
     if (value != null) {
       return JSON.parse(value)
     }
+    return null
   },
   remove (key) {
-    localStorage.removeItem(key);
+    localStorage.removeItem(key)
   }
 }
 
