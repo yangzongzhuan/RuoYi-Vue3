@@ -214,7 +214,7 @@ function listToString(list, separator) {
 
 // 初始化拖拽排序
 onMounted(() => {
-  if (props.drag) {
+  if (props.drag && !props.disabled) {
     nextTick(() => {
       const element = proxy.$refs.uploadFileList?.$el || proxy.$refs.uploadFileList
       Sortable.create(element, {
