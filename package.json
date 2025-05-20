@@ -47,5 +47,6 @@
   },
   "overrides": {
     "quill": "2.0.2"
-  }
+  },
+  "web-types": "./web-types.json"
 }
