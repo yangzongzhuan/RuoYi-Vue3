@@ -1,0 +1,48 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "framework": "vue",
+  "js-types-syntax": "typescript",
+  "description-markup": "markdown",
+  "framework-config": {
+    "enable-when": {
+      "file-extensions": ["vue"]
+    }
+  },
+  "contributions": {
+    "html": {
+      "vue-directives": [
+        {
+          "name": "hasPermi",
+          "description": "菜单权限.",
+          "doc-url": "https://doc.ruoyi.vip/ruoyi-vue/document/qdsc.html#%E6%9D%83%E9%99%90%E4%BD%BF%E7%94%A8",
+          "attribute-value": {
+            "type": "string[]"
+          }
+        },
+        {
+          "name": "hasRole",
+          "description": "角色权限.",
+          "doc-url": "https://doc.ruoyi.vip/ruoyi-vue/document/qdsc.html#%E6%9D%83%E9%99%90%E4%BD%BF%E7%94%A8",
+          "attribute-value": {
+            "type": "string[]"
+          }
+        },
+        {
+          "name": "copyText",
+          "description": "复制文本指令.",
+          "doc-url": "./src/directive/common/copyText.js",
+          "attribute-value": {
+            "type": "string",
+            "description": "要复制的文本内容.",
+            "required": false
+          },
+          "argument": {
+            "pattern": "callback",
+            "description": "复制成功后的回调.",
+            "required": false
+          }
+        }
+      ]
+    }
+  }
+}
