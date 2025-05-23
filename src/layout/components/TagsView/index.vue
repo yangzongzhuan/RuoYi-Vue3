@@ -5,13 +5,14 @@
         v-for="tag in visitedViews"
         :key="tag.path"
         :data-path="tag.path"
-        :class="isActive(tag) ? 'active' : ''"
+        :class="{ 'active': isActive(tag), 'has-icon': tagsIcon }"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
         :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
+        <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon"/>
         {{ tag.title }}
         <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
           <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
@@ -62,6 +63,7 @@ const router = useRouter()
 const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
+const tagsIcon = computed(() => useSettingsStore().tagsIcon)
 
 watch(route, () => {
   addTags()
@@ -305,6 +307,10 @@ function handleScroll() {
         }
       }
     }
+  }
+
+  .tags-view-item.active.has-icon::before {
+    content: none !important;
   }
 
   .contextmenu {
