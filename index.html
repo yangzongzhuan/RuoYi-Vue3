@@ -8,7 +8,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <link rel="icon" href="/favicon.ico">
   <title>若依管理系统</title>
-  <!--[if lt IE 11]><script>window.location.href='/html/ie.html';</script><![endif]-->
+  <!-- 判断是否可以支持Vue3 -->
+  <script>
+    if (typeof Proxy === 'function') {
+      window.location.href='/html/ie.html';
+    }
+  </script>
   <style>
     html,
     body,
