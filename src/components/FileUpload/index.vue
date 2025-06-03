@@ -27,7 +27,7 @@
       的文件
     </div>
     <!-- 文件列表 -->
-    <transition-group class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
+    <transition-group ref="uploadFileList" class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
       <li :key="file.uid" class="el-upload-list__item ele-upload-list__item-content" v-for="(file, index) in fileList">
         <el-link :href="`${baseUrl}${file.url}`" :underline="false" target="_blank">
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
@@ -42,6 +42,7 @@
 
 <script setup>
 import { getToken } from "@/utils/auth"
+import Sortable from 'sortablejs'
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -78,6 +79,11 @@ const props = defineProps({
   disabled: {
     type: Boolean,
     default: false
+  },
+  // 拖动排序
+  drag: {
+    type: Boolean,
+    default: true
   }
 })
 
@@ -205,9 +211,29 @@ function listToString(list, separator) {
   }
   return strs != '' ? strs.substr(0, strs.length - 1) : ''
 }
-</script>
 
+// 初始化拖拽排序
+onMounted(() => {
+  if (props.drag && !props.disabled) {
+    nextTick(() => {
+      const element = proxy.$refs.uploadFileList?.$el || proxy.$refs.uploadFileList
+      Sortable.create(element, {
+        ghostClass: 'file-upload-darg',
+        onEnd: (evt) => {
+          const movedItem = fileList.value.splice(evt.oldIndex, 1)[0]
+          fileList.value.splice(evt.newIndex, 0, movedItem)
+          emit('update:modelValue', listToString(fileList.value))
+        }
+      })
+    })
+  }
+})
+</script>
 <style scoped lang="scss">
+.file-upload-darg {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
 .upload-file-uploader {
   margin-bottom: 5px;
 }
@@ -216,6 +242,7 @@ function listToString(list, separator) {
   line-height: 2;
   margin-bottom: 10px;
   position: relative;
+  transition: none !important;
 }
 .upload-file-list .ele-upload-list__item-content {
   display: flex;

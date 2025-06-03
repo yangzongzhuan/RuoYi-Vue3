@@ -6,13 +6,8 @@
       </el-tab-pane>
       <el-tab-pane label="字段信息" name="columnInfo">
         <el-table ref="dragTable" :data="columns" row-key="columnId" :max-height="tableHeight">
-          <el-table-column label="序号" type="index" min-width="5%"/>
-          <el-table-column
-            label="字段列名"
-            prop="columnName"
-            min-width="10%"
-            :show-overflow-tooltip="true"
-          />
+          <el-table-column label="序号" type="index" min-width="5%" class-name="allowDrag"/>
+          <el-table-column label="字段列名" prop="columnName" min-width="10%" :show-overflow-tooltip="true" class-name="allowDrag"/>
           <el-table-column label="字段描述" min-width="10%">
             <template #default="scope">
               <el-input v-model="scope.row.columnComment"></el-input>
@@ -131,6 +126,7 @@ import { getGenTable, updateGenTable } from "@/api/tool/gen"
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type"
 import basicInfoForm from "./basicInfoForm"
 import genInfoForm from "./genInfoForm"
+import Sortable from 'sortablejs'
 
 const route = useRoute()
 const { proxy } = getCurrentInstance()
@@ -197,4 +193,19 @@ function close() {
     })
   }
 })()
+
+// 拖动排序
+onMounted(() => {
+  const element = document.querySelector('.el-table__body > tbody')
+  Sortable.create(element, {
+    handle: ".allowDrag",
+    onEnd: (evt) => {
+      const targetRow = columns.value.splice(evt.oldIndex, 1)[0]
+      columns.value.splice(evt.newIndex, 0, targetRow)
+      for (const index in columns.value) {
+        columns.value[index].sort = parseInt(index) + 1
+      }
+    }
+  })
+})
 </script>

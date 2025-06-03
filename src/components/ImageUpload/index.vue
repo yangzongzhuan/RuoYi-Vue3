@@ -2,6 +2,7 @@
   <div class="component-upload-image">
     <el-upload
       multiple
+      :disabled="disabled"
       :action="uploadImgUrl"
       list-type="picture-card"
       :on-success="handleUploadSuccess"
@@ -21,7 +22,7 @@
       <el-icon class="avatar-uploader-icon"><plus /></el-icon>
     </el-upload>
     <!-- 上传提示 -->
-    <div class="el-upload__tip" v-if="showTip">
+    <div class="el-upload__tip" v-if="showTip && !disabled">
       请上传
       <template v-if="fileSize">
         大小不超过 <b style="color: #f56c6c">{{ fileSize }}MB</b>
@@ -49,6 +50,7 @@
 <script setup>
 import { getToken } from "@/utils/auth"
 import { isExternal } from "@/utils/validate"
+import Sortable from 'sortablejs'
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -64,23 +66,33 @@ const props = defineProps({
   // 图片数量限制
   limit: {
     type: Number,
-    default: 5,
+    default: 5
   },
   // 大小限制(MB)
   fileSize: {
     type: Number,
-    default: 5,
+    default: 5
   },
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
     type: Array,
-    default: () => ["png", "jpg", "jpeg"],
+    default: () => ["png", "jpg", "jpeg"]
   },
   // 是否显示提示
   isShowTip: {
     type: Boolean,
     default: true
   },
+  // 禁用组件（仅查看图片）
+  disabled: {
+    type: Boolean,
+    default: false
+  },
+  // 拖动排序
+  drag: {
+    type: Boolean,
+    default: true
+  }
 })
 
 const { proxy } = getCurrentInstance()
@@ -216,6 +228,22 @@ function listToString(list, separator) {
   }
   return strs != "" ? strs.substr(0, strs.length - 1) : ""
 }
+
+// 初始化拖拽排序
+onMounted(() => {
+  if (props.drag && !props.disabled) {
+    nextTick(() => {
+      const element = proxy.$refs.imageUpload?.$el?.querySelector('.el-upload-list')
+      Sortable.create(element, {
+        onEnd: (evt) => {
+          const movedItem = fileList.value.splice(evt.oldIndex, 1)[0]
+          fileList.value.splice(evt.newIndex, 0, movedItem)
+          emit('update:modelValue', listToString(fileList.value))
+        }
+      })
+    })
+  }
+})
 </script>
 
 <style scoped lang="scss">
@@ -223,4 +251,8 @@ function listToString(list, separator) {
 :deep(.hide .el-upload--picture-card) {
     display: none;
 }
+
+:deep(.el-upload.el-upload--picture-card.is-disabled) {
+  display: none !important;
+} 
 </style>
