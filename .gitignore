@@ -12,12 +12,12 @@ selenium-debug.log
 
 # Editor directories and files
 .idea
-.vscode
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.local
+.history
 
 package-lock.json
-yarn.lock
+pnpm-lock.yaml
