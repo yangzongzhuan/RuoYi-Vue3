@@ -1,19 +1,21 @@
 {
   "name": "ruoyi",
+  "type": "module",
   "version": "3.9.0",
   "description": "若依管理系统",
   "author": "若依",
   "license": "MIT",
-  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+  },
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
-    "preview": "vite preview"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+    "preview": "vite preview",
+    "lint": "eslint",
+    "lint:script": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix"
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",
@@ -37,10 +39,14 @@
     "vuedraggable": "4.1.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.13.2",
+    "@eslint/eslintrc": "^3.3.1",
+    "@unocss/eslint-plugin": "^66.1.2",
     "@vitejs/plugin-vue": "5.2.4",
+    "eslint": "^9.28.0",
+    "eslint-plugin-format": "^1.0.1",
     "sass": "1.89.1",
     "unplugin-auto-import": "19.3.0",
-    "unplugin-vue-setup-extend-plus": "1.0.1",
     "vite": "6.3.5",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1"
