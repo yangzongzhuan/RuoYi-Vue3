@@ -21,7 +21,7 @@
       content-type="html"
       :options="options"
       :style="styles"
-      @text-change="(e) => $emit('update:modelValue', content)"
+      @text-change="(e) => emit('update:modelValue', content)"
     />
   </div>
 </template>
@@ -63,7 +63,7 @@ const props = defineProps({
     default: 'url',
   },
 })
-
+let emit = defineEmits(['update:modelValue'])
 const { proxy } = getCurrentInstance()
 
 const quillEditorRef = ref()

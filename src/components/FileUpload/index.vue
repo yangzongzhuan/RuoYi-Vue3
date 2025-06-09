@@ -1,11 +1,11 @@
 <template>
   <div class="upload-file">
     <el-upload
+      v-if="!disabled"
+      ref="fileUpload"
       multiple
       :action="uploadFileUrl"
-      ref="fileUpload"
       :before-upload="handleBeforeUpload"
-      v-if="!disabled"
       :file-list="fileList"
       :data="data"
       :limit="limit"
