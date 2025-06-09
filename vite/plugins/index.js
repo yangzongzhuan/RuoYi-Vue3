@@ -6,10 +6,12 @@ import Components from 'unplugin-vue-components/vite'
 
 import createCompression from './compression'
 import createSvgIcon from './svg-icon'
+import { configUnocssPlugin } from './unocss'
 
 export default function createVitePlugins(viteEnv, isBuild = false) {
   const vitePlugins = [
     vue(),
+    configUnocssPlugin(),
     AutoImport({
       imports: ['vue', 'vue-router', 'pinia'],
       dts: false,

@@ -19,6 +19,7 @@ export default antfu(
       'node_modules',
       'dist',
       'build/vite/plugins',
+      'src/main.js',
       'src/components/Crontab',
       'src/views/tool/build/RightPanel.vue',
     ],
