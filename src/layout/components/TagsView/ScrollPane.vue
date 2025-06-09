@@ -12,6 +12,7 @@
 <script setup>
 import useTagsViewStore from '@/store/modules/tagsView'
 
+const emits = defineEmits()
 const tagAndTagSpacing = ref(4)
 const { proxy } = getCurrentInstance()
 
@@ -31,8 +32,7 @@ function handleScroll(e) {
   $scrollWrapper.scrollLeft = $scrollWrapper.scrollLeft + eventDelta / 4
 }
 
-const emits = defineEmits()
-const emitScroll = () => {
+function emitScroll() {
   emits('scroll')
 }
 
@@ -55,9 +55,11 @@ function moveToTarget(currentTag) {
 
   if (firstTag === currentTag) {
     $scrollWrapper.scrollLeft = 0
-  } else if (lastTag === currentTag) {
+  }
+  else if (lastTag === currentTag) {
     $scrollWrapper.scrollLeft = $scrollWrapper.scrollWidth - $containerWidth
-  } else {
+  }
+  else {
     const tagListDom = document.getElementsByClassName('tags-view-item')
     const currentIndex = visitedViews.value.findIndex(item => item === currentTag)
     let prevTag = null
@@ -80,7 +82,8 @@ function moveToTarget(currentTag) {
     const beforePrevTagOffsetLeft = prevTag.offsetLeft - tagAndTagSpacing.value
     if (afterNextTagOffsetLeft > $scrollWrapper.scrollLeft + $containerWidth) {
       $scrollWrapper.scrollLeft = afterNextTagOffsetLeft - $containerWidth
-    } else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
+    }
+    else if (beforePrevTagOffsetLeft < $scrollWrapper.scrollLeft) {
       $scrollWrapper.scrollLeft = beforePrevTagOffsetLeft
     }
   }

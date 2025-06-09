@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'has-logo': showLogo }" class="sidebar-container">
-    <logo v-if="showLogo" :collapse="isCollapse" />
+    <Logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
       <el-menu
         :default-active="activeMenu"
@@ -13,7 +13,7 @@
         mode="vertical"
         :class="sideTheme"
       >
-        <sidebar-item
+        <SidebarItem
           v-for="(route, index) in sidebarRouters"
           :key="route.path + index"
           :item="route"
@@ -25,12 +25,12 @@
 </template>
 
 <script setup>
-import Logo from './Logo'
-import SidebarItem from './SidebarItem'
 import variables from '@/assets/styles/variables.module.scss'
 import useAppStore from '@/store/modules/app'
-import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
+import useSettingsStore from '@/store/modules/settings'
+import Logo from './Logo'
+import SidebarItem from './SidebarItem'
 
 const route = useRoute()
 const appStore = useAppStore()
@@ -71,7 +71,7 @@ const activeMenu = computed(() => {
 <style lang="scss" scoped>
 .sidebar-container {
   background-color: v-bind(getMenuBackground);
-  
+
   .scrollbar-wrapper {
     background-color: v-bind(getMenuBackground);
   }
@@ -80,7 +80,7 @@ const activeMenu = computed(() => {
     border: none;
     height: 100%;
     width: 100% !important;
-    
+
     .el-menu-item, .el-sub-menu__title {
       &:hover {
         background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
@@ -89,7 +89,7 @@ const activeMenu = computed(() => {
 
     .el-menu-item {
       color: v-bind(getMenuTextColor);
-      
+
       &.is-active {
         color: var(--menu-active-text, #409eff);
         background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;

@@ -1,22 +1,22 @@
 <template>
   <div class="navbar">
-    <hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-    <breadcrumb v-if="!settingsStore.topNav" id="breadcrumb-container" class="breadcrumb-container" />
-    <top-nav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container" />
+    <Hamburger id="hamburger-container" :is-active="appStore.sidebar.opened" class="hamburger-container" @toggle-click="toggleSideBar" />
+    <Breadcrumb v-if="!settingsStore.topNav" id="breadcrumb-container" class="breadcrumb-container" />
+    <TopNav v-if="settingsStore.topNav" id="topmenu-container" class="topmenu-container" />
 
     <div class="right-menu">
       <template v-if="appStore.device !== 'mobile'">
-        <header-search id="header-search" class="right-menu-item" />
+        <HeaderSearch id="header-search" class="right-menu-item" />
 
         <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <ruo-yi-git id="ruoyi-git" class="right-menu-item hover-effect" />
+          <RuoYiGit id="ruoyi-git" class="right-menu-item hover-effect" />
         </el-tooltip>
 
         <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <ruo-yi-doc id="ruoyi-doc" class="right-menu-item hover-effect" />
+          <RuoYiDoc id="ruoyi-doc" class="right-menu-item hover-effect" />
         </el-tooltip>
 
-        <screenfull id="screenfull" class="right-menu-item hover-effect" />
+        <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="主题模式" effect="dark" placement="bottom">
           <div class="right-menu-item hover-effect theme-switch-wrapper" @click="toggleTheme">
@@ -26,13 +26,13 @@
         </el-tooltip>
 
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
-          <size-select id="size-select" class="right-menu-item hover-effect" />
+          <SizeSelect id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
       </template>
 
-      <el-dropdown @command="handleCommand" class="avatar-container right-menu-item hover-effect" trigger="hover">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="hover" @command="handleCommand">
         <div class="avatar-wrapper">
-          <img :src="userStore.avatar" class="user-avatar" />
+          <img :src="userStore.avatar" class="user-avatar">
           <span class="user-nickname"> {{ userStore.nickName }} </span>
         </div>
         <template #dropdown>
@@ -46,7 +46,7 @@
           </el-dropdown-menu>
         </template>
       </el-dropdown>
-      <div class="right-menu-item hover-effect setting" @click="setLayout" v-if="settingsStore.showSettings">
+      <div v-if="settingsStore.showSettings" class="right-menu-item hover-effect setting" @click="setLayout">
         <svg-icon icon-class="more-up" />
       </div>
     </div>
@@ -56,17 +56,18 @@
 <script setup>
 import { ElMessageBox } from 'element-plus'
 import Breadcrumb from '@/components/Breadcrumb'
-import TopNav from '@/components/TopNav'
 import Hamburger from '@/components/Hamburger'
+import HeaderSearch from '@/components/HeaderSearch'
+import RuoYiDoc from '@/components/RuoYi/Doc'
+import RuoYiGit from '@/components/RuoYi/Git'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
-import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiGit from '@/components/RuoYi/Git'
-import RuoYiDoc from '@/components/RuoYi/Doc'
+import TopNav from '@/components/TopNav'
 import useAppStore from '@/store/modules/app'
-import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
+import useUserStore from '@/store/modules/user'
 
+const emits = defineEmits(['setLayout'])
 const appStore = useAppStore()
 const userStore = useUserStore()
 const settingsStore = useSettingsStore()
@@ -77,10 +78,10 @@ function toggleSideBar() {
 
 function handleCommand(command) {
   switch (command) {
-    case "setLayout":
+    case 'setLayout':
       setLayout()
       break
-    case "logout":
+    case 'logout':
       logout()
       break
     default:
@@ -92,7 +93,7 @@ function logout() {
   ElMessageBox.confirm('确定注销并退出系统吗？', '提示', {
     confirmButtonText: '确定',
     cancelButtonText: '取消',
-    type: 'warning'
+    type: 'warning',
   }).then(() => {
     userStore.logOut().then(() => {
       location.href = '/index'
@@ -100,7 +101,6 @@ function logout() {
   }).catch(() => { })
 }
 
-const emits = defineEmits(['setLayout'])
 function setLayout() {
   emits('setLayout')
 }
@@ -178,7 +178,7 @@ function toggleTheme() {
 
         svg {
           transition: transform 0.3s;
-          
+
           &:hover {
             transform: scale(1.15);
           }

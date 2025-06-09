@@ -1,5 +1,5 @@
-import useTagsViewStore from '@/store/modules/tagsView'
 import router from '@/router'
+import useTagsViewStore from '@/store/modules/tagsView'
 
 export default {
   // 刷新当前tab页签
@@ -9,7 +9,7 @@ export default {
       matched.forEach((m) => {
         if (m.components && m.components.default && m.components.default.name) {
           if (!['Layout', 'ParentView'].includes(m.components.default.name)) {
-            obj = { name: m.components.default.name, path: path, query: query }
+            obj = { name: m.components.default.name, path, query }
           }
         }
       })
@@ -17,8 +17,8 @@ export default {
     return useTagsViewStore().delCachedView(obj).then(() => {
       const { path, query } = obj
       router.replace({
-        path: '/redirect' + path,
-        query: query
+        path: `/redirect${path}`,
+        query,
       })
     })
   },
@@ -60,12 +60,12 @@ export default {
   },
   // 打开tab页签
   openPage(title, url, params) {
-    const obj = { path: url, meta: { title: title } }
+    const obj = { path: url, meta: { title } }
     useTagsViewStore().addView(obj)
     return router.push({ path: url, query: params })
   },
   // 修改tab页签
   updatePage(obj) {
     return useTagsViewStore().updateVisitedView(obj)
-  }
+  },
 }
