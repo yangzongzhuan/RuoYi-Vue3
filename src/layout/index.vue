@@ -21,7 +21,7 @@ import { AppMain, Navbar, Settings, TagsView } from './components'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
-const sideTheme = computed(() => settingsStore.sideTheme)
+// const sideTheme = computed(() => settingsStore.sideTheme)
 const sidebar = computed(() => useAppStore().sidebar)
 const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
@@ -34,7 +34,7 @@ const classObj = computed(() => ({
   mobile: device.value === 'mobile',
 }))
 
-const { width, height } = useWindowSize()
+const { width } = useWindowSize()
 const WIDTH = 992 // refer to Bootstrap's responsive design
 
 watch(() => device.value, () => {
@@ -64,8 +64,7 @@ function setLayout() {
 </script>
 
 <style lang="scss" scoped>
-
-  @use "@/assets/styles/variables.module.scss" as variables;
+@use "@/assets/styles/variables.module.scss" as variables;
 
 .app-wrapper {
 

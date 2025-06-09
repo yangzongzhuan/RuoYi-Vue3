@@ -1,9 +1,9 @@
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component, route }">
+    <router-view v-slot="slotProps">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagsViewStore.cachedViews">
-          <component :is="Component" v-if="!route.meta.link" :key="route.path" />
+          <component :is="slotProps.Component" v-if="!slotProps.route.meta.link" :key="slotProps.route.path" />
         </keep-alive>
       </transition>
     </router-view>

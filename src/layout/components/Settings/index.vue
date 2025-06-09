@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <el-drawer v-model="showSettings" :with-header="false" :lock-scroll="false" direction="rtl" size="300px">
     <div class="setting-drawer-title">
@@ -158,6 +159,7 @@ function saveSetting() {
 function resetSetting() {
   proxy.$modal.loading('正在清除设置缓存并刷新，请稍候...')
   localStorage.removeItem('layout-setting')
+  // eslint-disable-next-line no-implied-eval
   setTimeout('window.location.reload()', 1000)
 }
 

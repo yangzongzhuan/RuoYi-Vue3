@@ -10,9 +10,10 @@
 </template>
 
 <script setup>
+import { defineEmits } from 'vue'
 import useTagsViewStore from '@/store/modules/tagsView'
 
-const emits = defineEmits()
+const emits = defineEmits(['scroll'])
 const tagAndTagSpacing = ref(4)
 const { proxy } = getCurrentInstance()
 

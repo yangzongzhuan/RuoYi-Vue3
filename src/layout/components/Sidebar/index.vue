@@ -14,10 +14,10 @@
         :class="sideTheme"
       >
         <SidebarItem
-          v-for="(route, index) in sidebarRouters"
-          :key="route.path + index"
-          :item="route"
-          :base-path="route.path"
+          v-for="(item, index) in sidebarRouters"
+          :key="item.path + index"
+          :item="item"
+          :base-path="item.path"
         />
       </el-menu>
     </el-scrollbar>
