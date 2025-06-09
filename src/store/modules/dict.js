@@ -2,12 +2,12 @@ const useDictStore = defineStore(
   'dict',
   {
     state: () => ({
-      dict: new Array()
+      dict: [],
     }),
     actions: {
       // 获取字典
       getDict(_key) {
-        if (_key == null && _key == "") {
+        if (_key == null && _key == '') {
           return null
         }
         try {
@@ -16,22 +16,24 @@ const useDictStore = defineStore(
               return this.dict[i].value
             }
           }
-        } catch (e) {
+        }
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        catch (e) {
           return null
         }
       },
       // 设置字典
       setDict(_key, value) {
-        if (_key !== null && _key !== "") {
+        if (_key !== null && _key !== '') {
           this.dict.push({
             key: _key,
-            value: value
+            value,
           })
         }
       },
       // 删除字典
       removeDict(_key) {
-        var bln = false
+        let bln = false
         try {
           for (let i = 0; i < this.dict.length; i++) {
             if (this.dict[i].key == _key) {
@@ -39,19 +41,22 @@ const useDictStore = defineStore(
               return true
             }
           }
-        } catch (e) {
+        }
+        // eslint-disable-next-line unused-imports/no-unused-vars
+        catch (e) {
           bln = false
         }
         return bln
       },
       // 清空字典
       cleanDict() {
-        this.dict = new Array()
+        this.dict = []
       },
       // 初始字典
       initDict() {
-      }
-    }
-  })
+      },
+    },
+  },
+)
 
 export default useDictStore

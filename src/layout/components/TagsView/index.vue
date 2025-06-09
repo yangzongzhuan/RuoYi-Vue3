@@ -1,6 +1,6 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
+    <ScrollPane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         :key="tag.path"
@@ -18,8 +18,8 @@
           <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
         </span>
       </router-link>
-    </scroll-pane>
-    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+    </ScrollPane>
+    <ul v-show="visible" :style="{ left: `${left}px`, top: `${top}px` }" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">
         <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
       </li>
@@ -43,11 +43,11 @@
 </template>
 
 <script setup>
-import ScrollPane from './ScrollPane'
-import { getNormalPath } from '@/utils/ruoyi'
-import useTagsViewStore from '@/store/modules/tagsView'
-import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
+import useSettingsStore from '@/store/modules/settings'
+import useTagsViewStore from '@/store/modules/tagsView'
+import { getNormalPath } from '@/utils/ruoyi'
+import ScrollPane from './ScrollPane'
 
 const visible = ref(false)
 const top = ref(0)
@@ -73,7 +73,8 @@ watch(route, () => {
 watch(visible, (value) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
-  } else {
+  }
+  else {
     document.body.removeEventListener('click', closeMenu)
   }
 })
@@ -88,10 +89,11 @@ function isActive(r) {
 }
 
 function activeStyle(tag) {
-  if (!isActive(tag)) return {}
+  if (!isActive(tag))
+    return {}
   return {
-    "background-color": theme.value,
-    "border-color": theme.value
+    'background-color': theme.value,
+    'border-color': theme.value,
   }
 }
 
@@ -102,7 +104,9 @@ function isAffix(tag) {
 function isFirstView() {
   try {
     return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
-  } catch (err) {
+  }
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  catch (err) {
     return false
   }
 }
@@ -110,21 +114,23 @@ function isFirstView() {
 function isLastView() {
   try {
     return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
-  } catch (err) {
+  }
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  catch (err) {
     return false
   }
 }
 
 function filterAffixTags(routes, basePath = '') {
   let tags = []
-  routes.forEach(route => {
+  routes.forEach((route) => {
     if (route.meta && route.meta.affix) {
-      const tagPath = getNormalPath(basePath + '/' + route.path)
+      const tagPath = getNormalPath(`${basePath}/${route.path}`)
       tags.push({
         fullPath: tagPath,
         path: tagPath,
         name: route.name,
-        meta: { ...route.meta }
+        meta: { ...route.meta },
       })
     }
     if (route.children) {
@@ -143,7 +149,7 @@ function initTags() {
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
-       useTagsViewStore().addVisitedView(tag)
+      useTagsViewStore().addVisitedView(tag)
     }
   }
 }
@@ -185,7 +191,7 @@ function closeSelectedTag(view) {
 }
 
 function closeRightTags() {
-  proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
+  proxy.$tab.closeRightPage(selectedTag.value).then((visitedViews) => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -193,7 +199,7 @@ function closeRightTags() {
 }
 
 function closeLeftTags() {
-  proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
+  proxy.$tab.closeLeftPage(selectedTag.value).then((visitedViews) => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -220,13 +226,15 @@ function toLastView(visitedViews, view) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
-  } else {
+  }
+  else {
     // now the default is to redirect to the home page if there is no tags-view,
     // you can adjust it according to your needs.
     if (view.name === 'Dashboard') {
       // to reload home page
-      router.replace({ path: '/redirect' + view.fullPath })
-    } else {
+      router.replace({ path: `/redirect${view.fullPath}` })
+    }
+    else {
       router.push('/')
     }
   }
@@ -241,7 +249,8 @@ function openMenu(tag, e) {
 
   if (l > maxLeft) {
     left.value = maxLeft
-  } else {
+  }
+  else {
     left.value = l
   }
 

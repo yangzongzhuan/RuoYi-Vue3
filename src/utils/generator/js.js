@@ -30,7 +30,7 @@ export function makeUpJs(conf, type) {
       optionsList,
       methodList,
       propsList,
-      uploadVarList
+      uploadVarList,
     )
   })
 
@@ -42,9 +42,9 @@ export function makeUpJs(conf, type) {
     optionsList.join('\n'),
     uploadVarList.join('\n'),
     propsList.join('\n'),
-    methodList.join('\n')
+    methodList.join('\n'),
   )
-  
+
   return script
 }
 /**
@@ -59,8 +59,8 @@ function buildAttributes(
   optionsList,
   methodList,
   propsList,
-  uploadVarList
-){
+  uploadVarList,
+) {
   buildData(el, dataList)
   buildRules(el, ruleList)
 
@@ -83,7 +83,7 @@ function buildAttributes(
       // 上传请求路径
       const ${el.vModel}Action = ref('${el.action}')
       // 上传文件列表
-      const ${el.vModel}fileList =  ref([])`
+      const ${el.vModel}fileList =  ref([])`,
     )
     methodList.push(buildBeforeUpload(el))
     if (!el['auto-upload']) {
@@ -100,7 +100,7 @@ function buildAttributes(
         optionsList,
         methodList,
         propsList,
-        uploadVarList
+        uploadVarList,
       )
     })
   }
@@ -113,11 +113,13 @@ function buildAttributes(
  * @return {*}
  */
 function buildData(conf, dataList) {
-  if (conf.vModel === undefined) return
+  if (conf.vModel === undefined)
+    return
   let defaultValue
   if (typeof conf.defaultValue === 'string' && !conf.multiple) {
     defaultValue = `'${conf.defaultValue}'`
-  } else {
+  }
+  else {
     defaultValue = `${JSON.stringify(conf.defaultValue)}`
   }
   dataList.push(`${conf.vModel}: ${defaultValue},`)
@@ -130,19 +132,21 @@ function buildData(conf, dataList) {
  * @return {*}
  */
 function buildRules(conf, ruleList) {
-  if (conf.vModel === undefined) return
+  if (conf.vModel === undefined)
+    return
   const rules = []
   if (trigger[conf.tag]) {
     if (conf.required) {
-      const type = Array.isArray(conf.defaultValue) ? "type: 'array'," : ''
+      const type = Array.isArray(conf.defaultValue) ? 'type: \'array\',' : ''
       let message = Array.isArray(conf.defaultValue)
         ? `请至少选择一个${conf.vModel}`
         : conf.placeholder
-      if (message === undefined) message = `${conf.label}不能为空`
+      if (message === undefined)
+        message = `${conf.label}不能为空`
       rules.push(
         `{ required: true, ${type} message: '${message}', trigger: '${
           trigger[conf.tag]
-        }' }`
+        }' }`,
       )
     }
     if (conf.regList && Array.isArray(conf.regList)) {
@@ -151,7 +155,7 @@ function buildRules(conf, ruleList) {
           rules.push(
             `{ pattern: new RegExp(${item.pattern}), message: '${
               item.message
-            }', trigger: '${trigger[conf.tag]}' }`
+            }', trigger: '${trigger[conf.tag]}' }`,
           )
         }
       })
@@ -167,7 +171,8 @@ function buildRules(conf, ruleList) {
  * @return {*}
  */
 function buildOptions(conf, optionsList) {
-  if (conf.vModel === undefined) return
+  if (conf.vModel === undefined)
+    return
   if (conf.dataType === 'dynamic') {
     conf.options = []
   }
@@ -200,8 +205,8 @@ function buildProps(conf, propsList) {
   if (conf.dataType === 'dynamic') {
     conf.valueKey !== 'value' && (conf.props.props.value = conf.valueKey)
     conf.labelKey !== 'label' && (conf.props.props.label = conf.labelKey)
-    conf.childrenKey !== 'children' &&
-      (conf.props.props.children = conf.childrenKey)
+    conf.childrenKey !== 'children'
+    && (conf.props.props.children = conf.childrenKey)
   }
   const str = `
   // props设置
@@ -250,7 +255,7 @@ function buildBeforeUpload(conf) {
 /**
  * @name: 生成提交表单方法
  * @description: 生成提交表单方法
- * @param {Object} conf vModel 表单ref
+ * @param {object} conf vModel 表单ref
  * @return {*}
  */
 function buildSubmitUpload(conf) {
@@ -272,7 +277,7 @@ function buildexport(
   selectOptions,
   uploadVar,
   props,
-  methods
+  methods,
 ) {
   let str = `
     const { proxy } = getCurrentInstance()
@@ -296,8 +301,8 @@ function buildexport(
 
     ${methods}
   `
-  
-  if(type === 'dialog') {
+
+  if (type === 'dialog') {
     str += `
       // 弹窗设置
       const dialogVisible = defineModel()
@@ -343,7 +348,8 @@ function buildexport(
         })
       }
     `
-  } else {
+  }
+  else {
     str += `
     /**
      * @name: 表单提交

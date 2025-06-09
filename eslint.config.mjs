@@ -33,6 +33,7 @@ export default antfu({
     'no-console': 'off',
     'vue/multi-word-component-names': 'off',
     'max-len': ['error', { code: 120 }],
+    'jsdoc/require-returns-description': 'off',
   },
 
 })
