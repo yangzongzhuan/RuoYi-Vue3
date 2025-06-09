@@ -1,10 +1,10 @@
-@use './variables.module.scss' as vars;
-@use './mixin.scss' as vars;
-@use './transition.scss' as vars;
-@use './element-ui.scss' as vars;
-@use './sidebar.scss' as vars;
-@use './btn.scss' as vars;
-@use './ruoyi.scss' as vars ;
+@use './variables.module.scss' as variables;
+@use './mixin.scss' as mixins;
+@use './transition.scss' as transition;
+@use './element-ui.scss' as element-ui;
+@use './sidebar.scss' as sidebar;
+@use './btn.scss' as btn;
+@use './ruoyi.scss' as ruoyi ;
 
 body {
   height: 100%;

@@ -1,5 +1,5 @@
 <template>
-  <div :class="classObj" class="app-wrapper" :style="{ '--current-color': theme }">
+  <div :class="classObj" class="app-wrapper clearfix" :style="{ '--current-color': theme }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
     <Sidebar v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
@@ -64,11 +64,11 @@ function setLayout() {
 </script>
 
 <style lang="scss" scoped>
-  @use "@/assets/styles/mixin.scss" as vars;
-  @use "@/assets/styles/variables.module.scss" as vars;
+
+  @use "@/assets/styles/variables.module.scss" as variables;
 
 .app-wrapper {
-  @include clearfix;
+
   position: relative;
   height: 100%;
   width: 100%;
@@ -94,7 +94,7 @@ function setLayout() {
   top: 0;
   right: 0;
   z-index: 9;
-  width: calc(100% - #{$base-sidebar-width});
+  width: calc(100% - #{variables.$base-sidebar-width});
   transition: width 0.28s;
 }
 

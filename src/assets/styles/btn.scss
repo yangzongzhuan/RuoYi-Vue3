@@ -1,4 +1,4 @@
-@use './variables.module.scss' as vars;
+@use './variables.module.scss' as variables;
 
 @mixin colorBtn($color) {
   background: $color;
@@ -14,31 +14,31 @@
 }
 
 .blue-btn {
-  @include colorBtn($blue)
+  @include colorBtn(variables.$blue)
 }
 
 .light-blue-btn {
-  @include colorBtn($light-blue)
+  @include colorBtn(variables.$light-blue)
 }
 
 .red-btn {
-  @include colorBtn($red)
+  @include colorBtn(variables.$red)
 }
 
 .pink-btn {
-  @include colorBtn($pink)
+  @include colorBtn(variables.$pink)
 }
 
 .green-btn {
-  @include colorBtn($green)
+  @include colorBtn(variables.$green)
 }
 
 .tiffany-btn {
-  @include colorBtn($tiffany)
+  @include colorBtn(variables.$tiffany)
 }
 
 .yellow-btn {
-  @include colorBtn($yellow)
+  @include colorBtn(variables.$yellow)
 }
 
 .pan-btn {
