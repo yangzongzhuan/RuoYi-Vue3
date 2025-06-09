@@ -26,7 +26,7 @@
 </template>
 
 <script setup>
-let message = computed(() => {
+const message = computed(() => {
   return '找不到网页！'
 })
 </script>

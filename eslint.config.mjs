@@ -33,11 +33,13 @@ export default antfu(
     files: ['**/*.js', '**/*.vue'],
     rules: {
       'eqeqeq': 'off',
+      'vue/eqeqeq': 'off',
       'no-console': 'off',
       'vue/multi-word-component-names': 'off',
       'max-len': ['error', { code: 140 }],
       'jsdoc/require-returns-description': 'off',
       'prefer-const': 'off', // 关闭 prefer-const 规则
+      'vue/no-unused-refs': 'off', // 关闭不允许有空的ref
     },
 
   },
