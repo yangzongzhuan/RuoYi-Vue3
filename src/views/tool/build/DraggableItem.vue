@@ -1,18 +1,25 @@
+<!-- eslint-disable vue/no-mutating-props -->
 <template>
   <el-col :span="element.span" :class="className" @click.stop="activeItem(element)">
-    <el-form-item :label="element.label" :label-width="element.labelWidth ? element.labelWidth + 'px' : null"
-      :required="element.required" v-if="element.layout === 'colFormItem'">
-      <render :key="element.tag" :conf="element" v-model="element.defaultValue" />
+    <el-form-item
+      v-if="element.layout === 'colFormItem'" :label="element.label"
+      :label-width="element.labelWidth ? `${element.labelWidth}px` : null" :required="element.required"
+    >
+      <render :key="element.tag" v-model="element.defaultValue" :conf="element" />
     </el-form-item>
-    <el-row :gutter="element.gutter" :class="element.class" @click.stop="activeItem(element)" v-else>
+    <el-row v-else :gutter="element.gutter" :class="element.class" @click.stop="activeItem(element)">
       <span class="component-name"> {{ element.componentName }} </span>
-      <draggable group="componentsGroup" :animation="340" :list="element.children" class="drag-wrapper" item-key="label"
-        ref="draggableItemRef" :component-data="getComponentData()">
+      <draggable
+        ref="draggableItemRef" group="componentsGroup" :animation="340" :list="element.children" class="drag-wrapper"
+        item-key="label" :component-data="getComponentData()"
+      >
         <template #item="scoped">
-          <draggable-item :key="scoped.element.renderKey" :drawing-list="element.children" :element="scoped.element"
-            :index="index" :active-id="activeId" :form-conf="formConf" @activeItem="activeItem(scoped.element)"
-            @copyItem="copyItem(scoped.element, element.children)"
-            @deleteItem="deleteItem(scoped.index, element.children)" />
+          <draggable-item
+            :key="scoped.element.renderKey" :drawing-list="element.children" :element="scoped.element"
+            :index="index" :active-id="activeId" :form-conf="formConf" @active-item="activeItem(scoped.element)"
+            @copy-item="copyItem(scoped.element, element.children)"
+            @delete-item="deleteItem(scoped.index, element.children)"
+          />
         </template>
       </draggable>
     </el-row>
@@ -24,8 +31,9 @@
     </span>
   </el-col>
 </template>
+
 <script setup name="DraggableItem">
-import draggable from "vuedraggable/dist/vuedraggable.common"
+import draggable from 'vuedraggable/dist/vuedraggable.common'
 import render from '@/utils/generator/render'
 
 const props = defineProps({
@@ -33,14 +41,13 @@ const props = defineProps({
   index: Number,
   drawingList: Array,
   activeId: {
-    type: [String, Number]
+    type: [String, Number],
   },
-  formConf: Object
+  formConf: Object,
 })
+const emits = defineEmits(['activeItem', 'copyItem', 'deleteItem'])
 const className = ref('')
 const draggableItemRef = ref(null)
-const emits = defineEmits(['activeItem', 'copyItem', 'deleteItem'])
-
 function activeItem(item) {
   emits('activeItem', item)
 }
@@ -55,12 +62,18 @@ function getComponentData() {
   return {
     gutter: props.element.gutter,
     justify: props.element.justify,
-    align: props.element.align
+    align: props.element.align,
   }
 }
 
 watch(() => props.activeId, (val) => {
-  className.value = (props.element.layout === 'rowFormItem' ? 'drawing-row-item' : 'drawing-item') + (val === props.element.formId ? ' active-from-item' : '')
+  if (props.element.layout === 'rowFormItem') {
+    className.value = `drawing-row-item${val === props.element.formId ? ' active-from-item' : ''}`
+  }
+  else {
+    className.value = `drawing-item${val === props.element.formId ? ' active-from-item' : ''}`
+  }
+
   if (props.formConf.unFocusedComponentBorder) {
     className.value += ' unfocus-bordered'
   }

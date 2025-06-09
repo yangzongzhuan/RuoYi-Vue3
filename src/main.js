@@ -1,10 +1,11 @@
-import { createApp } from 'vue'
+import locale from 'element-plus/es/locale/lang/zh-cn'
 // import { createApp } from 'vue'必须放在等层，否者ElementPlus按需引入会报isFunction is not a function
+// eslint-disable-next-line perfectionist/sort-imports
 import ElementPlus from 'element-plus'
 
-import locale from 'element-plus/es/locale/lang/zh-cn'
-
 import Cookies from 'js-cookie'
+
+import { createApp } from 'vue'
 
 import { getConfigKey } from '@/api/system/config'
 // 字典标签组件

@@ -1,7 +1,7 @@
 <template>
   <!-- 导入表 -->
-  <el-dialog title="导入表" v-model="visible" width="800px" top="5vh" append-to-body>
-    <el-form :model="queryParams" ref="queryRef" :inline="true">
+  <el-dialog v-model="visible" title="导入表" width="800px" top="5vh" append-to-body>
+    <el-form ref="queryRef" :model="queryParams" :inline="true">
       <el-form-item label="表名称" prop="tableName">
         <el-input
           v-model="queryParams.tableName"
@@ -21,38 +21,47 @@
         />
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
-        <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+        <el-button type="primary" icon="Search" @click="handleQuery">
+          搜索
+        </el-button>
+        <el-button icon="Refresh" @click="resetQuery">
+          重置
+        </el-button>
       </el-form-item>
     </el-form>
     <el-row>
-      <el-table @row-click="clickRow" ref="table" :data="dbTableList" @selection-change="handleSelectionChange" height="260px">
-        <el-table-column type="selection" width="55"></el-table-column>
-        <el-table-column prop="tableName" label="表名称" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="tableComment" label="表描述" :show-overflow-tooltip="true"></el-table-column>
-        <el-table-column prop="createTime" label="创建时间"></el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"></el-table-column>
+      <el-table ref="table" :data="dbTableList" height="260px" @row-click="clickRow" @selection-change="handleSelectionChange">
+        <el-table-column type="selection" width="55" />
+        <el-table-column prop="tableName" label="表名称" :show-overflow-tooltip="true" />
+        <el-table-column prop="tableComment" label="表描述" :show-overflow-tooltip="true" />
+        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column prop="updateTime" label="更新时间" />
       </el-table>
       <pagination
-        v-show="total>0"
-        :total="total"
+        v-show="total > 0"
         v-model:page="queryParams.pageNum"
         v-model:limit="queryParams.pageSize"
+        :total="total"
         @pagination="getList"
       />
     </el-row>
     <template #footer>
       <div class="dialog-footer">
-        <el-button type="primary" @click="handleImportTable">确 定</el-button>
-        <el-button @click="visible = false">取 消</el-button>
+        <el-button type="primary" @click="handleImportTable">
+          确 定
+        </el-button>
+        <el-button @click="visible = false">
+          取 消
+        </el-button>
       </div>
     </template>
   </el-dialog>
 </template>
 
 <script setup>
-import { listDbTable, importTable } from "@/api/tool/gen"
+import { importTable, listDbTable } from '@/api/tool/gen'
 
+const emit = defineEmits(['ok'])
 const total = ref(0)
 const visible = ref(false)
 const tables = ref([])
@@ -63,10 +72,8 @@ const queryParams = reactive({
   pageNum: 1,
   pageSize: 10,
   tableName: undefined,
-  tableComment: undefined
+  tableComment: undefined,
 })
-
-const emit = defineEmits(["ok"])
 
 /** 查询参数列表 */
 function show() {
@@ -86,7 +93,7 @@ function handleSelectionChange(selection) {
 
 /** 查询表数据 */
 function getList() {
-  listDbTable(queryParams).then(res => {
+  listDbTable(queryParams).then((res) => {
     dbTableList.value = res.rows
     total.value = res.total
   })
@@ -100,22 +107,22 @@ function handleQuery() {
 
 /** 重置按钮操作 */
 function resetQuery() {
-  proxy.resetForm("queryRef")
+  proxy.resetForm('queryRef')
   handleQuery()
 }
 
 /** 导入按钮操作 */
 function handleImportTable() {
-  const tableNames = tables.value.join(",")
-  if (tableNames == "") {
-    proxy.$modal.msgError("请选择要导入的表")
+  const tableNames = tables.value.join(',')
+  if (tableNames == '') {
+    proxy.$modal.msgError('请选择要导入的表')
     return
   }
-  importTable({ tables: tableNames }).then(res => {
+  importTable({ tables: tableNames }).then((res) => {
     proxy.$modal.msgSuccess(res.msg)
     if (res.code === 200) {
       visible.value = false
-      emit("ok")
+      emit('ok')
     }
   })
 }
