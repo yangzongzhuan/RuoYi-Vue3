@@ -8,13 +8,15 @@
       @clear="filterIcons"
       @input="filterIcons"
     >
-      <template #suffix><i class="el-icon-search el-input__icon" /></template>
+      <template #suffix>
+        <i class="el-icon-search el-input__icon" />
+      </template>
     </el-input>
     <div class="icon-list">
       <div class="list-container">
-        <div v-for="(item, index) in iconList" class="icon-item-wrapper" :key="index" @click="selectedIcon(item)">
-          <div :class="['icon-item', { active: activeIcon === item }]">
-            <svg-icon :icon-class="item" class-name="icon" style="height: 25px;width: 16px;"/>
+        <div v-for="(item, index) in iconList" :key="index" class="icon-item-wrapper" @click="selectedIcon(item)">
+          <div class="icon-item" :class="[{ active: activeIcon === item }]">
+            <svg-icon :icon-class="item" class-name="icon" style="height: 25px;width: 16px;" />
             <span>{{ item }}</span>
           </div>
         </div>
@@ -26,21 +28,24 @@
 <script setup>
 import icons from './requireIcons'
 
-const props = defineProps({
+defineProps({
   activeIcon: {
-    type: String
-  }
+    type: String,
+  },
 })
 
+const emit = defineEmits(['selected'])
 const iconName = ref('')
 const iconList = ref(icons)
-const emit = defineEmits(['selected'])
-
 function filterIcons() {
-  iconList.value = icons
-  if (iconName.value) {
-    iconList.value = icons.filter(item => item.indexOf(iconName.value) !== -1)
+  // 如果没有过滤条件，直接返回完整的图标列表
+  if (!iconName.value) {
+    iconList.value = icons
+    return
   }
+
+  // 根据图标名称过滤图标列表
+  iconList.value = icons.filter(item => item.includes(iconName.value))
 }
 
 function selectedIcon(name) {
@@ -54,7 +59,7 @@ function reset() {
 }
 
 defineExpose({
-  reset
+  reset,
 })
 </script>
 

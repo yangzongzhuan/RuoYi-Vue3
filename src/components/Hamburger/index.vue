@@ -1,7 +1,8 @@
+<!-- eslint-disable max-len -->
 <template>
   <div style="padding: 0 15px;" @click="toggleClick">
     <svg
-      :class="{'is-active':isActive}"
+      :class="{ 'is-active': isActive }"
       class="hamburger"
       viewBox="0 0 1024 1024"
       xmlns="http://www.w3.org/2000/svg"
@@ -18,12 +19,12 @@
 defineProps({
   isActive: {
     type: Boolean,
-    default: false
-  }
+    default: false,
+  },
 })
 
-const emit = defineEmits()
-const toggleClick = () => {
+const emit = defineEmits(['toggleClick'])
+function toggleClick() {
   emit('toggleClick')
 }
 </script>
