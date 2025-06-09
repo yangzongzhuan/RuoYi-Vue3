@@ -20,8 +20,7 @@ export default antfu(
       'dist',
       'build/vite/plugins',
       'src/components/Crontab',
-      'src/views/tool/gen/genInfoForm.vue',
-      'src/views/tool/gen/basicInfoForm.vue',
+      'src/views/tool/build/RightPanel.vue',
     ],
   },
   ...compat.config({
