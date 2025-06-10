@@ -2,13 +2,9 @@
   "name": "ruoyi",
   "type": "module",
   "version": "3.9.0",
-  "description": "若依管理系统",
-  "author": "若依",
+  "description": "",
+  "author": "",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
-  },
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
@@ -53,7 +49,7 @@
     "lint-staged": "^16.1.0",
     "postcss": "8.4.29",
     "postcss-scss": "^4.0.9",
-    "sass": "1.89.1",
+    "sass-embedded": "1.89.1",
     "stylelint": "^16.20.0",
     "stylelint-config-html": "^1.1.0",
     "stylelint-config-recess-order": "^6.0.0",
