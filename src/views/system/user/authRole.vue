@@ -48,7 +48,7 @@
     <pagination v-show="total > 0" v-model:page="pageNum" v-model:limit="pageSize" :total="total" />
 
     <el-form label-width="100px">
-      <div style="text-align: center;margin-left:-120px;margin-top:30px;">
+      <div style="margin-top:30px;margin-left:-120px;text-align: center;">
         <el-button type="primary" @click="submitForm()">
           提交
         </el-button>

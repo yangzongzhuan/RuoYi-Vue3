@@ -1094,10 +1094,10 @@ function goTarget(url) {
     list-style-type: none;
   }
 
+  overflow-x: hidden;
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 13px;
   color: #676a6c;
-  overflow-x: hidden;
 
   h4 {
     margin-top: 0;
@@ -1120,10 +1120,10 @@ function goTarget(url) {
   .update-log {
     ol {
       display: block;
-      list-style-type: decimal;
+      padding-inline-start: 40px;
       margin-block: 1em;
       margin-inline: 0;
-      padding-inline-start: 40px;
+      list-style-type: decimal;
     }
   }
 }

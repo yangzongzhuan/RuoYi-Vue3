@@ -102,7 +102,7 @@
                   :value="dict.dictType"
                 >
                   <span style="float: left">{{ dict.dictName }}</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">{{ dict.dictType }}</span>
+                  <span style="float: right; font-size: 13px; color: #8492a6">{{ dict.dictType }}</span>
                 </el-option>
               </el-select>
             </template>
@@ -114,7 +114,7 @@
       </el-tab-pane>
     </el-tabs>
     <el-form label-width="100px">
-      <div style="text-align: center;margin-left:-100px;margin-top:10px;">
+      <div style="margin-top:10px;margin-left:-100px;text-align: center;">
         <el-button type="primary" @click="submitForm()">
           提交
         </el-button>

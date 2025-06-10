@@ -166,17 +166,17 @@ function closeDialog() {
 }
 
 .user-info-head:hover::after {
-  content: "+";
   position: absolute;
   inset: 0;
-  color: #eee;
-  background: rgb(0, 0, 0, 0.5);
   font-size: 24px;
   font-style: normal;
+  line-height: 110px;
+  color: #eee;
+  cursor: pointer;
+  content: "+";
+  background: rgb(0, 0, 0, 0.5);
+  border-radius: 50%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  cursor: pointer;
-  line-height: 110px;
-  border-radius: 50%;
 }
 </style>

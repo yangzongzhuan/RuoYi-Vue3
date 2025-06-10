@@ -56,6 +56,7 @@
     "stylelint-config-standard": "^38.0.0",
     "stylelint-config-standard-scss": "^15.0.1",
     "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-order": "^7.0.0",
     "stylelint-scss": "^6.12.0",
     "unocss": "^66.1.4",
     "unplugin-auto-import": "^19.3.0",
@@ -78,6 +79,5 @@
     "*.{scss,less,styl,html}": [
       "stylelint --fix --allow-empty-input"
     ]
-
   }
 }

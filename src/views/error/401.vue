@@ -49,20 +49,20 @@ function back() {
   margin: 100px auto;
 
   .pan-back-btn {
-    background: #008489;
     color: #fff;
+    background: #008489;
     border: none !important;
   }
 
   .pan-gif {
-    margin: 0 auto;
     display: block;
+    margin: 0 auto;
   }
 
   .pan-img {
     display: block;
-    margin: 0 auto;
     width: 100%;
+    margin: 0 auto;
   }
 
   .text-jumbo {
