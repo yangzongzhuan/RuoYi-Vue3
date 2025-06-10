@@ -1,7 +1,7 @@
 <template>
   <div :class="classObj" class="app-wrapper clearfix" :style="{ '--current-color': theme }">
     <div v-if="device === 'mobile' && sidebar.opened" class="drawer-bg" @click="handleClickOutside" />
-    <Sidebar v-if="!sidebar.hide" class="sidebar-container" />
+    <SidebarLeft v-if="!sidebar.hide" class="sidebar-container" />
     <div :class="{ hasTagsView: needTagsView, sidebarHide: sidebar.hide }" class="main-container">
       <div :class="{ 'fixed-header': fixedHeader }">
         <Navbar @set-layout="setLayout" />
@@ -18,6 +18,7 @@ import { useWindowSize } from '@vueuse/core'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import { AppMain, Navbar, Settings, TagsView } from './components'
+import SidebarLeft from './components/Sidebar/index.vue'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
