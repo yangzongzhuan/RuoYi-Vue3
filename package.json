@@ -14,7 +14,8 @@
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
     "preview": "vite preview",
-    "lint": "eslint",
+    "lint-staged": "npx lint-staged",
+    "prepare": "husky install",
     "lint:script": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
     "lint:style": "stylelint --fix \"src/views/**/*.{css,scss,html,vue}\""
   },
@@ -48,6 +49,8 @@
     "@vitejs/plugin-vue": "5.2.4",
     "eslint": "^9.28.0",
     "eslint-plugin-format": "^1.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
     "postcss": "8.4.29",
     "postcss-scss": "^4.0.9",
     "sass": "1.89.1",
@@ -67,5 +70,18 @@
   },
   "overrides": {
     "quill": "2.0.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "stylelint --fix --allow-empty-input"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix --allow-empty-input"
+    ]
+
   }
 }
