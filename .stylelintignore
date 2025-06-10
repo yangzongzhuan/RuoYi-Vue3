@@ -1,0 +1,11 @@
+# 忽略不需要检查的文件或目录
+/dist/*
+/public/*
+public/*
+/node_modules
+/test
+/unittest
+/**/build
+/**/dist
+/**/static
+/index.html

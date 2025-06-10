@@ -1076,12 +1076,14 @@ function goTarget(url) {
     font-size: 17.5px;
     border-left: 5px solid #eee;
   }
+
   hr {
     margin-top: 20px;
     margin-bottom: 20px;
     border: 0;
     border-top: 1px solid #eee;
   }
+
   .col-item {
     margin-bottom: 20px;
   }
@@ -1089,6 +1091,7 @@ function goTarget(url) {
   ul {
     padding: 0;
     margin: 0;
+    list-style-type: none;
   }
 
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -1096,12 +1099,8 @@ function goTarget(url) {
   color: #676a6c;
   overflow-x: hidden;
 
-  ul {
-    list-style-type: none;
-  }
-
   h4 {
-    margin-top: 0px;
+    margin-top: 0;
   }
 
   h2 {
@@ -1122,10 +1121,8 @@ function goTarget(url) {
     ol {
       display: block;
       list-style-type: decimal;
-      margin-block-start: 1em;
-      margin-block-end: 1em;
-      margin-inline-start: 0;
-      margin-inline-end: 0;
+      margin-block: 1em;
+      margin-inline: 0;
       padding-inline-start: 40px;
     }
   }

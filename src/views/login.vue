@@ -48,7 +48,7 @@
           <img :src="codeUrl" class="login-code-img" @click="getCode">
         </div>
       </el-form-item>
-      <el-checkbox v-model="loginForm.rememberMe" style="margin:0px 0px 25px 0px;">
+      <el-checkbox v-model="loginForm.rememberMe" style="margin:0 0 25px;">
         记住密码
       </el-checkbox>
       <el-form-item style="width:100%;">
@@ -185,44 +185,52 @@ getCookie()
   background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
+
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0 auto 30px;
   text-align: center;
   color: #707070;
 }
 
 .login-form {
   border-radius: 6px;
-  background: #ffffff;
+  background: #fff;
   width: 400px;
-  padding: 25px 25px 5px 25px;
+  padding: 25px 25px 5px;
   z-index: 1;
+
   .el-input {
     height: 40px;
+
     input {
       height: 40px;
     }
   }
+
   .input-icon {
     height: 39px;
     width: 14px;
-    margin-left: 0px;
+    margin-left: 0;
   }
 }
+
 .login-tip {
   font-size: 13px;
   text-align: center;
   color: #bfbfbf;
 }
+
 .login-code {
   width: 33%;
   height: 40px;
   float: right;
+
   img {
     cursor: pointer;
     vertical-align: middle;
   }
 }
+
 .el-login-footer {
   height: 40px;
   line-height: 40px;
@@ -235,6 +243,7 @@ getCookie()
   font-size: 12px;
   letter-spacing: 1px;
 }
+
 .login-code-img {
   height: 40px;
   padding-left: 12px;

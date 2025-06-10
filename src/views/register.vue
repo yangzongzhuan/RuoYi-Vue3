@@ -177,43 +177,51 @@ getCode()
   background-image: url("../assets/images/login-background.jpg");
   background-size: cover;
 }
+
 .title {
-  margin: 0px auto 30px auto;
+  margin: 0 auto 30px;
   text-align: center;
   color: #707070;
 }
 
 .register-form {
   border-radius: 6px;
-  background: #ffffff;
+  background: #fff;
   width: 400px;
-  padding: 25px 25px 5px 25px;
+  padding: 25px 25px 5px;
+
   .el-input {
     height: 40px;
+
     input {
       height: 40px;
     }
   }
+
   .input-icon {
     height: 39px;
     width: 14px;
-    margin-left: 0px;
+    margin-left: 0;
   }
 }
+
 .register-tip {
   font-size: 13px;
   text-align: center;
   color: #bfbfbf;
 }
+
 .register-code {
   width: 33%;
   height: 40px;
   float: right;
+
   img {
     cursor: pointer;
     vertical-align: middle;
   }
 }
+
 .el-register-footer {
   height: 40px;
   line-height: 40px;
@@ -226,6 +234,7 @@ getCode()
   font-size: 12px;
   letter-spacing: 1px;
 }
+
 .register-code-img {
   height: 40px;
   padding-left: 12px;
