@@ -46,7 +46,7 @@ router.beforeEach((to, from, next) => {
           })
         }).catch((err) => {
           useUserStore().logOut().then(() => {
-            ElMessage.error(err)
+            ElMessage.error(err.message)
             next({ path: '/' })
           })
         })
