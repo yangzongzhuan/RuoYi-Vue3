@@ -1,24 +1,36 @@
 <template>
-  <div v-if="!item.hidden">
+  <div v-if="!sidebarRouterItem.hidden">
     <template
-      v-if="hasOneShowingChild(item.children, item)
+      v-if="hasOneShowingChild(sidebarRouterItem.children, sidebarRouterItem)
         && (!onlyOneChild.children || onlyOneChild.noShowingChildren)
-        && !item.alwaysShow"
+        && !sidebarRouterItem.alwaysShow"
     >
       <AppLink v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
-          <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)" />
+          <svg-icon
+            v-if="onlyOneChild.meta?.icon || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)"
+            :icon-class="onlyOneChild.meta?.icon || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)"
+          />
           <template #title>
-            <span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">{{ onlyOneChild.meta.title }}</span>
+            <!--  -->
+            <span
+              class="menu-title"
+              style="margin-left: 10px;"
+              :title="hasTitle(onlyOneChild.meta.title)"
+            >{{ onlyOneChild.meta.title }}</span>
           </template>
         </el-menu-item>
       </AppLink>
     </template>
 
-    <el-sub-menu v-else :index="resolvePath(item.path)" teleported>
-      <template v-if="item.meta" #title>
-        <svg-icon :icon-class="item.meta && item.meta.icon" />
-        <span class="menu-title" :title="hasTitle(item.meta.title)">{{ item.meta.title }}</span>
+    <el-sub-menu v-else :index="resolvePath(sidebarRouterItem.path)" teleported>
+      <template v-if="sidebarRouterItem.meta" #title>
+        <svg-icon :icon-class="sidebarRouterItem.meta && sidebarRouterItem.meta.icon" />
+        <span
+          class="menu-title"
+          style=" margin-left: 16px;"
+          :title="hasTitle(sidebarRouterItem.meta.title)"
+        >{{ sidebarRouterItem.meta.title }}</span>
       </template>
 
       <sidebar-item
@@ -54,6 +66,15 @@ const props = defineProps({
   },
 })
 
+let sidebarRouterItem = computed(() => {
+  let coverIcon = coverIconFn(props.item)
+
+  return {
+    ...props.item,
+    ...coverIcon,
+  }
+})
+
 const onlyOneChild = ref({})
 
 function hasOneShowingChild(children = [], parent) {
@@ -64,7 +85,11 @@ function hasOneShowingChild(children = [], parent) {
     if (item.hidden) {
       return false
     }
-    onlyOneChild.value = item
+    let coverIcon = coverIconFn(item)
+    onlyOneChild.value = {
+      ...item,
+      ...coverIcon,
+    }
     return true
   })
 
@@ -75,7 +100,13 @@ function hasOneShowingChild(children = [], parent) {
 
   // Show parent if there are no child router to display
   if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
+    let parent_coverIcon = coverIconFn(parent)
+    onlyOneChild.value = {
+      ...parent,
+      ...parent_coverIcon,
+      path: '',
+      noShowingChildren: true,
+    }
     return true
   }
 
@@ -103,5 +134,16 @@ function hasTitle(title) {
   else {
     return ''
   }
+}
+
+function coverIconFn(item) {
+  let coverIcon = {}
+  if (item.meta && item.meta.icon == '#') {
+    coverIcon.meta = {
+      ...item.meta,
+      icon: '',
+    }
+  }
+  return coverIcon
 }
 </script>
