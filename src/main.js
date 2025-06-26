@@ -1,15 +1,11 @@
 import { createApp } from 'vue'
 
-import Cookies from 'js-cookie'
-
-import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-import locale from 'element-plus/es/locale/lang/zh-cn'
 
 import '@/assets/styles/index.scss' // global css
 
-import App from './App'
+import App from './app'
 import store from './store'
 import router from './router'
 import directive from './directive' // directive
@@ -34,7 +30,7 @@ import Pagination from '@/components/Pagination'
 // 自定义表格工具组件
 import RightToolbar from '@/components/RightToolbar'
 // 富文本组件
-import Editor from "@/components/Editor"
+// import Editor from "@/components/Editor"
 // 文件上传组件
 import FileUpload from "@/components/FileUpload"
 // 图片上传组件
@@ -64,7 +60,7 @@ app.component('FileUpload', FileUpload)
 app.component('ImageUpload', ImageUpload)
 app.component('ImagePreview', ImagePreview)
 app.component('RightToolbar', RightToolbar)
-app.component('Editor', Editor)
+// app.component('Editor', Editor)
 
 app.use(router)
 app.use(store)
@@ -73,12 +69,5 @@ app.use(elementIcons)
 app.component('svg-icon', SvgIcon)
 
 directive(app)
-
-// 使用element-plus 并且设置全局的大小
-app.use(ElementPlus, {
-  locale: locale,
-  // 支持 large、default、small
-  size: Cookies.get('size') || 'default'
-})
 
 app.mount('#app')
