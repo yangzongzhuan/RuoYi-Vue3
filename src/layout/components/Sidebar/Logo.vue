@@ -25,30 +25,28 @@ defineProps({
   }
 })
 
-const title = import.meta.env.VITE_APP_TITLE;
-const settingsStore = useSettingsStore();
-const sideTheme = computed(() => settingsStore.sideTheme);
+const title = import.meta.env.VITE_APP_TITLE
+const settingsStore = useSettingsStore()
+const sideTheme = computed(() => settingsStore.sideTheme)
 
 // 获取Logo背景色
 const getLogoBackground = computed(() => {
   if (settingsStore.isDark) {
-    return 'var(--sidebar-bg)';
+    return 'var(--sidebar-bg)'
   }
-  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg;
-});
+  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg
+})
 
 // 获取Logo文字颜色
 const getLogoTextColor = computed(() => {
   if (settingsStore.isDark) {
-    return 'var(--sidebar-text)';
+    return 'var(--sidebar-text)'
   }
-  return sideTheme.value === 'theme-dark' ? '#fff' : variables.menuLightText;
-});
+  return sideTheme.value === 'theme-dark' ? '#fff' : variables.menuLightText
+})
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/styles/variables.module.scss';
-
 .sidebarLogoFade-enter-active {
   transition: opacity 1.5s;
 }

@@ -13,9 +13,14 @@
           <el-button circle icon="Menu" />
           <template #dropdown>
             <el-dropdown-menu>
+              <!-- 全选/反选 按钮 -->
+              <el-dropdown-item>
+                <el-checkbox :indeterminate="isIndeterminate" v-model="isChecked" @change="toggleCheckAll"> 列展示 </el-checkbox>
+              </el-dropdown-item>
+              <div class="check-line"></div>
               <template v-for="item in columns" :key="item.key">
                 <el-dropdown-item>
-                  <el-checkbox :checked="item.visible" @change="checkboxChange($event, item.label)" :label="item.label" />
+                  <el-checkbox v-model="item.visible" @change="checkboxChange($event, item.label)" :label="item.label" />
                 </el-dropdown-item>
               </template>
             </el-dropdown-menu>
@@ -39,83 +44,95 @@ const props = defineProps({
   /* 是否显示检索条件 */
   showSearch: {
     type: Boolean,
-    default: true,
+    default: true
   },
   /* 显隐列信息 */
   columns: {
-    type: Array,
+    type: Array
   },
   /* 是否显示检索图标 */
   search: {
     type: Boolean,
-    default: true,
+    default: true
   },
   /* 显隐列类型（transfer穿梭框、checkbox复选框） */
   showColumnsType: {
     type: String,
-    default: "checkbox",
+    default: "checkbox"
   },
   /* 右外边距 */
   gutter: {
     type: Number,
-    default: 10,
+    default: 10
   },
 })
 
-const emits = defineEmits(['update:showSearch', 'queryTable']);
+const emits = defineEmits(['update:showSearch', 'queryTable'])
 
 // 显隐数据
-const value = ref([]);
+const value = ref([])
 // 弹出层标题
-const title = ref("显示/隐藏");
+const title = ref("显示/隐藏")
 // 是否显示弹出层
-const open = ref(false);
+const open = ref(false)
 
 const style = computed(() => {
-  const ret = {};
+  const ret = {}
   if (props.gutter) {
-    ret.marginRight = `${props.gutter / 2}px`;
+    ret.marginRight = `${props.gutter / 2}px`
   }
-  return ret;
-});
+  return ret
+})
+
+// 是否全选/半选 状态
+const isChecked = computed({
+  get: () => props.columns.every(col => col.visible),
+  set: () => {}
+})
+const isIndeterminate = computed(() => props.columns.some((col) => col.visible) && !isChecked.value)
 
 // 搜索
 function toggleSearch() {
-  emits("update:showSearch", !props.showSearch);
+  emits("update:showSearch", !props.showSearch)
 }
 
 // 刷新
 function refresh() {
-  emits("queryTable");
+  emits("queryTable")
 }
 
 // 右侧列表元素变化
 function dataChange(data) {
   for (let item in props.columns) {
-    const key = props.columns[item].key;
-    props.columns[item].visible = !data.includes(key);
+    const key = props.columns[item].key
+    props.columns[item].visible = !data.includes(key)
   }
 }
 
 // 打开显隐列dialog
 function showColumn() {
-  open.value = true;
+  open.value = true
 }
 
 if (props.showColumnsType == 'transfer') {
   // 显隐列初始默认隐藏列
   for (let item in props.columns) {
     if (props.columns[item].visible === false) {
-      value.value.push(parseInt(item));
+      value.value.push(parseInt(item))
     }
   }
 }
 
-// 勾选
+// 单勾选
 function checkboxChange(event, label) {
-  props.columns.filter(item => item.label == label)[0].visible = event;
+  props.columns.filter(item => item.label == label)[0].visible = event
 }
 
+// 切换全选/反选
+function toggleCheckAll() {
+  const newValue = !isChecked.value
+  props.columns.forEach((col) => (col.visible = newValue))
+}
 </script>
 
 <style lang='scss' scoped>
@@ -130,5 +147,11 @@ function checkboxChange(event, label) {
 :deep(.el-dropdown-menu__item) {
   line-height: 30px;
   padding: 0 17px;
+}
+.check-line {
+  width: 90%;
+  height: 1px;
+  background-color: #ccc;
+  margin: 3px auto;
 }
 </style>

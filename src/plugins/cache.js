@@ -29,7 +29,7 @@ const sessionCache = {
     return null
   },
   remove (key) {
-    sessionStorage.removeItem(key);
+    sessionStorage.removeItem(key)
   }
 }
 const localCache = {
@@ -63,7 +63,7 @@ const localCache = {
     return null
   },
   remove (key) {
-    localStorage.removeItem(key);
+    localStorage.removeItem(key)
   }
 }
 

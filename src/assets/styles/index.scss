@@ -1,10 +1,9 @@
-@import './variables.module.scss';
-@import './mixin.scss';
-@import './transition.scss';
-@import './element-ui.scss';
-@import './sidebar.scss';
-@import './btn.scss';
-@import './ruoyi.scss';
+@use './mixin.scss';
+@use './transition.scss';
+@use './element-ui.scss';
+@use './sidebar.scss';
+@use './btn.scss';
+@use './ruoyi.scss';
 
 body {
   height: 100%;
@@ -129,10 +128,6 @@ aside {
 .components-container {
   margin: 30px 50px;
   position: relative;
-}
-
-.pagination-container {
-  margin-top: 30px;
 }
 
 .text-center {

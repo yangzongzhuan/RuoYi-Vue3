@@ -78,10 +78,10 @@ watch(() => props.cron.hour, value => changeRadioValue(value))
 watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange())
 function changeRadioValue(value) {
     if (props.cron.min === '*') {
-        emit('update', 'min', '0', 'hour');
+        emit('update', 'min', '0', 'hour')
     }
     if (props.cron.second === '*') {
-        emit('update', 'second', '0', 'hour');
+        emit('update', 'second', '0', 'hour')
     }
     if (value === '*') {
         radioValue.value = 1

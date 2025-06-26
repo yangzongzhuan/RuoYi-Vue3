@@ -5,13 +5,14 @@
         v-for="tag in visitedViews"
         :key="tag.path"
         :data-path="tag.path"
-        :class="isActive(tag) ? 'active' : ''"
+        :class="{ 'active': isActive(tag), 'has-icon': tagsIcon }"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
         :style="activeStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
+        <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon" />
         {{ tag.title }}
         <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
           <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
@@ -48,20 +49,21 @@ import useTagsViewStore from '@/store/modules/tagsView'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
-const visible = ref(false);
-const top = ref(0);
-const left = ref(0);
-const selectedTag = ref({});
-const affixTags = ref([]);
-const scrollPaneRef = ref(null);
+const visible = ref(false)
+const top = ref(0)
+const left = ref(0)
+const selectedTag = ref({})
+const affixTags = ref([])
+const scrollPaneRef = ref(null)
 
-const { proxy } = getCurrentInstance();
-const route = useRoute();
-const router = useRouter();
+const { proxy } = getCurrentInstance()
+const route = useRoute()
+const router = useRouter()
 
-const visitedViews = computed(() => useTagsViewStore().visitedViews);
-const routes = computed(() => usePermissionStore().routes);
-const theme = computed(() => useSettingsStore().theme);
+const visitedViews = computed(() => useTagsViewStore().visitedViews)
+const routes = computed(() => usePermissionStore().routes)
+const theme = computed(() => useSettingsStore().theme)
+const tagsIcon = computed(() => useSettingsStore().tagsIcon)
 
 watch(route, () => {
   addTags()
@@ -86,11 +88,11 @@ function isActive(r) {
 }
 
 function activeStyle(tag) {
-  if (!isActive(tag)) return {};
+  if (!isActive(tag)) return {}
   return {
     "background-color": theme.value,
     "border-color": theme.value
-  };
+  }
 }
 
 function isAffix(tag) {
@@ -136,8 +138,8 @@ function filterAffixTags(routes, basePath = '') {
 }
 
 function initTags() {
-  const res = filterAffixTags(routes.value);
-  affixTags.value = res;
+  const res = filterAffixTags(routes.value)
+  affixTags.value = res
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
@@ -157,7 +159,7 @@ function moveToCurrentTag() {
   nextTick(() => {
     for (const r of visitedViews.value) {
       if (r.path === route.path) {
-        scrollPaneRef.value.moveToTarget(r);
+        scrollPaneRef.value.moveToTarget(r)
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
           useTagsViewStore().updateVisitedView(route)
@@ -168,9 +170,9 @@ function moveToCurrentTag() {
 }
 
 function refreshSelectedTag(view) {
-  proxy.$tab.refreshPage(view);
+  proxy.$tab.refreshPage(view)
   if (route.meta.link) {
-    useTagsViewStore().delIframeView(route);
+    useTagsViewStore().delIframeView(route)
   }
 }
 
@@ -199,7 +201,7 @@ function closeLeftTags() {
 }
 
 function closeOthersTags() {
-  router.push(selectedTag.value).catch(() => { });
+  router.push(selectedTag.value).catch(() => { })
   proxy.$tab.closeOtherPage(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
@@ -305,6 +307,10 @@ function handleScroll() {
         }
       }
     }
+  }
+
+  .tags-view-item.active.has-icon::before {
+    content: none !important;
   }
 
   .contextmenu {

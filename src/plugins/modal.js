@@ -1,6 +1,6 @@
 import { ElMessage, ElMessageBox, ElNotification, ElLoading } from 'element-plus'
 
-let loadingInstance;
+let loadingInstance
 
 export default {
   // 消息提示
@@ -41,7 +41,7 @@ export default {
   },
   // 错误通知
   notifyError(content) {
-    ElNotification.error(content);
+    ElNotification.error(content)
   },
   // 成功通知
   notifySuccess(content) {
@@ -77,6 +77,6 @@ export default {
   },
   // 关闭遮罩层
   closeLoading() {
-    loadingInstance.close();
+    loadingInstance.close()
   }
 }

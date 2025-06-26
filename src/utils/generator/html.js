@@ -318,7 +318,7 @@ function buildElRadioGroupChild(conf) {
   if (conf.options && conf.options.length) {
     const tag = conf.optionType === 'button' ? 'el-radio-button' : 'el-radio'
     const border = conf.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${conf.vModel}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${conf.vModel}Options" :key="index" :value="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
   }
   return children.join('\n')
 }
@@ -328,7 +328,7 @@ function buildElCheckboxGroupChild(conf) {
   if (conf.options && conf.options.length) {
     const tag = conf.optionType === 'button' ? 'el-checkbox-button' : 'el-checkbox'
     const border = conf.border ? 'border' : ''
-    children.push(`<${tag} v-for="(item, index) in ${conf.vModel}Options" :key="index" :label="item.value" :disabled="item.disabled" ${border}>{{item.label}}</${tag}>`)
+    children.push(`<${tag} v-for="(item, index) in ${conf.vModel}Options" :key="index" :label="item.value" :value="item.label" :disabled="item.disabled" ${border} />`)
   }
   return children.join('\n')
 }

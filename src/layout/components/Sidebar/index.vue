@@ -32,40 +32,40 @@ import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
-const route = useRoute();
+const route = useRoute()
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
 
-const sidebarRouters = computed(() => permissionStore.sidebarRouters);
-const showLogo = computed(() => settingsStore.sidebarLogo);
-const sideTheme = computed(() => settingsStore.sideTheme);
-const theme = computed(() => settingsStore.theme);
-const isCollapse = computed(() => !appStore.sidebar.opened);
+const sidebarRouters = computed(() => permissionStore.sidebarRouters)
+const showLogo = computed(() => settingsStore.sidebarLogo)
+const sideTheme = computed(() => settingsStore.sideTheme)
+const theme = computed(() => settingsStore.theme)
+const isCollapse = computed(() => !appStore.sidebar.opened)
 
 // 获取菜单背景色
 const getMenuBackground = computed(() => {
   if (settingsStore.isDark) {
-    return 'var(--sidebar-bg)';
+    return 'var(--sidebar-bg)'
   }
-  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg;
-});
+  return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg
+})
 
 // 获取菜单文字颜色
 const getMenuTextColor = computed(() => {
   if (settingsStore.isDark) {
-    return 'var(--sidebar-text)';
+    return 'var(--sidebar-text)'
   }
-  return sideTheme.value === 'theme-dark' ? variables.menuText : variables.menuLightText;
-});
+  return sideTheme.value === 'theme-dark' ? variables.menuText : variables.menuLightText
+})
 
 const activeMenu = computed(() => {
-  const { meta, path } = route;
+  const { meta, path } = route
   if (meta.activeMenu) {
-    return meta.activeMenu;
+    return meta.activeMenu
   }
-  return path;
-});
+  return path
+})
 </script>
 
 <style lang="scss" scoped>

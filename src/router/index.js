@@ -77,7 +77,7 @@ export const constantRoutes = [
     redirect: 'noredirect',
     children: [
       {
-        path: 'profile',
+        path: 'profile/:activeTab?',
         component: () => import('@/views/system/user/profile/index'),
         name: 'Profile',
         meta: { title: '个人中心', icon: 'user' }
@@ -169,6 +169,6 @@ const router = createRouter({
     }
     return { top: 0 }
   },
-});
+})
 
-export default router;
+export default router

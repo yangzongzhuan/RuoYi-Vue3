@@ -48,7 +48,7 @@
                    <span>基本资料</span>
                  </div>
                </template>
-               <el-tabs v-model="activeTab">
+               <el-tabs v-model="selectedTab">
                   <el-tab-pane label="基本资料" name="userinfo">
                      <userInfo :user="state.user" />
                   </el-tab-pane>
@@ -63,25 +63,32 @@
 </template>
 
 <script setup name="Profile">
-import userAvatar from "./userAvatar";
-import userInfo from "./userInfo";
-import resetPwd from "./resetPwd";
-import { getUserProfile } from "@/api/system/user";
+import userAvatar from "./userAvatar"
+import userInfo from "./userInfo"
+import resetPwd from "./resetPwd"
+import { getUserProfile } from "@/api/system/user"
 
-const activeTab = ref("userinfo");
+const route = useRoute()
+const selectedTab = ref("userinfo")
 const state = reactive({
   user: {},
   roleGroup: {},
   postGroup: {}
-});
+})
 
 function getUser() {
   getUserProfile().then(response => {
-    state.user = response.data;
-    state.roleGroup = response.roleGroup;
-    state.postGroup = response.postGroup;
-  });
-};
+    state.user = response.data
+    state.roleGroup = response.roleGroup
+    state.postGroup = response.postGroup
+  })
+}
 
-getUser();
+onMounted(() => {
+  const activeTab = route.params && route.params.activeTab
+  if (activeTab) {
+    selectedTab.value = activeTab
+  }
+  getUser()
+})
 </script>
