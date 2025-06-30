@@ -13,14 +13,6 @@
       <template v-if="appStore.device !== 'mobile'">
         <HeaderSearch id="header-search" class="right-menu-item" />
 
-        <el-tooltip content="源码地址" effect="dark" placement="bottom">
-          <RuoYiGit id="ruoyi-git" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
-        <el-tooltip content="文档地址" effect="dark" placement="bottom">
-          <RuoYiDoc id="ruoyi-doc" class="right-menu-item hover-effect" />
-        </el-tooltip>
-
         <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
         <el-tooltip content="主题模式" effect="dark" placement="bottom">
@@ -63,8 +55,6 @@ import { ElMessageBox } from 'element-plus'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import HeaderSearch from '@/components/HeaderSearch'
-import RuoYiDoc from '@/components/RuoYi/Doc'
-import RuoYiGit from '@/components/RuoYi/Git'
 import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import TopNav from '@/components/TopNav'

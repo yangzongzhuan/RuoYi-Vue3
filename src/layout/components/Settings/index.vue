@@ -40,7 +40,7 @@
       系统布局配置
     </h3>
 
-    <div class="drawer-item">
+    <!-- <div class="drawer-item">
       <span>开启 TopNav</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.topNav" class="drawer-switch" @change="topNavChange" />
@@ -73,7 +73,7 @@
       <span class="comp-style">
         <el-switch v-model="settingsStore.sidebarLogo" class="drawer-switch" />
       </span>
-    </div>
+    </div> -->
 
     <div class="drawer-item">
       <span>动态标题</span>
@@ -101,15 +101,11 @@
 </template>
 
 <script setup>
-import useAppStore from '@/store/modules/app'
-import usePermissionStore from '@/store/modules/permission'
 import useSettingsStore from '@/store/modules/settings'
 import { handleThemeStyle } from '@/utils/theme'
 
 const { proxy } = getCurrentInstance()
-const appStore = useAppStore()
 const settingsStore = useSettingsStore()
-const permissionStore = usePermissionStore()
 const showSettings = ref(false)
 const theme = ref(settingsStore.theme)
 const sideTheme = ref(settingsStore.sideTheme)
@@ -117,12 +113,12 @@ const storeSettings = computed(() => settingsStore)
 const predefineColors = ref(['#409EFF', '#ff4500', '#ff8c00', '#ffd700', '#90ee90', '#00ced1', '#1e90ff', '#c71585', '#145DFF'])
 
 /** 是否需要topnav */
-function topNavChange(val) {
-  if (!val) {
-    appStore.toggleSideBarHide(false)
-    permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
-  }
-}
+// function topNavChange(val) {
+//   if (!val) {
+//     appStore.toggleSideBarHide(false)
+//     permissionStore.setSidebarRouters(permissionStore.defaultRoutes)
+//   }
+// }
 
 /** 是否需要dynamicTitle */
 function dynamicTitleChange() {
