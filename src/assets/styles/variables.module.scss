@@ -10,7 +10,7 @@ $panGreen: #30B08F;
 
 // 默认主题变量
 $menuText: #bfcbd9;
-$menuActiveText: #409eff;
+$menuActiveText: #145DFF;
 $menuBg: #304156;
 $menuHover: #263445;
 
@@ -18,7 +18,7 @@ $menuHover: #263445;
 $menuLightBg: #ffffff;
 $menuLightHover: #f0f1f5;
 $menuLightText: #303133;
-$menuLightActiveText: #409EFF;
+$menuLightActiveText: #145DFF;
 
 // 基础变量
 $base-sidebar-width: 200px;
@@ -32,7 +32,7 @@ $base-sub-menu-background: #1f2d3d;
 $base-sub-menu-hover: #001528;
 
 // 组件变量
-$--color-primary: #409EFF;
+$--color-primary: #145DFF;
 $--color-success: #67C23A;
 $--color-warning: #E6A23C;
 $--color-danger: #F56C6C;
@@ -71,10 +71,10 @@ $--color-info: #909399;
   --sidebar-bg: #{$menuBg};
   --sidebar-text: #{$menuText};
   --menu-hover: #{$menuHover};
-  
+
   --navbar-bg: #ffffff;
   --navbar-text: #303133;
-  
+
   /* splitpanes default-theme 变量 */
   --splitpanes-default-bg: #ffffff;
 
@@ -119,7 +119,7 @@ html.dark {
   --blockquote-bg: #1d1e1f;
   --blockquote-border: #303030;
   --blockquote-text: #d0d0d0;
-  
+
   /* Cron 时间表达式 模式变量 */
   --cron-border: #303030;
 
@@ -199,7 +199,7 @@ html.dark {
       background-color: var(--el-bg-color-overlay);
     }
   }
-  
+
   /* 下拉菜单样式覆盖 */
   .el-dropdown-menu__item:not(.is-disabled):focus, .el-dropdown-menu__item:not(.is-disabled):hover{
     background-color: var(--navbar-hover) !important;
@@ -211,7 +211,7 @@ html.dark {
     border-left-color: var(--blockquote-border) !important;
     color: var(--blockquote-text) !important;
   }
-  
+
   /* 时间表达式标题样式覆盖 */
   .popup-result .title {
     background: var(--cron-border);

@@ -330,7 +330,7 @@ onMounted(() => {
 </script>
 
 <style lang='scss'>
-$lighterBlue: #409EFF;
+$lighterBlue: #145DFF;
 
 .container {
   position: relative;
