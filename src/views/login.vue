@@ -236,7 +236,6 @@ getCookie()
   bottom: 0;
   width: 100%;
   height: 40px;
-  font-family: Arial;
   font-size: 12px;
   line-height: 40px;
   color: #fff;

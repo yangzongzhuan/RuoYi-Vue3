@@ -34,7 +34,6 @@ module.exports = {
     'alpha-value-notation': 'number',
     'hue-degree-notation': 'number',
     'selector-class-pattern': null,
-    'font-family-no-missing-generic-family-keyword': null,
     'keyframes-name-pattern': null,
     'scss/dollar-variable-pattern': null,
     'property-no-unknown': null,

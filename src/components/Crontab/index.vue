@@ -297,7 +297,6 @@ onMounted(() => {
 .popup-result table span {
     display: block;
     width: 100%;
-    font-family: arial;
     line-height: 30px;
     height: 30px;
     white-space: nowrap;
