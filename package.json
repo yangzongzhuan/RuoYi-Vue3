@@ -9,6 +9,7 @@
     "dev": "vite",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
+    "build:test": "vite build --mode test",
     "preview": "vite preview",
     "lint-staged": "npx lint-staged",
     "prepare": "husky install",
