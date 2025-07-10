@@ -40,40 +40,41 @@
       系统布局配置
     </h3>
 
+    <!-- 默认false -->
     <!-- <div class="drawer-item">
       <span>开启 TopNav</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.topNav" class="drawer-switch" @change="topNavChange" />
       </span>
-    </div>
-
-    <div class="drawer-item">
+    </div> -->
+    <!-- 默认true -->
+    <!-- <div class="drawer-item">
       <span>开启 Tags-Views</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.tagsView" class="drawer-switch" />
       </span>
-    </div>
-
-    <div class="drawer-item">
+    </div> -->
+    <!-- 默认false -->
+    <!-- <div class="drawer-item">
       <span>显示页签图标</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.tagsIcon" :disabled="!settingsStore.tagsView" class="drawer-switch" />
       </span>
-    </div>
-
-    <div class="drawer-item">
+    </div> -->
+    <!-- 默认true -->
+    <!-- <div class="drawer-item">
       <span>固定 Header</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.fixedHeader" class="drawer-switch" />
       </span>
-    </div>
+    </div> -->
 
     <div class="drawer-item">
       <span>显示 Logo</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.sidebarLogo" class="drawer-switch" />
       </span>
-    </div> -->
+    </div>
 
     <div class="drawer-item">
       <span>动态标题</span>
