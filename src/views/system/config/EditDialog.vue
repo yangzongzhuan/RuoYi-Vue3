@@ -8,7 +8,6 @@
     :close-on-press-escape="false"
     @close="dialogClose"
   >
-    {{ sys_yes_no }}
     <el-form ref="dialogFromRef" :model="dialogForm" :rules="rules" label-width="80px">
       <el-form-item label="参数名称" prop="configName">
         <el-input v-model="dialogForm.configName" placeholder="请输入参数名称" />
