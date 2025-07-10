@@ -15,7 +15,12 @@
             <!--  -->
             <span
               class="menu-title"
-              style="margin-left: 10px;"
+              :style="
+                onlyOneChild.meta?.icon
+                  || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)
+                  ? 'margin-left: 10px;'
+                  : 'margin-left: 4px;'
+              "
               :title="hasTitle(onlyOneChild.meta.title)"
             >{{ onlyOneChild.meta.title }}</span>
           </template>
@@ -28,7 +33,7 @@
         <svg-icon :icon-class="sidebarRouterItem.meta && sidebarRouterItem.meta.icon" />
         <span
           class="menu-title"
-          style=" margin-left: 16px;"
+          style=" margin-left: 10px;"
           :title="hasTitle(sidebarRouterItem.meta.title)"
         >{{ sidebarRouterItem.meta.title }}</span>
       </template>
