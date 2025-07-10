@@ -67,7 +67,7 @@
           type="success"
           plain
           icon="Edit"
-          :disabled="single"
+          :disabled="tableSelectedRowNum != 1"
           @click="handleUpdate"
         >
           修改
@@ -79,7 +79,7 @@
           type="danger"
           plain
           icon="Delete"
-          :disabled="multiple"
+          :disabled="tableSelectedRowNum == 0"
           @click="handleDelete"
         >
           删除
@@ -110,7 +110,7 @@
       <right-toolbar v-model:show-search="showSearch" @query-table="getList" />
     </el-row>
 
-    <el-table v-loading="loading" :data="configList" @selection-change="handleSelectionChange">
+    <el-table v-loading="tableLoading" :data="tableData" @selection-change="(v) => handleSelectionChange(v, 'configId')">
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="参数主键" align="center" prop="configId" />
       <el-table-column label="参数名称" align="center" prop="configName" :show-overflow-tooltip="true" />
@@ -141,123 +141,65 @@
 
     <pagination
       v-show="total > 0"
-      v-model:page="queryParams.pageNum"
-      v-model:limit="queryParams.pageSize"
+      v-model:page="pageNum"
+      v-model:limit="pageSize"
       :total="total"
       @pagination="getList"
     />
 
     <!-- 添加或修改参数配置对话框 -->
-    <el-dialog v-model="open" :title="title" width="500px" append-to-body>
-      <el-form ref="configRef" :model="form" :rules="rules" label-width="80px">
-        <el-form-item label="参数名称" prop="configName">
-          <el-input v-model="form.configName" placeholder="请输入参数名称" />
-        </el-form-item>
-        <el-form-item label="参数键名" prop="configKey">
-          <el-input v-model="form.configKey" placeholder="请输入参数键名" />
-        </el-form-item>
-        <el-form-item label="参数键值" prop="configValue">
-          <el-input v-model="form.configValue" type="textarea" placeholder="请输入参数键值" />
-        </el-form-item>
-        <el-form-item label="系统内置" prop="configType">
-          <el-radio-group v-model="form.configType">
-            <el-radio
-              v-for="dict in sys_yes_no"
-              :key="dict.value"
-              :value="dict.value"
-            >
-              {{ dict.label }}
-            </el-radio>
-          </el-radio-group>
-        </el-form-item>
-        <el-form-item label="备注" prop="remark">
-          <el-input v-model="form.remark" type="textarea" placeholder="请输入内容" />
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <div class="dialog-footer">
-          <el-button type="primary" @click="submitForm">
-            确 定
-          </el-button>
-          <el-button @click="cancel">
-            取 消
-          </el-button>
-        </div>
-      </template>
-    </el-dialog>
+    <EditDialog ref="editDialogRef" @refresh="getList" />
   </div>
 </template>
 
 <script setup>
-import { addConfig, delConfig, getConfig, listConfig, refreshCache, updateConfig } from '@/api/system/config'
+import { delConfig, getConfig, listConfig, refreshCache } from '@/api/system/config'
+import { useTable } from '@/hooks/useTable'
+import EditDialog from './EditDialog.vue'
 
 defineOptions({
   name: 'ConfigIndex',
 })
 const { proxy } = getCurrentInstance()
-const { sys_yes_no } = proxy.useDict('sys_yes_no')
 
-const configList = ref([])
-const open = ref(false)
-const loading = ref(true)
+let {
+  tableData,
+  tableLoading,
+  pageNum,
+  pageSize,
+  total,
+  selectedRowIds,
+
+  tableSelectedRowNum,
+  //  重写handleSelectionChange
+  handleSelectionChange,
+} = useTable(getList)
+
 const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref('')
 const dateRange = ref([])
-
-const data = reactive({
-  form: {},
-  queryParams: {
-    pageNum: 1,
-    pageSize: 10,
-    configName: undefined,
-    configKey: undefined,
-    configType: undefined,
-  },
-  rules: {
-    configName: [{ required: true, message: '参数名称不能为空', trigger: 'blur' }],
-    configKey: [{ required: true, message: '参数键名不能为空', trigger: 'blur' }],
-    configValue: [{ required: true, message: '参数键值不能为空', trigger: 'blur' }],
-  },
+const queryParams = ref({
+  configName: undefined,
+  configKey: undefined,
+  configType: undefined,
 })
-
-const { queryParams, form, rules } = toRefs(data)
 
 /** 查询参数列表 */
 function getList() {
-  loading.value = true
-  listConfig(proxy.addDateRange(queryParams.value, dateRange.value)).then((response) => {
-    configList.value = response.rows
+  tableLoading.value = true
+  listConfig(proxy.addDateRange({
+    ...queryParams.value,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
+  }, dateRange.value)).then((response) => {
+    tableData.value = response.rows
     total.value = response.total
-    loading.value = false
+    tableLoading.value = false
   })
-}
-
-/** 取消按钮 */
-function cancel() {
-  open.value = false
-  reset()
-}
-
-/** 表单重置 */
-function reset() {
-  form.value = {
-    configId: undefined,
-    configName: undefined,
-    configKey: undefined,
-    configValue: undefined,
-    configType: 'Y',
-    remark: undefined,
-  }
-  proxy.resetForm('configRef')
 }
 
 /** 搜索按钮操作 */
 function handleQuery() {
-  queryParams.value.pageNum = 1
+  pageNum.value = 1
   getList()
 }
 
@@ -268,56 +210,22 @@ function resetQuery() {
   handleQuery()
 }
 
-/** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.configId)
-  single.value = selection.length != 1
-  multiple.value = !selection.length
-}
-
 /** 新增按钮操作 */
 function handleAdd() {
-  reset()
-  open.value = true
-  title.value = '添加参数'
+  proxy.$refs.editDialogRef.openDialog('添加参数')
 }
 
 /** 修改按钮操作 */
 function handleUpdate(row) {
-  reset()
-  const configId = row.configId || ids.value
+  const configId = row.configId || selectedRowIds.value
   getConfig(configId).then((response) => {
-    form.value = response.data
-    open.value = true
-    title.value = '修改参数'
-  })
-}
-
-/** 提交按钮 */
-function submitForm() {
-  proxy.$refs.configRef.validate((valid) => {
-    if (valid) {
-      if (form.value.configId != undefined) {
-        updateConfig(form.value).then(() => {
-          proxy.$modal.msgSuccess('修改成功')
-          open.value = false
-          getList()
-        })
-      }
-      else {
-        addConfig(form.value).then(() => {
-          proxy.$modal.msgSuccess('新增成功')
-          open.value = false
-          getList()
-        })
-      }
-    }
+    proxy.$refs.editDialogRef.openDialog('修改参数', response.data)
   })
 }
 
 /** 删除按钮操作 */
 function handleDelete(row) {
-  const configIds = row.configId || ids.value
+  const configIds = row.configId || selectedRowIds.value
   proxy.$modal.confirm(`是否确认删除参数编号为"${configIds}"的数据项？`).then(() => {
     return delConfig(configIds)
   }).then(() => {
@@ -330,6 +238,8 @@ function handleDelete(row) {
 function handleExport() {
   proxy.download('system/config/export', {
     ...queryParams.value,
+    pageNum: pageNum.value,
+    pageSize: pageSize.value,
   }, `config_${new Date().getTime()}.xlsx`)
 }
 
