@@ -68,9 +68,12 @@
   </el-dialog>
 </template>
 
-<script setup name="SelectUser">
+<script setup>
 import { authUserSelectAll, unallocatedUserList } from '@/api/system/role'
 
+defineOptions({
+  name: 'SelectUser',
+})
 const props = defineProps({
   roleId: {
     type: [Number, String],

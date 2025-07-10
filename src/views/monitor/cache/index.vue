@@ -169,10 +169,13 @@
   </div>
 </template>
 
-<script setup name="Cache">
+<script setup>
 import * as echarts from 'echarts'
 import { getCache } from '@/api/monitor/cache'
 
+defineOptions({
+  name: 'CacheIndex',
+})
 const cache = ref([])
 const commandstats = ref(null)
 const usedmemory = ref(null)

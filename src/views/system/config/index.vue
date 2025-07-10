@@ -188,9 +188,12 @@
   </div>
 </template>
 
-<script setup name="Config">
+<script setup>
 import { addConfig, delConfig, getConfig, listConfig, refreshCache, updateConfig } from '@/api/system/config'
 
+defineOptions({
+  name: 'ConfigIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_yes_no } = proxy.useDict('sys_yes_no')
 

@@ -169,9 +169,12 @@
   </div>
 </template>
 
-<script setup name="Dept">
+<script setup>
 import { addDept, delDept, getDept, listDept, listDeptExcludeChild, updateDept } from '@/api/system/dept'
 
+defineOptions({
+  name: 'DeptIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
 

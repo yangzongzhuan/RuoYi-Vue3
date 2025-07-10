@@ -258,9 +258,12 @@
   </div>
 </template>
 
-<script setup name="Operlog">
+<script setup>
 import { cleanOperlog, delOperlog, list } from '@/api/monitor/operlog'
 
+defineOptions({
+  name: 'OperlogIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_oper_type, sys_common_status } = proxy.useDict('sys_oper_type', 'sys_common_status')
 

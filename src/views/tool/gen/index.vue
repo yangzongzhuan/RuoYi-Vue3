@@ -182,11 +182,14 @@
   </div>
 </template>
 
-<script setup name="Gen">
+<script setup>
 import { delTable, genCode, listTable, previewTable, synchDb } from '@/api/tool/gen'
 import createTable from './createTable'
 import importTable from './importTable'
 
+defineOptions({
+  name: 'GenIndex',
+})
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 

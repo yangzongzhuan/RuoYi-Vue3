@@ -74,12 +74,15 @@
   </div>
 </template>
 
-<script setup name="Profile">
+<script setup>
 import { getUserProfile } from '@/api/system/user'
 import resetPwd from './resetPwd'
 import userAvatar from './userAvatar'
 import userInfo from './userInfo'
 
+defineOptions({
+  name: 'ProfileIndex',
+})
 const route = useRoute()
 const selectedTab = ref('userinfo')
 const state = reactive({

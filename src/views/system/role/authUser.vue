@@ -102,10 +102,13 @@
   </div>
 </template>
 
-<script setup name="AuthUser">
+<script setup>
 import { allocatedUserList, authUserCancel, authUserCancelAll } from '@/api/system/role'
 import selectUser from './selectUser'
 
+defineOptions({
+  name: 'AuthUser',
+})
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')

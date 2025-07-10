@@ -32,10 +32,13 @@
   </el-col>
 </template>
 
-<script setup name="DraggableItem">
+<script setup>
 import draggable from 'vuedraggable/dist/vuedraggable.common'
 import render from '@/utils/generator/render'
 
+defineOptions({
+  name: 'DraggableItem',
+})
 const props = defineProps({
   element: Object,
   index: Number,

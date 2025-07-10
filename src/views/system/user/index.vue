@@ -254,13 +254,16 @@
   </div>
 </template>
 
-<script setup name="User">
+<script setup>
 import { Pane, Splitpanes } from 'splitpanes'
 import { addUser, changeUserStatus, delUser, deptTreeSelect, getUser, listUser, resetUserPwd, updateUser } from '@/api/system/user'
 import useAppStore from '@/store/modules/app'
 import { getToken } from '@/utils/auth'
 import 'splitpanes/dist/splitpanes.css'
 
+defineOptions({
+  name: 'UserIndex',
+})
 const router = useRouter()
 const appStore = useAppStore()
 const { proxy } = getCurrentInstance()

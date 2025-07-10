@@ -178,9 +178,12 @@
   </div>
 </template>
 
-<script setup name="Notice">
+<script setup>
 import { addNotice, delNotice, getNotice, listNotice, updateNotice } from '@/api/system/notice'
 
+defineOptions({
+  name: 'NoticeIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_notice_status, sys_notice_type } = proxy.useDict('sys_notice_status', 'sys_notice_type')
 

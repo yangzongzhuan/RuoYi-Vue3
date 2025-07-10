@@ -204,11 +204,14 @@
   </div>
 </template>
 
-<script setup name="Data">
+<script setup>
 import { addData, delData, getData, listData, updateData } from '@/api/system/dict/data'
 import { optionselect as getDictOptionselect, getType } from '@/api/system/dict/type'
 import useDictStore from '@/store/modules/dict'
 
+defineOptions({
+  name: 'DictData',
+})
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
 

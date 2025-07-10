@@ -166,9 +166,12 @@
   </div>
 </template>
 
-<script setup name="Post">
+<script setup>
 import { addPost, delPost, getPost, listPost, updatePost } from '@/api/system/post'
 
+defineOptions({
+  name: 'PostIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
 

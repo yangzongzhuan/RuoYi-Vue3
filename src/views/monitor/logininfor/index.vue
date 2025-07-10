@@ -158,9 +158,12 @@
   </div>
 </template>
 
-<script setup name="Logininfor">
+<script setup>
 import { cleanLogininfor, delLogininfor, list, unlockLogininfor } from '@/api/monitor/logininfor'
 
+defineOptions({
+  name: 'LogininforIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_common_status } = proxy.useDict('sys_common_status')
 

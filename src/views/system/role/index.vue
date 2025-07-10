@@ -275,10 +275,13 @@
   </div>
 </template>
 
-<script setup name="Role">
+<script setup>
 import { treeselect as menuTreeselect, roleMenuTreeselect } from '@/api/system/menu'
 import { addRole, changeRoleStatus, dataScope, delRole, deptTreeSelect, getRole, listRole, updateRole } from '@/api/system/role'
 
+defineOptions({
+  name: 'RoleIndex',
+})
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')

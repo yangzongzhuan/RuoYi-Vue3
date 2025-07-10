@@ -126,13 +126,16 @@
   </el-card>
 </template>
 
-<script setup name="GenEdit">
+<script setup>
 import Sortable from 'sortablejs'
 import { optionselect as getDictOptionselect } from '@/api/system/dict/type'
 import { getGenTable, updateGenTable } from '@/api/tool/gen'
 import basicInfoForm from './basicInfoForm'
 import genInfoForm from './genInfoForm'
 
+defineOptions({
+  name: 'GenEdit',
+})
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 

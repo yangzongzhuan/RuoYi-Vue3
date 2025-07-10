@@ -195,10 +195,13 @@
   </div>
 </template>
 
-<script setup name="Dict">
+<script setup>
 import { addType, delType, getType, listType, refreshCache, updateType } from '@/api/system/dict/type'
 import useDictStore from '@/store/modules/dict'
 
+defineOptions({
+  name: 'DictIndex',
+})
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict('sys_normal_disable')
 

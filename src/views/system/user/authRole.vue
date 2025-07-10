@@ -60,9 +60,12 @@
   </div>
 </template>
 
-<script setup name="AuthRole">
+<script setup>
 import { getAuthRole, updateAuthRole } from '@/api/system/user'
 
+defineOptions({
+  name: 'AuthRole',
+})
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 

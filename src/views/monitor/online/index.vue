@@ -64,9 +64,12 @@
   </div>
 </template>
 
-<script setup name="Online">
+<script setup>
 import { forceLogout, list as initData } from '@/api/monitor/online'
 
+defineOptions({
+  name: 'OnlineIndex',
+})
 const { proxy } = getCurrentInstance()
 
 const onlineList = ref([])
