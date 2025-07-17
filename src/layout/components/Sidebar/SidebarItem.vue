@@ -72,11 +72,11 @@ const props = defineProps({
 })
 
 let sidebarRouterItem = computed(() => {
-  let coverIcon = coverIconFn(props.item)
+  const newIconMetaOption = iconFormat(props.item)
 
   return {
     ...props.item,
-    ...coverIcon,
+    ...newIconMetaOption,
   }
 })
 
@@ -90,10 +90,10 @@ function hasOneShowingChild(children = [], parent) {
     if (item.hidden) {
       return false
     }
-    let coverIcon = coverIconFn(item)
+    const newIconMetaOption = iconFormat(item)
     onlyOneChild.value = {
       ...item,
-      ...coverIcon,
+      ...newIconMetaOption,
     }
     return true
   })
@@ -105,10 +105,10 @@ function hasOneShowingChild(children = [], parent) {
 
   // Show parent if there are no child router to display
   if (showingChildren.length === 0) {
-    let parent_coverIcon = coverIconFn(parent)
+    const metaOptionFormat = iconFormat(parent)
     onlyOneChild.value = {
       ...parent,
-      ...parent_coverIcon,
+      ...metaOptionFormat,
       path: '',
       noShowingChildren: true,
     }
@@ -141,14 +141,14 @@ function hasTitle(title) {
   }
 }
 
-function coverIconFn(item) {
-  let coverIcon = {}
+function iconFormat(item) {
+  let flag = {}
   if (item.meta && item.meta.icon == '#') {
-    coverIcon.meta = {
+    flag.meta = {
       ...item.meta,
       icon: '',
     }
   }
-  return coverIcon
+  return flag
 }
 </script>

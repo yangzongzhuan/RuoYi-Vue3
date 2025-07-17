@@ -45,6 +45,9 @@ function openDialog(title, resDetailData) {
 function cancel() {
   dialogVisible.value = false
 }
-function submitForm()
+function submitForm() {
+  // TODO: implement form submission logic here
+}
+
 function dialogClose() {}
 </script>
