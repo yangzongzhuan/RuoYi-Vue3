@@ -14,7 +14,7 @@
     "lint-staged": "npx lint-staged",
     "prepare": "husky install",
     "lint:script": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
-    "lint:style": "stylelint --fix \"src/views/**/*.{css,scss,html,vue}\""
+    "lint:style": "stylelint --fix \"src/**/*.{css,scss,html,vue}\""
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",

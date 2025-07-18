@@ -44,9 +44,10 @@ module.exports = {
     'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignorePseudoClasses: ['deep'],
+        ignorePseudoClasses: ['deep', 'export'],
       },
     ],
     'custom-property-empty-line-before': 'never',
+    'scss/at-mixin-pattern': null,
   },
 }
