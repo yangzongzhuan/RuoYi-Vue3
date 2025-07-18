@@ -6,5 +6,5 @@ export default {
       const componentConfig = components[key]
       app.component(componentConfig.name, componentConfig)
     }
-  }
+  },
 }

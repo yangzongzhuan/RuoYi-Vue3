@@ -1,11 +1,11 @@
 const styles = {
   'el-rate': '.el-rate{display: inline-block; vertical-align: text-top;}',
-  'el-upload': '.el-upload__tip{line-height: 1.2;}'
+  'el-upload': '.el-upload__tip{line-height: 1.2;}',
 }
 
 function addCss(cssList, el) {
   const css = styles[el.tag]
-  css && cssList.indexOf(css) === -1 && cssList.push(css)
+  css && !cssList.includes(css) && cssList.push(css)
   if (el.children) {
     el.children.forEach(el2 => addCss(cssList, el2))
   }
