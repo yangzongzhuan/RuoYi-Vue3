@@ -13,10 +13,10 @@ const { isFullscreen, toggle } = useFullscreen()
 <style lang='scss' scoped>
 .screenfull-svg {
   display: inline-block;
-  cursor: pointer;
-  fill: #5a5e66;
   width: 20px;
   height: 20px;
   vertical-align: 10px;
+  cursor: pointer;
+  fill: #5a5e66;
 }
 </style>

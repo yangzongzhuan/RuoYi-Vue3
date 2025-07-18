@@ -172,9 +172,9 @@ defineExpose({
 <style lang='scss' scoped>
 .setting-drawer-title {
   margin-bottom: 12px;
-  color: var(--el-text-color-primary, rgba(0, 0, 0, 0.85));
-  line-height: 22px;
   font-weight: bold;
+  line-height: 22px;
+  color: var(--el-text-color-primary, rgb(0, 0, 0, 0.85));
 
   .drawer-title {
     font-size: 14px;
@@ -183,16 +183,16 @@ defineExpose({
 
 .setting-drawer-block-checbox {
   display: flex;
-  justify-content: flex-start;
   align-items: center;
+  justify-content: flex-start;
   margin-top: 10px;
   margin-bottom: 20px;
 
   .setting-drawer-block-checbox-item {
     position: relative;
     margin-right: 16px;
-    border-radius: 2px;
     cursor: pointer;
+    border-radius: 2px;
 
     img {
       width: 48px;
@@ -207,21 +207,21 @@ defineExpose({
       height: 100%;
       padding-top: 15px;
       padding-left: 24px;
-      color: #1890ff;
-      font-weight: 700;
       font-size: 14px;
+      font-weight: 700;
+      color: #1890ff;
     }
   }
 }
 
 .drawer-item {
-  color: var(--el-text-color-regular, rgba(0, 0, 0, 0.65));
   padding: 12px 0;
   font-size: 14px;
+  color: var(--el-text-color-regular, rgb(0, 0, 0, 0.65));
 
   .comp-style {
     float: right;
-    margin: -3px 8px 0px 0px;
+    margin: -3px 8px 0 0;
   }
 }
 </style>

@@ -243,25 +243,29 @@ onMounted(() => {
 
 <style scoped lang="scss">
 .file-upload-darg {
-  opacity: 0.5;
   background: #c8ebfb;
+  opacity: 0.5;
 }
+
 .upload-file-uploader {
   margin-bottom: 5px;
 }
+
 .upload-file-list .el-upload-list__item {
-  border: 1px solid #e4e7ed;
-  line-height: 2;
-  margin-bottom: 10px;
   position: relative;
+  margin-bottom: 10px;
+  line-height: 2;
+  border: 1px solid #e4e7ed;
   transition: none !important;
 }
+
 .upload-file-list .ele-upload-list__item-content {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   color: inherit;
 }
+
 .ele-upload-list__item-content-action .el-link {
   margin-right: 10px;
 }

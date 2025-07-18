@@ -188,9 +188,11 @@ function onRadioChange() {
 .el-input-number--small, .el-select, .el-select--small {
     margin: 0 0.5rem;
 }
+
 .el-select, .el-select--small {
     width: 8rem;
 }
+
 .el-select.multiselect, .el-select--small.multiselect {
     width: 17.8rem;
 }

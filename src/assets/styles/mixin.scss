@@ -1,8 +1,8 @@
 @mixin clearfix {
-  &:after {
-    content: "";
-    display: table;
+  &::after {
     clear: both;
+    display: table;
+    content: "";
   }
 }
 
@@ -28,39 +28,34 @@
 }
 
 @mixin pct($pct) {
-  width: #{$pct};
   position: relative;
+  width: #{$pct};
   margin: 0 auto;
 }
 
 @mixin triangle($width, $height, $color, $direction) {
-  $width: $width/2;
+  $width: $width / 2;
   $color-border-style: $height solid $color;
   $transparent-border-style: $width solid transparent;
-  height: 0;
-  width: 0;
 
-  @if $direction==up {
+  width: 0;
+  height: 0;
+
+  @if $direction == up {
+    border-right: $transparent-border-style;
     border-bottom: $color-border-style;
     border-left: $transparent-border-style;
-    border-right: $transparent-border-style;
-  }
-
-  @else if $direction==right {
-    border-left: $color-border-style;
+  } @else if $direction == right {
     border-top: $transparent-border-style;
     border-bottom: $transparent-border-style;
-  }
-
-  @else if $direction==down {
+    border-left: $color-border-style;
+  } @else if $direction == down {
     border-top: $color-border-style;
-    border-left: $transparent-border-style;
     border-right: $transparent-border-style;
-  }
-
-  @else if $direction==left {
-    border-right: $color-border-style;
+    border-left: $transparent-border-style;
+  } @else if $direction == left {
     border-top: $transparent-border-style;
+    border-right: $color-border-style;
     border-bottom: $transparent-border-style;
   }
 }

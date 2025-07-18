@@ -11,10 +11,10 @@ body {
   margin: 0;
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+  text-rendering: optimizelegibility;
   --el-font-family:
-    -apple-system, BlinkMacSystemFont, 'Source Han Sans SC', 'Noto Sans SC', 'Noto Sans CJK SC', Arial, 'Noto Sans',
-    Roboto, 'Segoe UI', 'Helvetica Neue', arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
+    -apple-system, blinkmacsystemfont, 'Source Han Sans SC', 'Noto Sans SC', 'Noto Sans CJK SC', arial, 'Noto Sans',
+    roboto, 'Segoe UI', 'Helvetica Neue', arial, 'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
     'Segoe UI Symbol', 'Noto Color Emoji';
 
   font-family:
@@ -28,8 +28,8 @@ label {
 }
 
 html {
-  height: 100%;
   box-sizing: border-box;
+  height: 100%;
 }
 
 #app {
@@ -37,13 +37,13 @@ html {
 }
 
 *,
-*:before,
-*:after {
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
 .no-padding {
-  padding: 0px !important;
+  padding: 0 !important;
 }
 
 .padding-content {
@@ -58,9 +58,9 @@ a:active {
 a,
 a:focus,
 a:hover {
-  cursor: pointer;
   color: inherit;
   text-decoration: none;
+  cursor: pointer;
 }
 
 div:focus {
@@ -96,25 +96,25 @@ div:focus {
 }
 
 .clearfix {
-  &:after {
-    visibility: hidden;
+  &::after {
+    clear: both;
     display: block;
+    visibility: hidden;
+    height: 0;
     font-size: 0;
     content: " ";
-    clear: both;
-    height: 0;
   }
 }
 
 aside {
-  background: #eef1f6;
+  display: block;
   padding: 8px 24px;
   margin-bottom: 20px;
-  border-radius: 2px;
-  display: block;
-  line-height: 32px;
   font-size: 16px;
+  line-height: 32px;
   color: #2c3e50;
+  background: #eef1f6;
+  border-radius: 2px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
@@ -128,14 +128,14 @@ aside {
   }
 }
 
-//main-container全局样式
+// main-container全局样式
 .app-container {
   padding: 20px;
 }
 
 .components-container {
-  margin: 30px 50px;
   position: relative;
+  margin: 30px 50px;
 }
 
 .text-center {
@@ -143,14 +143,14 @@ aside {
 }
 
 .sub-navbar {
-  height: 50px;
-  line-height: 50px;
   position: relative;
   width: 100%;
-  text-align: right;
+  height: 50px;
   padding-right: 20px;
+  line-height: 50px;
+  text-align: right;
+  background: linear-gradient(90deg, rgb(32, 182, 249, 1) 0%, rgb(32, 182, 249, 1) 0%, rgb(33, 120, 241, 1) 100%, rgb(33, 120, 241, 1) 100%);
   transition: 600ms ease position;
-  background: linear-gradient(90deg, rgba(32, 182, 249, 1) 0%, rgba(32, 182, 249, 1) 0%, rgba(33, 120, 241, 1) 100%, rgba(33, 120, 241, 1) 100%);
 
   .subtitle {
     font-size: 20px;
@@ -181,7 +181,7 @@ aside {
 
   .filter-item {
     display: inline-block;
-    vertical-align: middle;
     margin-bottom: 10px;
+    vertical-align: middle;
   }
 }

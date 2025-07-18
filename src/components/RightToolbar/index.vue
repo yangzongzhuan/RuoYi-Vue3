@@ -138,21 +138,24 @@ function toggleCheckAll() {
 
 <style lang='scss' scoped>
 :deep(.el-transfer__button) {
-  border-radius: 50%;
   display: block;
-  margin-left: 0px;
+  margin-left: 0;
+  border-radius: 50%;
 }
+
 :deep(.el-transfer__button:first-child) {
   margin-bottom: 10px;
 }
+
 :deep(.el-dropdown-menu__item) {
-  line-height: 30px;
   padding: 0 17px;
+  line-height: 30px;
 }
+
 .check-line {
   width: 90%;
   height: 1px;
-  background-color: #ccc;
   margin: 3px auto;
+  background-color: #ccc;
 }
 </style>

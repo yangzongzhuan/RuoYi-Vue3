@@ -227,18 +227,6 @@ getCookie()
   }
 }
 
-.el-login-footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 40px;
-  font-size: 12px;
-  line-height: 40px;
-  color: #fff;
-  text-align: center;
-  letter-spacing: 1px;
-}
-
 .login-code-img {
   height: 40px;
   padding-left: 12px;

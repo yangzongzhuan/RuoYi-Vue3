@@ -1,11 +1,11 @@
 @use './variables.module.scss' as variables;
-#app {
 
+#app {
   .main-container {
-    min-height: 100%;
-    transition: margin-left .28s;
-    margin-left: variables.$base-sidebar-width;
     position: relative;
+    min-height: 100%;
+    margin-left: variables.$base-sidebar-width;
+    transition: margin-left .28s;
   }
 
   .sidebarHide {
@@ -13,18 +13,18 @@
   }
 
   .sidebar-container {
-    transition: width 0.28s;
-    width: variables.$base-sidebar-width !important;
-    height: 100%;
     position: fixed;
-    font-size: 0px;
     top: 0;
     bottom: 0;
     left: 0;
     z-index: 1001;
+    width: variables.$base-sidebar-width !important;
+    height: 100%;
     overflow: hidden;
-    -webkit-box-shadow: 2px 0 6px rgba(0,21,41,.35);
-    box-shadow: 0px 0px 8px 0px rgba(0, 0, 0, 0.1);
+    font-size: 0;
+    box-shadow: 2px 0 6px rgb(0,21,41,.35);
+    box-shadow: 0 0 8px 0 rgb(0, 0, 0, 0.1);
+    transition: width 0.28s;
 
     // reset element-ui css
     .horizontal-collapse-transition {
@@ -36,7 +36,7 @@
     }
 
     .el-scrollbar__bar.is-vertical {
-      right: 0px;
+      right: 0;
     }
 
     .el-scrollbar {
@@ -64,9 +64,9 @@
     // }
 
     .el-menu {
-      border: none;
-      height: 100%;
       width: 100% !important;
+      height: 100%;
+      border: none;
     }
 
     .el-menu-item, .menu-title {
@@ -80,7 +80,7 @@
     .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgb(0, 0, 0, 0.06) !important;
       }
     }
 
@@ -93,7 +93,7 @@
       min-width: variables.$base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgb(0, 0, 0, 0.06) !important;
       }
     }
 
@@ -117,8 +117,8 @@
     }
 
     .sub-menu-title-noDropdown {
-      padding: 0 !important;
       position: relative;
+      padding: 0 !important;
 
       .el-tooltip {
         padding: 0 !important;
@@ -146,18 +146,19 @@
       .el-sub-menu {
         &>.el-sub-menu__title {
           &>span {
-            height: 0;
-            width: 0;
-            overflow: hidden;
-            visibility: hidden;
             display: inline-block;
+            visibility: hidden;
+            width: 0;
+            height: 0;
+            overflow: hidden;
           }
+
           &>i {
-            height: 0;
-            width: 0;
-            overflow: hidden;
-            visibility: hidden;
             display: inline-block;
+            visibility: hidden;
+            width: 0;
+            height: 0;
+            overflow: hidden;
           }
         }
       }
@@ -171,25 +172,24 @@
   // mobile responsive
   .mobile {
     .main-container {
-      margin-left: 0px;
+      margin-left: 0;
     }
 
     .sidebar-container {
-      transition: transform .28s;
       width: variables.$base-sidebar-width !important;
+      transition: transform .28s;
     }
 
     &.hideSidebar {
       .sidebar-container {
         pointer-events: none;
-        transition-duration: 0.3s;
         transform: translate3d(-(variables.$base-sidebar-width), 0, 0);
+        transition-duration: 0.3s;
       }
     }
   }
 
   .withoutAnimation {
-
     .main-container,
     .sidebar-container {
       transition: none;
@@ -209,7 +209,7 @@
   .el-menu-item {
     &:hover {
       // you can use $sub-menuHover
-      background-color: rgba(0, 0, 0, 0.06) !important;
+      background-color: rgb(0, 0, 0, 0.06) !important;
     }
   }
 

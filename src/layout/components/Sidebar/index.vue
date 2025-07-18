@@ -77,13 +77,13 @@ const activeMenu = computed(() => {
   }
 
   .el-menu {
-    border: none;
-    height: 100%;
     width: 100% !important;
+    height: 100%;
+    border: none;
 
     .el-menu-item, .el-sub-menu__title {
       &:hover {
-        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+        background-color: var(--menu-hover, rgb(0, 0, 0, 0.06)) !important;
       }
     }
 
@@ -92,7 +92,7 @@ const activeMenu = computed(() => {
 
       &.is-active {
         color: var(--menu-active-text, #145DFF);
-        background-color: var(--menu-hover, rgba(0, 0, 0, 0.06)) !important;
+        background-color: var(--menu-hover, rgb(0, 0, 0, 0.06)) !important;
       }
     }
 

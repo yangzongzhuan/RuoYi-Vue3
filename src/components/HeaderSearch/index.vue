@@ -213,9 +213,9 @@ watch(searchPool, (list) => {
 <style lang='scss' scoped>
 .header-search {
   .search-icon {
-    cursor: pointer;
     font-size: 18px;
     vertical-align: middle;
+    cursor: pointer;
   }
 }
 
@@ -225,8 +225,8 @@ watch(searchPool, (list) => {
 
   .search-item {
     display: flex;
-    height: 48px;
     align-items: center;
+    height: 48px;
     padding-right: 10px;
 
     .left {
@@ -240,21 +240,22 @@ watch(searchPool, (list) => {
     }
 
     .search-info {
-      padding-left: 5px;
-      margin-top: 10px;
-      width: 100%;
       display: flex;
+      flex: 1;
       flex-direction: column;
       justify-content: flex-start;
-      flex: 1;
+      width: 100%;
+      padding-left: 5px;
+      margin-top: 10px;
 
       .menu-title,
       .menu-path {
         height: 20px;
       }
+
       .menu-path {
-        color: #ccc;
         font-size: 10px;
+        color: #ccc;
       }
     }
   }
