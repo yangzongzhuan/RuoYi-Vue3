@@ -81,7 +81,7 @@ service.interceptors.response.use((res) => {
   const msg = errorCode[code] || res.data.msg || errorCode.default
   // 二进制数据则直接返回
   if (res.request.responseType === 'blob' || res.request.responseType === 'arraybuffer') {
-    return res.data
+    return res
   }
   if (code === 401) {
     if (!isRelogin.show) {
@@ -144,14 +144,15 @@ export function download(url, params, filename, config) {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     responseType: 'blob',
     ...config,
-  }).then(async (data) => {
-    const isBlob = blobValidate(data)
+  }).then(async (res) => {
+    const resData = res.data
+    const isBlob = blobValidate(resData)
     if (isBlob) {
-      const blob = new Blob([data])
+      const blob = new Blob([resData])
       saveAs(blob, filename)
     }
     else {
-      const resText = await data.text()
+      const resText = await resData.text()
       const rspObj = JSON.parse(resText)
       const errMsg = errorCode[rspObj.code] || rspObj.msg || errorCode.default
       ElMessage.error(errMsg)
