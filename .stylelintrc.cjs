@@ -27,6 +27,9 @@ module.exports = {
   ],
   // 配置 rules
   rules: {
+    'scss/dollar-variable-pattern': null,
+    'scss/at-rule-no-unknown': true,
+    'scss/at-mixin-pattern': null,
     // 开启 Prettier 自动格式化功能
     // 'prettier/prettier': true,
     // 屏蔽background-color: rgba(0, 0, 0, 0.5);这种写法引起的警告 start
@@ -35,11 +38,9 @@ module.exports = {
     'hue-degree-notation': 'number',
     'selector-class-pattern': null,
     'keyframes-name-pattern': null,
-    'scss/dollar-variable-pattern': null,
     'property-no-unknown': null,
     // ----
     'at-rule-no-unknown': null,
-    'scss/at-rule-no-unknown': true,
     'no-descending-specificity': null,
     'selector-pseudo-class-no-unknown': [
       true,
@@ -48,6 +49,7 @@ module.exports = {
       },
     ],
     'custom-property-empty-line-before': 'never',
-    'scss/at-mixin-pattern': null,
+    // 李龙的数字字体
+    'font-family-no-missing-generic-family-keyword': null,
   },
 }

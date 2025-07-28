@@ -15,13 +15,6 @@
 
         <Screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <el-tooltip content="主题模式" effect="dark" placement="bottom">
-          <div class="right-menu-item hover-effect theme-switch-wrapper" @click="toggleTheme">
-            <svg-icon v-if="settingsStore.isDark" icon-class="sunny" />
-            <svg-icon v-if="!settingsStore.isDark" icon-class="moon" />
-          </div>
-        </el-tooltip>
-
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <SizeSelect id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
@@ -98,10 +91,6 @@ function logout() {
 
 function setLayout() {
   emits('setLayout')
-}
-
-function toggleTheme() {
-  settingsStore.toggleTheme()
 }
 </script>
 

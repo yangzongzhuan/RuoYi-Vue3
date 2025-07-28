@@ -39,7 +39,7 @@
       </template>
 
       <sidebar-item
-        v-for="(child, index) in item.children"
+        v-for="(child, index) in sidebarRouterItem.children"
         :key="child.path + index"
         :is-nest="true"
         :item="child"
