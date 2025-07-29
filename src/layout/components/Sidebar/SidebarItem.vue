@@ -1,22 +1,45 @@
 <template>
-  <div v-if="!item.hidden">
-    <template v-if="hasOneShowingChild(item.children, item) && (!onlyOneChild.children || onlyOneChild.noShowingChildren) && !item.alwaysShow">
-      <app-link v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
+  <div v-if="!sidebarRouterItem.hidden">
+    <template
+      v-if="hasOneShowingChild(sidebarRouterItem.children, sidebarRouterItem)
+        && (!onlyOneChild.children || onlyOneChild.noShowingChildren)
+        && !sidebarRouterItem.alwaysShow"
+    >
+      <AppLink v-if="onlyOneChild.meta" :to="resolvePath(onlyOneChild.path, onlyOneChild.query)">
         <el-menu-item :index="resolvePath(onlyOneChild.path)" :class="{ 'submenu-title-noDropdown': !isNest }">
-          <svg-icon :icon-class="onlyOneChild.meta.icon || (item.meta && item.meta.icon)"/>
-          <template #title><span class="menu-title" :title="hasTitle(onlyOneChild.meta.title)">{{ onlyOneChild.meta.title }}</span></template>
+          <svg-icon
+            v-if="onlyOneChild.meta?.icon || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)"
+            :icon-class="onlyOneChild.meta?.icon || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)"
+          />
+          <template #title>
+            <!--  -->
+            <span
+              class="menu-title"
+              :style="
+                onlyOneChild.meta?.icon
+                  || (sidebarRouterItem.meta && sidebarRouterItem.meta.icon)
+                  ? 'margin-left: 10px;'
+                  : 'margin-left: 4px;'
+              "
+              :title="hasTitle(onlyOneChild.meta.title)"
+            >{{ onlyOneChild.meta.title }}</span>
+          </template>
         </el-menu-item>
-      </app-link>
+      </AppLink>
     </template>
 
-    <el-sub-menu v-else ref="subMenu" :index="resolvePath(item.path)" teleported>
-      <template v-if="item.meta" #title>
-        <svg-icon :icon-class="item.meta && item.meta.icon" />
-        <span class="menu-title" :title="hasTitle(item.meta.title)">{{ item.meta.title }}</span>
+    <el-sub-menu v-else :index="resolvePath(sidebarRouterItem.path)" teleported>
+      <template v-if="sidebarRouterItem.meta" #title>
+        <svg-icon :icon-class="sidebarRouterItem.meta && sidebarRouterItem.meta.icon" />
+        <span
+          class="menu-title"
+          style=" margin-left: 10px;"
+          :title="hasTitle(sidebarRouterItem.meta.title)"
+        >{{ sidebarRouterItem.meta.title }}</span>
       </template>
 
       <sidebar-item
-        v-for="(child, index) in item.children"
+        v-for="(child, index) in sidebarRouterItem.children"
         :key="child.path + index"
         :is-nest="true"
         :item="child"
@@ -28,23 +51,32 @@
 </template>
 
 <script setup>
+import { getNormalPath } from '@/utils/ruoyi'
 import { isExternal } from '@/utils/validate'
 import AppLink from './Link'
-import { getNormalPath } from '@/utils/ruoyi'
 
 const props = defineProps({
   // route object
   item: {
     type: Object,
-    required: true
+    required: true,
   },
   isNest: {
     type: Boolean,
-    default: false
+    default: false,
   },
   basePath: {
     type: String,
-    default: ''
+    default: '',
+  },
+})
+
+let sidebarRouterItem = computed(() => {
+  const newIconMetaOption = iconFormat(props.item)
+
+  return {
+    ...props.item,
+    ...newIconMetaOption,
   }
 })
 
@@ -54,11 +86,15 @@ function hasOneShowingChild(children = [], parent) {
   if (!children) {
     children = []
   }
-  const showingChildren = children.filter(item => {
+  const showingChildren = children.filter((item) => {
     if (item.hidden) {
       return false
     }
-    onlyOneChild.value = item
+    const newIconMetaOption = iconFormat(item)
+    onlyOneChild.value = {
+      ...item,
+      ...newIconMetaOption,
+    }
     return true
   })
 
@@ -69,7 +105,13 @@ function hasOneShowingChild(children = [], parent) {
 
   // Show parent if there are no child router to display
   if (showingChildren.length === 0) {
-    onlyOneChild.value = { ...parent, path: '', noShowingChildren: true }
+    const metaOptionFormat = iconFormat(parent)
+    onlyOneChild.value = {
+      ...parent,
+      ...metaOptionFormat,
+      path: '',
+      noShowingChildren: true,
+    }
     return true
   }
 
@@ -84,17 +126,29 @@ function resolvePath(routePath, routeQuery) {
     return props.basePath
   }
   if (routeQuery) {
-    let query = JSON.parse(routeQuery)
-    return { path: getNormalPath(props.basePath + '/' + routePath), query: query }
+    const query = JSON.parse(routeQuery)
+    return { path: getNormalPath(`${props.basePath}/${routePath}`), query }
   }
-  return getNormalPath(props.basePath + '/' + routePath)
+  return getNormalPath(`${props.basePath}/${routePath}`)
 }
 
-function hasTitle(title){
+function hasTitle(title) {
   if (title.length > 5) {
     return title
-  } else {
-    return ""
   }
+  else {
+    return ''
+  }
+}
+
+function iconFormat(item) {
+  let flag = {}
+  if (item.meta && item.meta.icon == '#') {
+    flag.meta = {
+      ...item.meta,
+      icon: '',
+    }
+  }
+  return flag
 }
 </script>

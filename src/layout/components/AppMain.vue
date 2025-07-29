@@ -1,9 +1,9 @@
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component, route }">
+    <router-view v-slot="slotProps">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagsViewStore.cachedViews">
-          <component v-if="!route.meta.link" :is="Component" :key="route.path"/>
+          <component :is="slotProps.Component" v-if="!slotProps.route.meta.link" :key="slotProps.route.path" />
         </keep-alive>
       </transition>
     </router-view>
@@ -13,9 +13,9 @@
 </template>
 
 <script setup>
-import copyright from "./Copyright/index"
-import iframeToggle from "./IframeToggle/index"
 import useTagsViewStore from '@/store/modules/tagsView'
+import copyright from './Copyright/index'
+import iframeToggle from './IframeToggle/index'
 
 const route = useRoute()
 const tagsViewStore = useTagsViewStore()
@@ -37,10 +37,11 @@ function addIframe() {
 
 <style lang="scss" scoped>
 .app-main {
+  position: relative;
+  width: 100%;
+
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
-  width: 100%;
-  position: relative;
   overflow: hidden;
 }
 
@@ -86,4 +87,3 @@ function addIframe() {
   border-radius: 3px;
 }
 </style>
-

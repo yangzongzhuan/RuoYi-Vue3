@@ -1,7 +1,8 @@
+import 'virtual:uno.css'
 import { createApp } from 'vue'
 
 import Cookies from 'js-cookie'
-
+// import { createApp } from 'vue'必须放在等层，否者ElementPlus按需引入会报isFunction is not a function
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'

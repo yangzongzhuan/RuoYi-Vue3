@@ -26,16 +26,17 @@
 </template>
 
 <script setup>
-import errImage from "@/assets/401_images/401.gif"
+import errImage from '@/assets/401_images/401.gif'
 
-let { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance()
 
-const errGif = ref(errImage + "?" + +new Date())
+const errGif = ref(`${errImage}?${+new Date()}`)
 
 function back() {
   if (proxy.$route.query.noGoBack) {
-    proxy.$router.push({ path: "/" })
-  } else {
+    proxy.$router.push({ path: '/' })
+  }
+  else {
     proxy.$router.go(-1)
   }
 }
@@ -46,33 +47,41 @@ function back() {
   width: 800px;
   max-width: 100%;
   margin: 100px auto;
+
   .pan-back-btn {
-    background: #008489;
     color: #fff;
+    background: #008489;
     border: none !important;
   }
+
   .pan-gif {
-    margin: 0 auto;
     display: block;
+    margin: 0 auto;
   }
+
   .pan-img {
     display: block;
-    margin: 0 auto;
     width: 100%;
+    margin: 0 auto;
   }
+
   .text-jumbo {
     font-size: 60px;
     font-weight: 700;
     color: #484848;
   }
+
   .list-unstyled {
     font-size: 14px;
+
     li {
       padding-bottom: 5px;
     }
+
     a {
       color: #008489;
       text-decoration: none;
+
       &:hover {
         text-decoration: underline;
       }

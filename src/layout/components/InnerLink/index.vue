@@ -1,28 +1,28 @@
 <template>
-  <div :style="'height:' + height" v-loading="loading" element-loading-text="正在加载页面，请稍候！">
+  <div v-loading="loading" :style="`height:${height}`" element-loading-text="正在加载页面，请稍候！">
     <iframe
       :id="iframeId"
+      ref="iframeRef"
       style="width: 100%; height: 100%"
       :src="src"
-      ref="iframeRef"
       frameborder="no"
-    ></iframe>
+    />
   </div>
 </template>
 
 <script setup>
-const props = defineProps({
+defineProps({
   src: {
     type: String,
-    default: "/"
+    default: '/',
   },
   iframeId: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 const loading = ref(true)
-const height = ref(document.documentElement.clientHeight - 94.5 + 'px')
+const height = ref(`${document.documentElement.clientHeight - 94.5}px`)
 const iframeRef = ref(null)
 
 onMounted(() => {

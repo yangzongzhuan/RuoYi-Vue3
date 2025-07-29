@@ -1,6 +1,6 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
+    <ScrollPane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
       <router-link
         v-for="tag in visitedViews"
         :key="tag.path"
@@ -18,8 +18,8 @@
           <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
         </span>
       </router-link>
-    </scroll-pane>
-    <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
+    </ScrollPane>
+    <ul v-show="visible" :style="{ left: `${left}px`, top: `${top}px` }" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">
         <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
       </li>
@@ -43,11 +43,11 @@
 </template>
 
 <script setup>
-import ScrollPane from './ScrollPane'
-import { getNormalPath } from '@/utils/ruoyi'
-import useTagsViewStore from '@/store/modules/tagsView'
-import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
+import useSettingsStore from '@/store/modules/settings'
+import useTagsViewStore from '@/store/modules/tagsView'
+import { getNormalPath } from '@/utils/ruoyi'
+import ScrollPane from './ScrollPane'
 
 const visible = ref(false)
 const top = ref(0)
@@ -73,7 +73,8 @@ watch(route, () => {
 watch(visible, (value) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
-  } else {
+  }
+  else {
     document.body.removeEventListener('click', closeMenu)
   }
 })
@@ -88,10 +89,11 @@ function isActive(r) {
 }
 
 function activeStyle(tag) {
-  if (!isActive(tag)) return {}
+  if (!isActive(tag))
+    return {}
   return {
-    "background-color": theme.value,
-    "border-color": theme.value
+    'background-color': theme.value,
+    'border-color': theme.value,
   }
 }
 
@@ -102,7 +104,9 @@ function isAffix(tag) {
 function isFirstView() {
   try {
     return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
-  } catch (err) {
+  }
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  catch (err) {
     return false
   }
 }
@@ -110,21 +114,23 @@ function isFirstView() {
 function isLastView() {
   try {
     return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
-  } catch (err) {
+  }
+  // eslint-disable-next-line unused-imports/no-unused-vars
+  catch (err) {
     return false
   }
 }
 
 function filterAffixTags(routes, basePath = '') {
   let tags = []
-  routes.forEach(route => {
+  routes.forEach((route) => {
     if (route.meta && route.meta.affix) {
-      const tagPath = getNormalPath(basePath + '/' + route.path)
+      const tagPath = getNormalPath(`${basePath}/${route.path}`)
       tags.push({
         fullPath: tagPath,
         path: tagPath,
         name: route.name,
-        meta: { ...route.meta }
+        meta: { ...route.meta },
       })
     }
     if (route.children) {
@@ -143,7 +149,7 @@ function initTags() {
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
-       useTagsViewStore().addVisitedView(tag)
+      useTagsViewStore().addVisitedView(tag)
     }
   }
 }
@@ -185,7 +191,7 @@ function closeSelectedTag(view) {
 }
 
 function closeRightTags() {
-  proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
+  proxy.$tab.closeRightPage(selectedTag.value).then((visitedViews) => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -193,7 +199,7 @@ function closeRightTags() {
 }
 
 function closeLeftTags() {
-  proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
+  proxy.$tab.closeLeftPage(selectedTag.value).then((visitedViews) => {
     if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
@@ -220,13 +226,15 @@ function toLastView(visitedViews, view) {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
-  } else {
+  }
+  else {
     // now the default is to redirect to the home page if there is no tags-view,
     // you can adjust it according to your needs.
     if (view.name === 'Dashboard') {
       // to reload home page
-      router.replace({ path: '/redirect' + view.fullPath })
-    } else {
+      router.replace({ path: `/redirect${view.fullPath}` })
+    }
+    else {
       router.push('/')
     }
   }
@@ -241,7 +249,8 @@ function openMenu(tag, e) {
 
   if (l > maxLeft) {
     left.value = maxLeft
-  } else {
+  }
+  else {
     left.value = l
   }
 
@@ -261,26 +270,26 @@ function handleScroll() {
 
 <style lang="scss" scoped>
 .tags-view-container {
-  height: 34px;
   width: 100%;
+  height: 34px;
   background: var(--tags-bg, #fff);
   border-bottom: 1px solid var(--tags-item-border, #d8dce5);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  box-shadow: 0 1px 3px 0 rgb(0, 0, 0, .12), 0 0 3px 0 rgb(0, 0, 0, .04);
 
   .tags-view-wrapper {
     .tags-view-item {
-      display: inline-block;
       position: relative;
-      cursor: pointer;
+      display: inline-block;
       height: 26px;
-      line-height: 26px;
-      border: 1px solid var(--tags-item-border, #d8dce5);
-      color: var(--tags-item-text, #495060);
-      background: var(--tags-item-bg, #fff);
       padding: 0 8px;
-      font-size: 12px;
-      margin-left: 5px;
       margin-top: 4px;
+      margin-left: 5px;
+      font-size: 12px;
+      line-height: 26px;
+      color: var(--tags-item-text, #495060);
+      cursor: pointer;
+      background: var(--tags-item-bg, #fff);
+      border: 1px solid var(--tags-item-border, #d8dce5);
 
       &:first-of-type {
         margin-left: 15px;
@@ -291,19 +300,19 @@ function handleScroll() {
       }
 
       &.active {
-        background-color: #42b983;
         color: #fff;
+        background-color: #42b983;
         border-color: #42b983;
 
         &::before {
-          content: '';
-          background: #fff;
+          position: relative;
           display: inline-block;
           width: 8px;
           height: 8px;
-          border-radius: 50%;
-          position: relative;
           margin-right: 5px;
+          content: '';
+          background: #fff;
+          border-radius: 50%;
         }
       }
     }
@@ -314,22 +323,22 @@ function handleScroll() {
   }
 
   .contextmenu {
-    margin: 0;
-    background: var(--el-bg-color-overlay, #fff);
-    z-index: 3000;
     position: absolute;
-    list-style-type: none;
+    z-index: 3000;
     padding: 5px 0;
-    border-radius: 4px;
+    margin: 0;
     font-size: 12px;
     font-weight: 400;
     color: var(--tags-item-text, #333);
-    box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, .3);
+    list-style-type: none;
+    background: var(--el-bg-color-overlay, #fff);
     border: 1px solid var(--el-border-color-light, #e4e7ed);
+    border-radius: 4px;
+    box-shadow: 2px 2px 3px 0 rgb(0, 0, 0, .3);
 
     li {
-      margin: 0;
       padding: 7px 16px;
+      margin: 0;
       cursor: pointer;
 
       &:hover {
@@ -341,29 +350,29 @@ function handleScroll() {
 </style>
 
 <style lang="scss">
-//reset element css of el-icon-close
+// reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
       width: 16px;
       height: 16px;
       vertical-align: 2px;
-      border-radius: 50%;
       text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
+      border-radius: 50%;
       transform-origin: 100% 50%;
+      transition: all .3s cubic-bezier(.645, .045, .355, 1);
 
-      &:before {
-        transform: scale(.6);
+      &::before {
         display: inline-block;
         vertical-align: -3px;
+        transform: scale(.6);
       }
 
       &:hover {
-        background-color: var(--tags-close-hover, #b4bccc);
-        color: #fff;
         width: 12px !important;
         height: 12px !important;
+        color: #fff;
+        background-color: var(--tags-close-hover, #b4bccc);
       }
     }
   }
