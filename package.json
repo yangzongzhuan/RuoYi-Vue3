@@ -1,6 +1,6 @@
 {
   "name": "ruoyi",
-  "version": "3.9.0",
+  "version": "25.0203.1218",
   "description": "若依管理系统",
   "author": "若依",
   "license": "MIT",
@@ -38,14 +38,13 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "5.2.4",
-    "sass-embedded": "1.89.1",
-    "unplugin-auto-import": "0.18.6",
+    "rollup-plugin-visualizer": "^5.14.0",
+    "sass": "1.77.5",
+    "unplugin-auto-import": "^0.18.6",
+    "unplugin-vue-components": "^28.0.0",
     "unplugin-vue-setup-extend-plus": "1.0.1",
     "vite": "6.3.5",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1"
-  },
-  "overrides": {
-    "quill": "2.0.2"
   }
 }

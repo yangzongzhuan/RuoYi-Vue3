@@ -134,7 +134,7 @@
 
       <!-- 调度日志详细 -->
       <el-dialog title="调度日志详细" v-model="open" width="700px" append-to-body>
-         <el-form :model="form" label-width="100px">
+         <el-form label-position="top" :model="form" label-width="100px">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="日志序号：">{{ form.jobLogId }}</el-form-item>
