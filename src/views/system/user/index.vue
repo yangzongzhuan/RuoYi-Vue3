@@ -1,9 +1,9 @@
 <template>
   <div class="app-container">
     <el-row :gutter="20">
-      <splitpanes :horizontal="appStore.device === 'mobile'" class="default-theme">
+      <el-splitter :layout="appStore.device === 'mobile'? 'vertical' : 'horizontal' " class="default-theme">
         <!--部门数据-->
-        <pane size="16">
+        <el-splitter-panel size="16">
           <el-col>
             <div class="head-container">
               <el-input v-model="deptName" placeholder="请输入部门名称" clearable prefix-icon="Search" style="margin-bottom: 20px" />
@@ -12,9 +12,9 @@
               <el-tree :data="deptOptions" :props="{ label: 'label', children: 'children' }" :expand-on-click-node="false" :filter-node-method="filterNode" ref="deptTreeRef" node-key="id" highlight-current default-expand-all @node-click="handleNodeClick" />
             </div>
           </el-col>
-        </pane>
+        </el-splitter-panel>
         <!--用户数据-->
-        <pane size="84">
+        <el-splitter-panel size="84">
           <el-col>
             <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
               <el-form-item label="用户名称" prop="userName">
@@ -97,8 +97,8 @@
             </el-table>
             <pagination v-show="total > 0" :total="total" v-model:page="queryParams.pageNum" v-model:limit="queryParams.pageSize" @pagination="getList" />
           </el-col>
-        </pane>
-      </splitpanes>
+          </el-splitter-panel>
+      </el-splitter>
     </el-row>
 
     <!-- 添加或修改用户配置对话框 -->
@@ -217,8 +217,6 @@
 import { getToken } from "@/utils/auth"
 import useAppStore from '@/store/modules/app'
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user"
-import { Splitpanes, Pane } from "splitpanes"
-import "splitpanes/dist/splitpanes.css"
 
 const router = useRouter()
 const appStore = useAppStore()
