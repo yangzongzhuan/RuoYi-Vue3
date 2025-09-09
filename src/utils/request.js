@@ -146,10 +146,17 @@ export function download(url, params, filename, config) {
     ...config,
   }).then(async (res) => {
     const resData = res.data
+    let headerFileName = filename
+    if (config && (config.filename || config.fileName)) {
+      headerFileName = config.filename || config.fileName
+    }
+    if (res.headers && res.headers.filename) {
+      headerFileName = decodeURIComponent(res.headers.filename)
+    }
     const isBlob = blobValidate(resData)
     if (isBlob) {
       const blob = new Blob([resData])
-      saveAs(blob, filename)
+      saveAs(blob, headerFileName)
     }
     else {
       const resText = await resData.text()
