@@ -48,5 +48,8 @@
     "scss",
     "pcss",
     "postcss"
-  ]
+  ],
+  // 加上这段不然vite-plugin-stylelin 不生效
+  "stylelint.validate": ["css", "less", "postcss", "scss", "vue", "sass"],
+  "stylelint.configFile": ".stylelintrc.cjs"
 }
