@@ -221,7 +221,23 @@
 
     <!-- 用户导入对话框 -->
     <el-dialog v-model="upload.open" :title="upload.title" width="400px" append-to-body>
-      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers" :action="`${upload.url}?updateSupport=${upload.updateSupport}`" :disabled="upload.isUploading" :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+      <el-upload
+        ref="uploadRef"
+        :limit="1"
+        accept=".xlsx, .xls"
+        :headers="upload.headers"
+        :action="`${upload.url}?updateSupport=${upload.updateSupport}`"
+        :disabled="upload.isUploading"
+        :on-progress="handleFileUploadProgress"
+        :on-success="handleFileSuccess"
+        :on-change="handleFileChange"
+        :on-remove="handleFileRemove"
+        :auto-upload="false"
+        drag
+      >
+        <el-icon class="el-icon--upload">
+          <upload-filled />
+        </el-icon>
         <el-icon class="el-icon--upload">
           <upload-filled />
         </el-icon>
@@ -501,7 +517,15 @@ function importTemplate() {
 function handleFileUploadProgress(_event, _file, _fileList) {
   upload.isUploading = true
 }
+/** 文件选择处理 */
+function handleFileChange(file, _fileList) {
+  upload.selectedFile = file
+}
 
+/** 文件删除处理 */
+function handleFileRemove(_file, _fileList) {
+  upload.selectedFile = null
+}
 /** 文件上传成功处理 */
 function handleFileSuccess(response, file, _fileList) {
   upload.open = false
@@ -517,6 +541,13 @@ function handleFileSuccess(response, file, _fileList) {
 
 /** 提交上传文件 */
 function submitFileForm() {
+  const file = upload.selectedFile
+  let flagName = file?.name || ''
+  let flag = flagName.toLowerCase().endsWith('.xls') || flagName.toLowerCase().endsWith('.xlsx')
+  if (!file || file.length === 0 || !flag) {
+    proxy.$modal.msgError('请选择后缀为 “xls”或“xlsx”的文件。')
+    return
+  }
   proxy.$refs.uploadRef.submit()
 }
 

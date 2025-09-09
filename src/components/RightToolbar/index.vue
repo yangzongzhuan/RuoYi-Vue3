@@ -7,7 +7,7 @@
       <el-tooltip class="item" effect="dark" content="刷新" placement="top">
         <el-button circle icon="Refresh" @click="refresh()" />
       </el-tooltip>
-      <el-tooltip v-if="columns" class="item" effect="dark" content="显隐列" placement="top">
+      <el-tooltip v-if="columns && Object.keys(columns).length > 0" class="item" effect="dark" content="显隐列" placement="top">
         <el-button v-if="showColumnsType === 'transfer'" circle icon="Menu" @click="showColumn()" />
         <el-dropdown v-if="showColumnsType === 'checkbox'" trigger="click" :hide-on-click="false" style="padding-left: 12px">
           <el-button circle icon="Menu" />
@@ -50,7 +50,7 @@ const props = defineProps({
   },
   /* 显隐列信息 */
   // columns: {
-  //   type: Array,
+  //   type: Objact,
   // },
   /* 是否显示检索图标 */
   search: {
