@@ -23,7 +23,7 @@ export default {
    * 是否显示 tagsView
    */
   tagsView: true,
-  
+
   /**
    * 显示页签图标
    */
@@ -32,7 +32,7 @@ export default {
   /**
    * 是否固定头部
    */
-  fixedHeader: false,
+  fixedHeader: true,
 
   /**
    * 是否显示logo
@@ -52,6 +52,5 @@ export default {
   /**
    * 底部版权文本内容
    */
-  footerContent: 'Copyright © 2018-2025 RuoYi. All Rights Reserved.'
+  footerContent: 'Copyright © xxxx-xxxx',
 }
-

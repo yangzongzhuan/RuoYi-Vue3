@@ -1,19 +1,20 @@
 {
   "name": "ruoyi",
-  "version": "3.9.0",
-  "description": "若依管理系统",
-  "author": "若依",
-  "license": "MIT",
   "type": "module",
+  "version": "3.9.0",
+  "description": "",
+  "author": "",
+  "license": "MIT",
   "scripts": {
     "dev": "vite",
     "build:prod": "vite build",
     "build:stage": "vite build --mode staging",
-    "preview": "vite preview"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://gitee.com/y_project/RuoYi-Vue.git"
+    "build:test": "vite build --mode test",
+    "preview": "vite preview",
+    "lint-staged": "npx lint-staged",
+    "prepare": "husky install",
+    "lint:script": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix",
+    "lint:style": "stylelint --fix \"src/**/*.{css,scss,html,vue}\""
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.3.1",
@@ -22,14 +23,15 @@
     "axios": "1.9.0",
     "clipboard": "2.0.11",
     "echarts": "5.6.0",
-    "element-plus": "2.10.7",
+    "element-plus": "2.9.11",
     "file-saver": "2.0.5",
-    "fuse.js": "6.6.2",
-    "js-beautify": "1.14.11",
+    "fuse.js": "7.1.0",
+    "js-beautify": "1.15.4",
     "js-cookie": "3.0.5",
     "jsencrypt": "3.3.2",
     "nprogress": "0.2.0",
     "pinia": "3.0.2",
+    "sortablejs": "^1.15.6",
     "splitpanes": "4.0.4",
     "vue": "3.5.16",
     "vue-cropper": "1.1.1",
@@ -37,15 +39,46 @@
     "vuedraggable": "4.1.0"
   },
   "devDependencies": {
+    "@antfu/eslint-config": "^4.13.2",
+    "@eslint/eslintrc": "^3.3.1",
+    "@unocss/eslint-plugin": "^66.1.2",
+    "@unocss/preset-uno": "^66.1.4",
     "@vitejs/plugin-vue": "5.2.4",
+    "eslint": "^9.28.0",
+    "eslint-plugin-format": "^1.0.1",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.1.0",
+    "postcss": "8.4.29",
+    "postcss-scss": "^4.0.9",
     "sass-embedded": "1.89.1",
-    "unplugin-auto-import": "0.18.6",
-    "unplugin-vue-setup-extend-plus": "1.0.1",
+    "stylelint": "^16.20.0",
+    "stylelint-config-html": "^1.1.0",
+    "stylelint-config-recess-order": "^6.0.0",
+    "stylelint-config-standard": "^38.0.0",
+    "stylelint-config-standard-scss": "^15.0.1",
+    "stylelint-config-standard-vue": "^1.0.0",
+    "stylelint-order": "^7.0.0",
+    "stylelint-scss": "^6.12.0",
+    "unocss": "^66.1.4",
+    "unplugin-auto-import": "^19.3.0",
+    "unplugin-vue-components": "^28.7.0",
     "vite": "6.3.5",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-svg-icons": "2.0.1"
   },
   "overrides": {
     "quill": "2.0.2"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix"
+    ],
+    "*.vue": [
+      "eslint --fix",
+      "stylelint --fix --allow-empty-input"
+    ],
+    "*.{scss,less,styl,html}": [
+      "stylelint --fix --allow-empty-input"
+    ]
   }
 }

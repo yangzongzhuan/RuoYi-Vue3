@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/eqeqeq -->
 <template>
   <div>
     <template v-for="(item, index) in options">
@@ -7,27 +8,26 @@
           :key="item.value"
           :index="index"
           :class="item.elTagClass"
-        >{{ item.label + " " }}</span>
+        >{{ `${item.label} ` }}</span>
         <el-tag
           v-else
+          :key="`${item.value}`"
           :disable-transitions="true"
-          :key="item.value + ''"
           :index="index"
           :type="item.elTagType"
           :class="item.elTagClass"
-        >{{ item.label + " " }}</el-tag>
+        >
+          {{ `${item.label} ` }}
+        </el-tag>
       </template>
     </template>
     <template v-if="unmatch && showValue">
-      {{ unmatchArray | handleArray }}
+      {{ handleArray(unmatchArray) }}
     </template>
   </div>
 </template>
 
 <script setup>
-// 记录未匹配的项
-const unmatchArray = ref([])
-
 const props = defineProps({
   // 数据
   options: {
@@ -43,34 +43,77 @@ const props = defineProps({
   },
   separator: {
     type: String,
-    default: ",",
-  }
+    default: ',',
+  },
 })
 
-const values = computed(() => {
-  if (props.value === null || typeof props.value === 'undefined' || props.value === '') return []
-  return Array.isArray(props.value) ? props.value.map(item => '' + item) : String(props.value).split(props.separator)
-})
+// 记录未匹配的项
+const unmatchArray = ref([])
+let values = ref([])
+let unmatch = ref(false)
+watch(
+  [() => props.value, () => props.options],
+  () => {
+    unmatchArray.value = []
+    unmatch.value = false
+    values.value = []
 
-const unmatch = computed(() => {
-  unmatchArray.value = []
-  // 没有value不显示
-  if (props.value === null || typeof props.value === 'undefined' || props.value === '' || !Array.isArray(props.options) || props.options.length === 0) return false
-  // 传入值为数组
-  let unmatch = false // 添加一个标志来判断是否有未匹配项
-  values.value.forEach(item => {
-    if (!props.options.some(v => v.value === item)) {
-      unmatchArray.value.push(item)
-      unmatch = true // 如果有未匹配项，将标志设置为true
+    if (!(props.value === null || typeof props.value === 'undefined' || props.value === '')) {
+      if (Array.isArray(props.value)) {
+        values.value = props.value.map(item => `${item}`)
+      }
+      else {
+        values.value = String(props.value).split(props.separator)
+      }
+
+      //
+
+      values.value.forEach((item) => {
+        if (!props.options.some(v => v.value === item)) {
+          unmatchArray.value.push(item)
+          unmatch.value = true // 如果有未匹配项，将标志设置为true
+        }
+      })
     }
-  })
-  return unmatch // 返回标志的值
-})
+  },
+  {
+    immediate: true,
+  },
+)
+// const values = computed(() => {
+//   if (props.value === null || typeof props.value === 'undefined' || props.value === '')
+//     return []
+//   return Array.isArray(props.value) ? props.value.map(item => `${item}`) : String(props.value).split(props.separator)
+// })
+
+// const unmatch = computed(() => {
+//   unmatchArray.value = []
+//   // 没有value不显示
+//   if (
+//     props.value === null
+//     || typeof props.value === 'undefined'
+//     || props.value === ''
+//     || !Array.isArray(props.options)
+//     || props.options.length === 0
+//   ) {
+//     return false
+//   }
+//   // 传入值为数组
+//   let unmatch = false // 添加一个标志来判断是否有未匹配项
+//   values.value.forEach((item) => {
+//     if (!props.options.some(v => v.value === item)) {
+//       unmatchArray.value.push(item)
+//       unmatch = true // 如果有未匹配项，将标志设置为true
+//     }
+//   })
+//   return unmatch // 返回标志的值
+// })
 
 function handleArray(array) {
-  if (array.length === 0) return ""
+  if (array.length === 0)
+    return ''
   return array.reduce((pre, cur) => {
-    return pre + " " + cur
+    return `${pre} ${cur}`
   })
 }
 </script>

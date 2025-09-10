@@ -9,15 +9,15 @@ export default defineComponent({
   props: {
     iconClass: {
       type: String,
-      required: true
+      required: true,
     },
     className: {
       type: String,
-      default: ''
+      default: '',
     },
     color: {
       type: String,
-      default: ''
+      default: '',
     },
   },
   setup(props) {
@@ -28,26 +28,26 @@ export default defineComponent({
           return `svg-icon ${props.className}`
         }
         return 'svg-icon'
-      })
+      }),
     }
-  }
+  },
 })
 </script>
 
 <style scope lang="scss">
 .sub-el-icon,
 .nav-icon {
-  display: inline-block;
-  font-size: 15px;
-  margin-right: 12px;
   position: relative;
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 15px;
 }
 
 .svg-icon {
+  position: relative;
   width: 1em;
   height: 1em;
-  position: relative;
-  fill: currentColor;
   vertical-align: -2px;
+  fill: currentcolor;
 }
 </style>

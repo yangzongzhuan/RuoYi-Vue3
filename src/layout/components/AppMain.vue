@@ -1,9 +1,9 @@
 <template>
   <section class="app-main">
-    <router-view v-slot="{ Component, route }">
+    <router-view v-slot="slotProps">
       <transition name="fade-transform" mode="out-in">
         <keep-alive :include="tagsViewStore.cachedViews">
-          <component v-if="!route.meta.link" :is="Component" :key="route.path"/>
+          <component :is="slotProps.Component" v-if="!slotProps.route.meta.link" :key="slotProps.route.path" />
         </keep-alive>
       </transition>
     </router-view>
@@ -13,9 +13,9 @@
 </template>
 
 <script setup>
-import copyright from "./Copyright/index"
-import iframeToggle from "./IframeToggle/index"
 import useTagsViewStore from '@/store/modules/tagsView'
+import copyright from './Copyright/index'
+import iframeToggle from './IframeToggle/index'
 
 const route = useRoute()
 const tagsViewStore = useTagsViewStore()
@@ -37,18 +37,12 @@ function addIframe() {
 
 <style lang="scss" scoped>
 .app-main {
+  position: relative;
+  width: 100%;
+
   /* 50= navbar  50  */
   min-height: calc(100vh - 50px);
-  width: 100%;
-  position: relative;
   overflow: hidden;
-}
-
-.fixed-header + .app-main {
-  overflow-y: auto;
-  scrollbar-gutter: auto;
-  height: calc(100vh - 50px);
-  min-height: 0px;
 }
 
 .app-main:has(.copyright) {
@@ -56,7 +50,7 @@ function addIframe() {
 }
 
 .fixed-header + .app-main {
-  margin-top: 50px;
+  padding-top: 50px;
 }
 
 .hasTagsView {
@@ -66,14 +60,19 @@ function addIframe() {
   }
 
   .fixed-header + .app-main {
-    margin-top: 84px;
-    height: calc(100vh - 84px);
-    min-height: 0px;
+    padding-top: 84px;
   }
 }
 </style>
 
 <style lang="scss">
+// fix css style bug in open el-dialog
+.el-popup-parent--hidden {
+  .fixed-header {
+    padding-right: 6px;
+  }
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;

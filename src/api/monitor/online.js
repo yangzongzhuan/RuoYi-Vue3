@@ -5,14 +5,14 @@ export function list(query) {
   return request({
     url: '/monitor/online/list',
     method: 'get',
-    params: query
+    params: query,
   })
 }
 
 // 强退用户
 export function forceLogout(tokenId) {
   return request({
-    url: '/monitor/online/' + tokenId,
-    method: 'delete'
+    url: `/monitor/online/${tokenId}`,
+    method: 'delete',
   })
 }
