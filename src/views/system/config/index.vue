@@ -161,7 +161,7 @@ defineOptions({
   name: 'ConfigIndex',
 })
 const { proxy } = getCurrentInstance()
-
+const { sys_yes_no } = proxy.useDict('sys_yes_no')
 let {
   tableData,
   tableLoading,
