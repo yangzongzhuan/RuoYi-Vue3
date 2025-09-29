@@ -34,8 +34,13 @@ module.exports = {
     // 'prettier/prettier': true,
     // 屏蔽background-color: rgba(0, 0, 0, 0.5);这种写法引起的警告 start
     'color-function-notation': 'legacy',
-    'alpha-value-notation': 'number',
-    'hue-degree-notation': 'number',
+    'color-function-alias-notation': 'with-alpha',
+    'alpha-value-notation': [
+      'number',
+      {
+        exceptProperties: ['opacity'], // 可选：对特定属性豁免规则
+      },
+    ],
     'selector-class-pattern': null,
     'keyframes-name-pattern': null,
     'property-no-unknown': null,

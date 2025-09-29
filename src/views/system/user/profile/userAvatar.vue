@@ -174,7 +174,7 @@ function closeDialog() {
   color: #eee;
   cursor: pointer;
   content: "+";
-  background: rgb(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.5);
   border-radius: 50%;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

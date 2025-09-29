@@ -22,8 +22,8 @@
     height: 100%;
     overflow: hidden;
     font-size: 0;
-    box-shadow: 2px 0 6px rgb(0,21,41,.35);
-    box-shadow: 0 0 8px 0 rgb(0, 0, 0, 0.1);
+    box-shadow: 2px 0 6px rgba(0,21,41,.35);
+    box-shadow: 0 0 8px 0 rgba(0, 0, 0, 0.1);
     transition: width 0.28s;
 
     // reset element-ui css
@@ -80,7 +80,7 @@
     .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: rgb(0, 0, 0, 0.06) !important;
+        background-color: rgba(0, 0, 0, 0.06) !important;
       }
     }
 
@@ -93,7 +93,7 @@
       min-width: variables.$base-sidebar-width !important;
 
       &:hover {
-        background-color: rgb(0, 0, 0, 0.06) !important;
+        background-color: rgba(0, 0, 0, 0.06) !important;
       }
     }
 
@@ -209,7 +209,7 @@
   .el-menu-item {
     &:hover {
       // you can use $sub-menuHover
-      background-color: rgb(0, 0, 0, 0.06) !important;
+      background-color: rgba(0, 0, 0, 0.06) !important;
     }
   }
 

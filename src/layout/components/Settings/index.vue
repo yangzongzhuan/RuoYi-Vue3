@@ -174,7 +174,7 @@ defineExpose({
   margin-bottom: 12px;
   font-weight: bold;
   line-height: 22px;
-  color: var(--el-text-color-primary, rgb(0, 0, 0, 0.85));
+  color: var(--el-text-color-primary, rgba(0, 0, 0, 0.85));
 
   .drawer-title {
     font-size: 14px;
@@ -217,7 +217,7 @@ defineExpose({
 .drawer-item {
   padding: 12px 0;
   font-size: 14px;
-  color: var(--el-text-color-regular, rgb(0, 0, 0, 0.65));
+  color: var(--el-text-color-regular, rgba(0, 0, 0, 0.65));
 
   .comp-style {
     float: right;
