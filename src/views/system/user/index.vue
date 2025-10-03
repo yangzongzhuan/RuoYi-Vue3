@@ -58,12 +58,12 @@
 
             <el-table v-loading="loading" :data="userList" @selection-change="handleSelectionChange">
               <el-table-column type="selection" width="50" align="center" />
-              <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns[0].visible" />
-              <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns[1].visible" :show-overflow-tooltip="true" />
-              <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns[2].visible" :show-overflow-tooltip="true" />
-              <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns[3].visible" :show-overflow-tooltip="true" />
-              <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns[4].visible" width="120" />
-              <el-table-column label="状态" align="center" key="status" v-if="columns[5].visible">
+              <el-table-column label="用户编号" align="center" key="userId" prop="userId" v-if="columns.userId.visible" />
+              <el-table-column label="用户名称" align="center" key="userName" prop="userName" v-if="columns.userName.visible" :show-overflow-tooltip="true" />
+              <el-table-column label="用户昵称" align="center" key="nickName" prop="nickName" v-if="columns.nickName.visible" :show-overflow-tooltip="true" />
+              <el-table-column label="部门" align="center" key="deptName" prop="dept.deptName" v-if="columns.deptName.visible" :show-overflow-tooltip="true" />
+              <el-table-column label="手机号码" align="center" key="phonenumber" prop="phonenumber" v-if="columns.phonenumber.visible" width="120" />
+              <el-table-column label="状态" align="center" key="status" v-if="columns.status.visible">
                 <template #default="scope">
                   <el-switch
                     v-model="scope.row.status"
@@ -73,7 +73,7 @@
                   ></el-switch>
                 </template>
               </el-table-column>
-              <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns[6].visible" width="160">
+              <el-table-column label="创建时间" align="center" prop="createTime" v-if="columns.createTime.visible" width="160">
                 <template #default="scope">
                   <span>{{ parseTime(scope.row.createTime) }}</span>
                 </template>
@@ -112,7 +112,7 @@
           </el-col>
           <el-col :span="12">
             <el-form-item label="归属部门" prop="deptId">
-              <el-tree-select v-model="form.deptId" :data="enabledDeptOptions" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门" check-strictly />
+              <el-tree-select v-model="form.deptId" :data="enabledDeptOptions" :props="{ value: 'id', label: 'label', children: 'children' }" value-key="id" placeholder="请选择归属部门" clearable check-strictly />
             </el-form-item>
           </el-col>
         </el-row>
@@ -190,7 +190,7 @@
 
     <!-- 用户导入对话框 -->
     <el-dialog :title="upload.title" v-model="upload.open" width="400px" append-to-body>
-      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers" :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading" :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :auto-upload="false" drag>
+      <el-upload ref="uploadRef" :limit="1" accept=".xlsx, .xls" :headers="upload.headers" :action="upload.url + '?updateSupport=' + upload.updateSupport" :disabled="upload.isUploading" :on-progress="handleFileUploadProgress" :on-success="handleFileSuccess" :on-change="handleFileChange" :on-remove="handleFileRemove" :auto-upload="false" drag>
         <el-icon class="el-icon--upload"><upload-filled /></el-icon>
         <div class="el-upload__text">将文件拖到此处，或<em>点击上传</em></div>
         <template #tip>
@@ -257,15 +257,15 @@ const upload = reactive({
   url: import.meta.env.VITE_APP_BASE_API + "/system/user/importData"
 })
 // 列显隐信息
-const columns = ref([
-  { key: 0, label: `用户编号`, visible: true },
-  { key: 1, label: `用户名称`, visible: true },
-  { key: 2, label: `用户昵称`, visible: true },
-  { key: 3, label: `部门`, visible: true },
-  { key: 4, label: `手机号码`, visible: true },
-  { key: 5, label: `状态`, visible: true },
-  { key: 6, label: `创建时间`, visible: true }
-])
+const columns = ref({
+  userId: { label: '用户编号', visible: true },
+  userName: { label: '用户名称', visible: true },
+  nickName: { label: '用户昵称', visible: true },
+  deptName: { label: '部门', visible: true },
+  phonenumber: { label: '手机号码', visible: true },
+  status: { label: '状态', visible: true },
+  createTime: { label: '创建时间', visible: true }
+})
 
 const data = reactive({
   form: {},
@@ -432,6 +432,7 @@ function handleSelectionChange(selection) {
 function handleImport() {
   upload.title = "用户导入"
   upload.open = true
+  upload.selectedFile = null
 }
 
 /** 下载模板操作 */
@@ -445,6 +446,16 @@ const handleFileUploadProgress = (event, file, fileList) => {
   upload.isUploading = true
 }
 
+/** 文件选择处理 */
+const handleFileChange = (file, fileList) => {
+  upload.selectedFile = file
+}
+
+/** 文件删除处理 */
+const handleFileRemove = (file, fileList) => {
+  upload.selectedFile = null
+}
+
 /** 文件上传成功处理 */
 const handleFileSuccess = (response, file, fileList) => {
   upload.open = false
@@ -456,6 +467,11 @@ const handleFileSuccess = (response, file, fileList) => {
 
 /** 提交上传文件 */
 function submitFileForm() {
+  const file = upload.selectedFile
+  if (!file || file.length === 0 || !file.name.toLowerCase().endsWith('.xls') && !file.name.toLowerCase().endsWith('.xlsx')) {
+    proxy.$modal.msgError("请选择后缀为 “xls”或“xlsx”的文件。")
+    return
+  }
   proxy.$refs["uploadRef"].submit()
 }
 
