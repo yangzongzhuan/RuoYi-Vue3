@@ -2,7 +2,7 @@
   <div>
     <el-dialog title="添加选项" v-model="open" width="800px" :close-on-click-modal="false" :modal-append-to-body="false"
       @open="onOpen" @close="onClose">
-      <el-form ref="treeNodeForm" :model="formData" :rules="rules" label-width="100px">
+      <el-form label-position="top" ref="treeNodeForm" :model="formData" :rules="rules" label-width="100px">
         <el-col :span="24">
           <el-form-item label="选项名" prop="label">
             <el-input v-model="formData.label" placeholder="请输入选项名" clearable />
