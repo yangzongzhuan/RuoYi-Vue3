@@ -295,8 +295,9 @@ watch(activeId, (val) => {
   oldActiveId = val
 }, { immediate: true })
 
+let clipboard = null
 onMounted(() => {
-  const clipboard = new ClipboardJS('#copyNode', {
+  clipboard = new ClipboardJS('#copyNode', {
     text: trigger => {
       const codeStr = generateCode()
       ElNotification({ title: '成功', message: '代码已复制到剪切板，可粘贴。', type: 'success' })
@@ -306,6 +307,9 @@ onMounted(() => {
   clipboard.on('error', e => {
     proxy.$modal.msgError('代码复制失败')
   })
+})
+onUnmounted(() => {
+  clipboard.destroy()
 })
 </script>
 
