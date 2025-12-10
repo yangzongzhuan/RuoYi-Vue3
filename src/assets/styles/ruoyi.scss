@@ -60,6 +60,14 @@
   color: inherit;
 }
 
+.el-form--inline {
+  .el-form-item {
+    .el-input, .el-cascader, .el-select, .el-autocomplete {
+      width: 200px;
+    }
+  }
+}
+
 .el-form .el-form-item__label {
   font-weight: 700;
 }
