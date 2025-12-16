@@ -166,7 +166,7 @@
                   <el-form-item label="操作方法：">{{ form.method }}</el-form-item>
                </el-col>
                <el-col :span="24">
-                  <el-form-item label="请求参数：">{{ form.operParam }}</el-form-item>
+                  <el-form-item label="请求参数：" style="word-break: break-all; white-space: pre-wrap;">{{ form.operParam }}</el-form-item>
                </el-col>
                <el-col :span="24">
                   <el-form-item label="返回参数：">{{ form.jsonResult }}</el-form-item>
