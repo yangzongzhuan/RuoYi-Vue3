@@ -156,6 +156,18 @@
   width: inherit;
 }
 
+/* el menu */
+.el-menu-item,
+.el-sub-menu {
+  .svg-icon + span {
+    margin-left: 5px;
+  }
+}
+
+.el-menu--horizontal .el-menu--popup {
+  min-width: 120px !important;
+}
+
 /** 表格更多操作下拉样式 */
 .el-table .el-dropdown-link {
   cursor: pointer;

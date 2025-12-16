@@ -34,6 +34,9 @@ const getLogoBackground = computed(() => {
   if (settingsStore.isDark) {
     return 'var(--sidebar-bg)'
   }
+  if (settingsStore.navType == 3) {
+    return variables.menuLightBg
+  }
   return sideTheme.value === 'theme-dark' ? variables.menuBg : variables.menuLightBg
 })
 
@@ -41,6 +44,9 @@ const getLogoBackground = computed(() => {
 const getLogoTextColor = computed(() => {
   if (settingsStore.isDark) {
     return 'var(--sidebar-text)'
+  }
+  if (settingsStore.navType == 3) {
+    return variables.menuLightText
   }
   return sideTheme.value === 'theme-dark' ? '#fff' : variables.menuLightText
 })
@@ -58,7 +64,6 @@ const getLogoTextColor = computed(() => {
 
 .sidebar-logo-container {
   position: relative;
-  width: 100%;
   height: 50px;
   line-height: 50px;
   background: v-bind(getLogoBackground);

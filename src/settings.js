@@ -15,9 +15,9 @@ export default {
   showSettings: true,
 
   /**
-   * 是否显示顶部导航
+   * 菜单导航模式 1、纯左侧 2、混合（左侧+顶部） 3、纯顶部
    */
-  topNav: false,
+  navType: 1,
 
   /**
    * 是否显示 tagsView
