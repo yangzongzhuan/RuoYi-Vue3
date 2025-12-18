@@ -88,7 +88,7 @@
               <s> 满101046199 </s> <s> 满136919097 </s> <s> 满143961921 </s> <s> 满174951577 </s> 
               <s> 满161281055 </s> <s> 满138988063 </s> <s> 满151450850 </s> <s> 满224622315 </s>
               <s> 满287842588 </s> <s> 满187944233 </s> <s> 满228578329 </s> <s> 满191164766 </s>
-			  <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EeCBXu51I1zPWRia2uskpjDRx6VrbnFN&authKey=Xm8yDxk0%2FyYGI11oxhXaQnTn4K7UwCk7Kn2MZTh3P1JxLctollAkyeySjnaILDkb&noverify=0&group_code=174569686" target="_blank">174569686</a>
+              <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EeCBXu51I1zPWRia2uskpjDRx6VrbnFN&authKey=Xm8yDxk0%2FyYGI11oxhXaQnTn4K7UwCk7Kn2MZTh3P1JxLctollAkyeySjnaILDkb&noverify=0&group_code=174569686" target="_blank">174569686</a>
             </p>
             <p>
               <i class="el-icon-chat-dot-round"></i> 微信：<a
@@ -114,6 +114,42 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.9.1 - 2025-12-18">
+              <ol>
+                <li>支持防盗链功能</li>
+                <li>菜单导航设置支持纯顶部</li>
+                <li>使用yauaa代替bitwalker</li>
+                <li>用户头像更换后移除旧头像文件</li>
+                <li>支持Excel导出对象的多个子列表</li>
+                <li>升级oshi到最新版本6.9.1</li>
+                <li>升级druid到最新版本1.2.27</li>
+                <li>升级fastjson到最新版2.0.60</li>
+                <li>升级spring-security到5.7.14</li>
+                <li>升级tomcat到最新版本9.0.112</li>
+                <li>升级commons.io到最新版本2.21.0</li>
+                <li>用户导入添加验证提示</li>
+                <li>显示列信息支持对象格式</li>
+                <li>忽略用户密码字段的JSON序列化</li>
+                <li>网页标题设置新增SET_TITLE方法</li>
+                <li>自动识别json对象白名单配置范围缩小</li>
+                <li>登录/注册页面底部版权信息修改为读取配置</li>
+                <li>修复用户归属部门无法修改为空问题</li>
+                <li>修复固定头部时出现的导航栏偏移问题</li>
+                <li>修复v3时间控件between选择后清空报错问题</li>
+                <li>修复comboReadDict属性下多个sheet出现的报错</li>
+                <li>修复表单构建移除所有控件后切换路由回来空白问题</li>
+                <li>优化布局设置显示</li>
+                <li>优化字典组件值宽松匹配</li>
+                <li>优化获取字典类型值的方法</li>
+                <li>优化生成代码下载的zip文件名</li>
+                <li>优化日志记录参数拼装提升效率</li>
+                <li>优化导入文件检查标题行不能为空</li>
+                <li>优化表单构建关闭页签销毁复制插件</li>
+                <li>优化Excel统计行数值的单元格样式显示</li>
+                <li>优化数据权限控制逻辑，放开permission限制</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.9.0 - 2025-05-28">
               <ol>
                 <li>优化菜单搜索查询页</li>
@@ -1059,7 +1095,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.9.0')
+const version = ref('3.9.1')
 
 function goTarget(url) {
   window.open(url, '__blank')
