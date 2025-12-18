@@ -58,6 +58,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+/* menu item */
+.topbar-menu.el-menu--horizontal .el-submenu__title, .topbar-menu.el-menu--horizontal .el-menu-item {
+  padding: 0 10px !important;
+}
+
 .topbar-menu.el-menu--horizontal > .el-menu-item {
   float: left;
   height: 50px !important;
@@ -74,21 +79,9 @@ onMounted(() => {
 /* sub-menu item */
 .topbar-menu.el-menu--horizontal > .el-sub-menu .el-sub-menu__title {
   float: left;
-  height: 62px !important;
   line-height: 50px !important;
   color: #303133 !important;
-  padding: 0 5px !important;
-  margin: 0 20px -4px!important;
-}
-
-/* 背景色隐藏 */
-.topbar-menu.el-menu--horizontal>.el-menu-item:not(.is-disabled):focus, .topbar-menu.el-menu--horizontal>.el-menu-item:not(.is-disabled):hover, .topbar-menu.el-menu--horizontal>.el-submenu .el-submenu__title:hover {
-  background-color: #ffffff;
-}
-
-/* 图标右间距 */
-.topbar-menu .svg-icon {
-  margin-right: 4px;
+  margin: 0 15px -3px!important;
 }
 
 /* topbar more arrow */

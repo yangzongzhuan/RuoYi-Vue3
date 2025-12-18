@@ -156,12 +156,10 @@
   width: inherit;
 }
 
-/* el menu */
-.el-menu-item,
-.el-sub-menu {
-  .svg-icon + span {
-    margin-left: 5px;
-  }
+/* horizontal el menu */
+.el-menu--horizontal .el-menu-item .svg-icon + span,
+.el-menu--horizontal .el-sub-menu__title .svg-icon + span {
+  margin-left: 3px;
 }
 
 .el-menu--horizontal .el-menu--popup {
