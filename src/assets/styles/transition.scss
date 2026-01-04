@@ -47,3 +47,34 @@
 .breadcrumb-leave-active {
   position: absolute;
 }
+
+/* 黑暗模式下过渡效果 */
+::view-transition-new(root), ::view-transition-old(root) {
+  animation: none !important;
+  backface-visibility: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.dark::view-transition-old(root) {
+  z-index: 2147483646;
+  background: var(--bg-color-dark); 
+}
+
+.dark::view-transition-new(root) {
+  z-index: 1;
+  background: var(--bg-color);
+}
+
+::view-transition-old(root) {
+  z-index: 1;
+  background: var(--bg-color);
+}
+
+::view-transition-new(root) {
+  z-index: 2147483646;
+  background: var(--bg-color-dark);
+}

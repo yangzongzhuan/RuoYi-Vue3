@@ -89,6 +89,9 @@ html.dark {
   --el-text-color-regular: #d0d0d0;
   --el-border-color: #434343;
   --el-border-color-light: #434343;
+  
+  /* primary */
+  --primary-bg: #18212b;
 
   /* 侧边栏 */
   --sidebar-bg: #141414;
@@ -171,6 +174,33 @@ html.dark {
         background-color: var(--splitpanes-border);
       }
     }
+  }
+
+  /* 按钮样式覆盖 */
+  .el-button--primary.is-plain {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--el-color-primary-light-2);
+    color: var(--el-color-primary-light-2);
+
+    &:hover {
+      background-color: var(--el-button-hover-bg-color);
+      border-color: var(--el-button-hover-border-color);
+      color: var(--el-button-hover-text-color);
+    }
+
+    &.is-disabled {
+      background-color: var(--link-active-bg-color);
+      border-color: var(--el-color-primary-light-3);
+      color: var(--el-color-primary-light-3);
+      opacity: 0.5;
+    }
+  }
+
+  /* primary tag 样式覆盖 */
+  .el-tag--primary {
+    background-color: var(--primary-bg);
+    border: 1px solid var(--el-border-color-light);
+    color: var(--el-color-primary);
   }
 
   /* 表格样式覆盖 */
