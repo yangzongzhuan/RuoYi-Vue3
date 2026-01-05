@@ -76,7 +76,7 @@ function handleArray(array) {
 }
 
 function isValueMatch(itemValue) {
-  return this.values.some(val => val == itemValue)
+  return values.value.some(val => val == itemValue)
 }
 </script>
 
