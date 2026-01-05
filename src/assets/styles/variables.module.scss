@@ -261,5 +261,11 @@ html.dark {
     background: var(--cron-border);
   }
 
+  /* 底部版权样式覆盖 */
+  .copyright {
+    background-color: var(--el-bg-color) !important;
+    color: var(--el-text-color-regular) !important;
+    border-top: 1px solid var(--el-bg-color) !important;
+  }
 }
 
