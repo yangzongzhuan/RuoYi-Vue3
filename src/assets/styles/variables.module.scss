@@ -130,8 +130,8 @@ html.dark {
   --splitpanes-default-bg: #141414;
 
   /* 侧边栏菜单覆盖 */
-   .sidebar-container {
-    .el-menu-item, .menu-title {
+  .sidebar-container {
+    .el-menu-item:not(.is-active), .menu-title {
       color: var(--el-text-color-regular);
     }
     & .theme-dark .nest-menu .el-sub-menu>.el-sub-menu__title,
@@ -140,13 +140,27 @@ html.dark {
     }
   }
 
+  .topmenu-container {
+    .el-menu-item,
+    .el-sub-menu .el-sub-menu__title {
+      color: var(--el-text-color-regular) !important;
+    }
+  }
+
+  .topbar-menu.el-menu--horizontal > .el-sub-menu .el-sub-menu__title{
+    color: var(--el-text-color-regular) !important;
+  }
+
   /* 顶部栏栏菜单覆盖 */
   .el-menu--horizontal {
-    .el-menu-item {
+    .el-menu-item, .el-sub-menu {
       &:not(.is-disabled) {
         &:hover,
         &:focus {
           background-color: var(--navbar-hover) !important;
+          .el-sub-menu__title {
+            background-color: var(--navbar-hover) !important;
+          }
         }
       }
     }
