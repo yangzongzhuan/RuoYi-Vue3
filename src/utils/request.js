@@ -26,6 +26,8 @@ service.interceptors.request.use(config => {
   const isToken = (config.headers || {}).isToken === false
   // 是否需要防止数据重复提交
   const isRepeatSubmit = (config.headers || {}).repeatSubmit === false
+  // 间隔时间(ms)，小于此时间视为重复提交
+  const interval = (config.headers || {}).interval || 1000
   if (getToken() && !isToken) {
     config.headers['Authorization'] = 'Bearer ' + getToken() // 让每个请求携带自定义token 请根据实际情况自行修改
   }
@@ -55,7 +57,6 @@ service.interceptors.request.use(config => {
       const s_url = sessionObj.url                // 请求地址
       const s_data = sessionObj.data              // 请求数据
       const s_time = sessionObj.time              // 请求时间
-      const interval = 1000                       // 间隔时间(ms)，小于此时间视为重复提交
       if (s_data === requestObj.data && requestObj.time - s_time < interval && s_url === requestObj.url) {
         const message = '数据正在处理，请勿重复提交'
         console.warn(`[${s_url}]: ` + message)
@@ -115,7 +116,7 @@ service.interceptors.response.use(res => {
     } else if (message.includes("timeout")) {
       message = "系统接口请求超时"
     } else if (message.includes("Request failed with status code")) {
-      message = "系统接口" + message.substr(message.length - 3) + "异常"
+      message = "系统接口" + message.slice(-3) + "异常"
     }
     ElMessage({ message: message, type: 'error', duration: 5 * 1000 })
     return Promise.reject(error)
