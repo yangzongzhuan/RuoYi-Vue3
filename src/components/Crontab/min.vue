@@ -32,7 +32,7 @@
         </el-form-item>
     </el-form>
 </template>
-<script setup>
+<script setup lang="ts">
 const emit = defineEmits(['update'])
 const props = defineProps({
     cron: {
@@ -53,29 +53,29 @@ const props = defineProps({
         }
     }
 })
-const radioValue = ref(1)
-const cycle01 = ref(0)
-const cycle02 = ref(1)
-const average01 = ref(0)
-const average02 = ref(1)
-const checkboxList = ref([])
-const checkCopy = ref([0])
+const radioValue = ref<number>(1)
+const cycle01 = ref<number>(0)
+const cycle02 = ref<number>(1)
+const average01 = ref<number>(0)
+const average02 = ref<number>(1)
+const checkboxList = ref<number[]>([])
+const checkCopy = ref<number[]>([0])
 const cycleTotal = computed(() => {
-    cycle01.value = props.check(cycle01.value, 0, 58)
-    cycle02.value = props.check(cycle02.value, cycle01.value + 1, 59)
+    cycle01.value = props.check!(cycle01.value, 0, 58)
+    cycle02.value = props.check!(cycle02.value, cycle01.value + 1, 59)
     return cycle01.value + '-' + cycle02.value
 })
 const averageTotal = computed(() => {
-    average01.value = props.check(average01.value, 0, 58)
-    average02.value = props.check(average02.value, 1, 59 - average01.value)
+    average01.value = props.check!(average01.value, 0, 58)
+    average02.value = props.check!(average02.value, 1, 59 - average01.value)
     return average01.value + '/' + average02.value
 })
 const checkboxString = computed(() => {
     return checkboxList.value.join(',')
 })
-watch(() => props.cron.min, value => changeRadioValue(value))
+watch(() => props.cron.min, (value: string) => changeRadioValue(value))
 watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange())
-function changeRadioValue(value) {
+function changeRadioValue(value: string): void {
     if (value === '*') {
         radioValue.value = 1
     } else if (value.indexOf('-') > -1) {
@@ -93,7 +93,7 @@ function changeRadioValue(value) {
         radioValue.value = 4
     }
 }
-function onRadioChange() {
+function onRadioChange(): void {
     switch (radioValue.value) {
         case 1:
             emit('update', 'min', '*', 'min')

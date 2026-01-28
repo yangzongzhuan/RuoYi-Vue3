@@ -106,7 +106,7 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
@@ -116,35 +116,35 @@ const { proxy } = getCurrentInstance()
 const appStore = useAppStore()
 const settingsStore = useSettingsStore()
 const permissionStore = usePermissionStore()
-const showSettings = ref(false)
-const navType = ref(settingsStore.navType)
-const theme = ref(settingsStore.theme)
-const sideTheme = ref(settingsStore.sideTheme)
+const showSettings = ref<boolean>(false)
+const navType = ref<number>(settingsStore.navType)
+const theme = ref<string>(settingsStore.theme)
+const sideTheme = ref<string>(settingsStore.sideTheme)
 const storeSettings = computed(() => settingsStore)
-const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
+const predefineColors = ref<string[]>(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
 
 /** 是否需要dynamicTitle */
-function dynamicTitleChange() {
+function dynamicTitleChange(): void {
   useSettingsStore().setTitle(useSettingsStore().title)
 }
 
-function themeChange(val) {
+function themeChange(val: string): void {
   settingsStore.theme = val
   handleThemeStyle(val)
 }
 
-function handleTheme(val) {
+function handleTheme(val: string): void {
   settingsStore.sideTheme = val
   sideTheme.value = val
 }
 
-function handleNavType(val) {
+function handleNavType(val: number): void {
   settingsStore.navType = val
   navType.value = val
 }
 
 /** 菜单导航设置 */
-watch(() => navType, val => {
+watch(() => navType, (val: any) => {
   if (val.value == 1) {
     appStore.sidebar.opened = true
     appStore.toggleSideBarHide(false)
@@ -162,9 +162,9 @@ watch(() => navType, val => {
   }, { immediate: true, deep: true }
 )
 
-function saveSetting() {
+function saveSetting(): void {
   proxy.$modal.loading("正在保存到本地，请稍候...")
-  let layoutSetting = {
+  const layoutSetting = {
     "navType": storeSettings.value.navType,
     "tagsView": storeSettings.value.tagsView,
     "tagsIcon": storeSettings.value.tagsIcon,
@@ -179,13 +179,15 @@ function saveSetting() {
   setTimeout(proxy.$modal.closeLoading(), 1000)
 }
 
-function resetSetting() {
+function resetSetting(): void {
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
   localStorage.removeItem("layout-setting")
-  setTimeout("window.location.reload()", 1000)
+  setTimeout(() => {
+    window.location.reload()
+  }, 1000)
 }
 
-function openSetting() {
+function openSetting(): void {
   showSettings.value = true
 }
 

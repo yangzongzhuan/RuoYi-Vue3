@@ -24,28 +24,30 @@
   </div>
 </template>
 
-<script setup>
-// 记录未匹配的项
-const unmatchArray = ref([])
+<script setup lang="ts">
+// @ts-nocheck
+interface DictOption {
+  label: string
+  value: string | number
+  elTagType?: string
+  elTagClass?: string
+}
 
-const props = defineProps({
-  // 数据
-  options: {
-    type: Array,
-    default: null,
-  },
-  // 当前的值
-  value: [Number, String, Array],
-  // 当未找到匹配的数据时，显示value
-  showValue: {
-    type: Boolean,
-    default: true,
-  },
-  separator: {
-    type: String,
-    default: ",",
-  }
+interface Props {
+  options?: DictOption[] | null
+  value?: number | string | (number | string)[]
+  showValue?: boolean
+  separator?: string
+}
+
+const props = withDefaults(defineProps<Props>(), {
+  options: null,
+  showValue: true,
+  separator: ","
 })
+
+// 记录未匹配的项
+const unmatchArray = ref<(string | number)[]>([])
 
 const values = computed(() => {
   if (props.value === null || typeof props.value === 'undefined' || props.value === '') return []
@@ -60,7 +62,7 @@ const unmatch = computed(() => {
   // 传入值为数组
   let unmatch = false // 添加一个标志来判断是否有未匹配项
   values.value.forEach(item => {
-    if (!props.options.some(v => v.value == item)) {
+    if (!props.options?.some(v => v.value == item)) {
       unmatchArray.value.push(item)
       unmatch = true // 如果有未匹配项，将标志设置为true
     }
@@ -68,14 +70,14 @@ const unmatch = computed(() => {
   return unmatch // 返回标志的值
 })
 
-function handleArray(array) {
+function handleArray(array: (string | number)[]): string {
   if (array.length === 0) return ""
   return array.reduce((pre, cur) => {
     return pre + " " + cur
-  })
+  }, "")
 }
 
-function isValueMatch(itemValue) {
+function isValueMatch(itemValue: string | number): boolean {
   return values.value.some(val => val == itemValue)
 }
 </script>

@@ -144,31 +144,32 @@
    </div>
 </template>
 
-<script setup name="Post">
+<script setup lang="ts" name="Post">
 import { listPost, addPost, delPost, getPost, updatePost } from "@/api/system/post"
+import type { SysPost, PostQueryParams } from '@/types/api/system/post'
 
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const postList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
+const postList = ref<SysPost[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
 
 const data = reactive({
-  form: {},
+  form: {} as SysPost,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     postCode: undefined,
     postName: undefined,
     status: undefined
-  },
+  } as PostQueryParams,
   rules: {
     postName: [{ required: true, message: "岗位名称不能为空", trigger: "blur" }],
     postCode: [{ required: true, message: "岗位编码不能为空", trigger: "blur" }],
@@ -220,8 +221,8 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.postId)
+function handleSelectionChange(selection: SysPost[]) {
+  ids.value = selection.map(item => item.postId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -234,11 +235,11 @@ function handleAdd() {
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row?: SysPost) {
   reset()
-  const postId = row.postId || ids.value
+  const postId = row?.postId || ids.value[0]
   getPost(postId).then(response => {
-    form.value = response.data
+    form.value = response.data!
     open.value = true
     title.value = "修改岗位"
   })
@@ -246,16 +247,16 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["postRef"].validate(valid => {
+  proxy.$refs["postRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.postId != undefined) {
-        updatePost(form.value).then(response => {
+        updatePost(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addPost(form.value).then(response => {
+        addPost(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -266,8 +267,8 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const postIds = row.postId || ids.value
+function handleDelete(row?: SysPost) {
+  const postIds = row?.postId || ids.value
   proxy.$modal.confirm('是否确认删除岗位编号为"' + postIds + '"的数据项？').then(function() {
     return delPost(postIds)
   }).then(() => {

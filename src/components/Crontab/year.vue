@@ -40,7 +40,7 @@
     </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const emit = defineEmits(['update'])
 const props = defineProps({
     cron: {
@@ -64,13 +64,13 @@ const props = defineProps({
 
 const fullYear = Number(new Date().getFullYear())
 const maxFullYear = fullYear + 10
-const radioValue = ref(1)
-const cycle01 = ref(fullYear)
-const cycle02 = ref(fullYear + 1)
-const average01 = ref(fullYear)
-const average02 = ref(1)
-const checkboxList = ref([])
-const checkCopy = ref([fullYear])
+const radioValue = ref<number>(1)
+const cycle01 = ref<number>(fullYear)
+const cycle02 = ref<number>(fullYear + 1)
+const average01 = ref<number>(fullYear)
+const average02 = ref<number>(1)
+const checkboxList = ref<number[]>([])
+const checkCopy = ref<number[]>([fullYear])
 
 const cycleTotal = computed(() => {
     cycle01.value = props.check(cycle01.value, fullYear, maxFullYear - 1)
@@ -85,9 +85,9 @@ const averageTotal = computed(() => {
 const checkboxString = computed(() => {
     return checkboxList.value.join(',')
 })
-watch(() => props.cron.year, value => changeRadioValue(value))
+watch(() => props.cron.year, (value: string) => changeRadioValue(value))
 watch([radioValue, cycleTotal, averageTotal, checkboxString], () => onRadioChange())
-function changeRadioValue(value) {
+function changeRadioValue(value: string): void {
     if (value === '') {
         radioValue.value = 1
     } else if (value === "*") {
@@ -107,7 +107,7 @@ function changeRadioValue(value) {
         radioValue.value = 5
     }
 }
-function onRadioChange() {
+function onRadioChange(): void {
     switch (radioValue.value) {
         case 1:
             emit('update', 'year', '', 'year')

@@ -95,9 +95,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import draggable from "vuedraggable/dist/vuedraggable.common"
 import ClipboardJS from 'clipboard'
+//@ts-ignore
 import beautifier from 'js-beautify'
 import logo from '@/assets/logo/logo.png'
 import { inputComponents, selectComponents, layoutComponents, formConf as formConfData } from '@/utils/generator/config'
@@ -108,72 +109,72 @@ import { makeUpJs } from '@/utils/generator/js'
 import { makeUpCss } from '@/utils/generator/css'
 import Download from '@/plugins/download'
 import { ElNotification } from 'element-plus'
-import DraggableItem from './DraggableItem'
-import RightPanel from './RightPanel'
-import CodeTypeDialog from './CodeTypeDialog'
-import { onMounted, watch } from 'vue'
+import DraggableItem from './DraggableItem.vue'
+import RightPanel from './RightPanel.vue'
+import CodeTypeDialog from './CodeTypeDialog.vue'
 
 initDrawingDefaultValue()
 
-const drawingList = ref(drawingDefaultValue)
+const drawingList = ref<any[]>(drawingDefaultValue)
 const { proxy } = getCurrentInstance()
-const dialogVisible = ref(false)
-const showFileName = ref(false)
-const operationType = ref('')
-const idGlobal = ref(100)
-const activeData = ref(drawingDefaultValue[0])
-const activeId = ref(drawingDefaultValue[0].formId)
-const generateConf = ref(null)
-const formData = ref({})
-const formConf = ref(formConfData)
-let oldActiveId
-let tempActiveData
+const dialogVisible = ref<boolean>(false)
+const showFileName = ref<boolean>(false)
+const operationType = ref<string>('')
+const idGlobal = ref<number>(100)
+const activeData = ref<any>(drawingDefaultValue[0])
+const activeId = ref<number>(drawingDefaultValue[0].formId)
+const generateConf = ref<any | null>(null)
+const formData = ref<FormData>({} as FormData)
+const formConf = ref<any>(formConfData)
+let oldActiveId: number
+let tempActiveData: any
 
-function activeFormItem(element) {
+function activeFormItem(element: any): void {
   activeData.value = element
   activeId.value = element.formId
 }
-function copy() {
+function copy(): void {
   dialogVisible.value = true
   showFileName.value = false
   operationType.value = 'copy'
 }
-function download() {
+function download(): void {
   dialogVisible.value = true
   showFileName.value = true
   operationType.value = 'download'
 }
-function empty() {
+function empty(): void {
   proxy.$modal.confirm('确定要清空所有组件吗？', '提示', { type: 'warning' }).then(() => {
-      idGlobal.value = 100
-      drawingList.value = []
-      cleanDrawingDefaultValue()
-    }
-  )
+    idGlobal.value = 100
+    drawingList.value = []
+    cleanDrawingDefaultValue()
+  })
 }
 
-function onEnd(obj, a) {
+function onEnd(obj: any): void {
   if (obj.from !== obj.to) {
     activeData.value = tempActiveData
     activeId.value = idGlobal.value
   }
 }
 
-function addComponent(item) {
+function addComponent(item: any): void {
   const clone = cloneComponent(item)
   drawingList.value.push(clone)
   activeFormItem(clone)
 }
 
-function cloneComponent(origin) {
-  const clone = JSON.parse(JSON.stringify(origin))
+function cloneComponent(origin: any): any {
+  const clone = JSON.parse(JSON.stringify(origin)) as any
   clone.formId = ++idGlobal.value
   clone.span = formConf.value.span
   clone.renderKey = +new Date() // 改变renderKey后可以实现强制更新组件
   if (!clone.layout) clone.layout = 'colFormItem'
   if (clone.layout === 'colFormItem') {
     clone.vModel = `field${idGlobal.value}`
-    clone.placeholder !== undefined && (clone.placeholder += clone.label)
+    if (clone.placeholder !== undefined) {
+      clone.placeholder += clone.label
+    }
     tempActiveData = clone
   } else if (clone.layout === 'rowFormItem') {
     delete clone.label
@@ -184,15 +185,14 @@ function cloneComponent(origin) {
   return tempActiveData
 }
 
-function drawingItemCopy(item, parent) {
+function drawingItemCopy(item: any, parent: any[]): void {
   let clone = JSON.parse(JSON.stringify(item))
   clone = createIdAndKey(clone)
   parent.push(clone)
   activeFormItem(clone)
 }
 
-
-function createIdAndKey(item) {
+function createIdAndKey(item: any): any {
   item.formId = ++idGlobal.value
   item.renderKey = +new Date()
   if (item.layout === 'colFormItem') {
@@ -201,12 +201,12 @@ function createIdAndKey(item) {
     item.componentName = `row${idGlobal.value}`
   }
   if (Array.isArray(item.children)) {
-    item.children = item.children.map(childItem => createIdAndKey(childItem))
+    item.children = item.children.map((childItem: any) => createIdAndKey(childItem))
   }
   return item
 }
 
-function drawingItemDelete(index, parent) {
+function drawingItemDelete(index: number, parent: any[]): void {
   parent.splice(index, 1)
   nextTick(() => {
     const len = drawingList.value.length
@@ -216,26 +216,25 @@ function drawingItemDelete(index, parent) {
   })
 }
 
-function tagChange(newTag) {
-  newTag = cloneComponent(newTag)
-  newTag.vModel = activeData.value.vModel
-  newTag.formId = activeId.value
-  newTag.span = activeData.value.span
+function tagChange(newTag: any): void {
+  let clonedTag = cloneComponent(newTag)
+  clonedTag.vModel = activeData.value.vModel
+  clonedTag.formId = activeId.value
+  clonedTag.span = activeData.value.span
   delete activeData.value.tag
   delete activeData.value.tagIcon
   delete activeData.value.document
-  Object.keys(newTag).forEach(key => {
+  Object.keys(clonedTag).forEach(key => {
     if (activeData.value[key] !== undefined
-      && typeof activeData.value[key] === typeof newTag[key]) {
-      newTag[key] = activeData.value[key]
+      && typeof activeData.value[key] === typeof clonedTag[key]) {
+      clonedTag[key] = activeData.value[key]
     }
   })
-  activeData.value = newTag
-  updateDrawingList(newTag, drawingList.value)
+  activeData.value = clonedTag
+  updateDrawingList(clonedTag, drawingList.value)
 }
 
-
-function updateDrawingList(newTag, list) {
+function updateDrawingList(newTag: any, list: any[]): void {
   const index = list.findIndex(item => item.formId === activeId.value)
   if (index > -1) {
     list.splice(index, 1, newTag)
@@ -245,12 +244,12 @@ function updateDrawingList(newTag, list) {
     })
   }
 }
-function generate(data) {
+function generate(data: any): void {
   generateConf.value = data
   nextTick(() => {
     switch (operationType.value) {
       case 'copy':
-        execCopy(data)
+        execCopy()
         break
       case 'download':
         execDownload(data)
@@ -261,19 +260,23 @@ function generate(data) {
   })
 }
 
-function execDownload(data) {
+function execDownload(data: any): void {
   const codeStr = generateCode()
   const blob = new Blob([codeStr], { type: 'text/plain;charset=utf-8' })
-  Download.saveAs(blob, data.fileName)
+  Download.saveAs(blob, data.fileName!)
 }
 
-function execCopy(data) {
-  document.getElementById('copyNode').click()
+function execCopy(): void {
+  const copyNode = document.getElementById('copyNode') as HTMLElement
+  if (copyNode) {
+    copyNode.click()
+  }
 }
-function AssembleFormData() {
+function AssembleFormData(): void {
   formData.value = { fields: JSON.parse(JSON.stringify(drawingList.value)), ...formConf.value }
 }
-function generateCode() {
+function generateCode(): string {
+  if (!generateConf.value) return ''
   const { type } = generateConf.value
   AssembleFormData()
   const script = vueScript(makeUpJs(formData.value, type))
@@ -281,7 +284,7 @@ function generateCode() {
   const css = cssStyle(makeUpCss(formData.value))
   return beautifier.html(html + script + css, beautifierConf.html)
 }
-watch(() => activeData.value.label, (val, oldVal) => {
+watch(() => activeData.value.label, (val: string, oldVal: string) => {
   if (
     activeData.value.placeholder === undefined
     || !activeData.value.tag
@@ -291,25 +294,25 @@ watch(() => activeData.value.label, (val, oldVal) => {
   }
   activeData.value.placeholder = activeData.value.placeholder.replace(oldVal, '') + val
 })
-watch(activeId, (val) => {
+watch(activeId, (val: number) => {
   oldActiveId = val
 }, { immediate: true })
 
-let clipboard = null
+let clipboard: ClipboardJS | null = null
 onMounted(() => {
   clipboard = new ClipboardJS('#copyNode', {
-    text: trigger => {
+    text: (trigger: Element) => {
       const codeStr = generateCode()
       ElNotification({ title: '成功', message: '代码已复制到剪切板，可粘贴。', type: 'success' })
       return codeStr
     }
   })
-  clipboard.on('error', e => {
+  clipboard.on('error', () => {
     proxy.$modal.msgError('代码复制失败')
   })
 })
 onUnmounted(() => {
-  clipboard.destroy()
+  clipboard?.destroy()
 })
 </script>
 

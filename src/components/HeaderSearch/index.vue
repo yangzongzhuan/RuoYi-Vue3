@@ -44,25 +44,32 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Fuse from 'fuse.js'
 import { getNormalPath } from '@/utils/ruoyi'
 import { isHttp } from '@/utils/validate'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
+interface SearchItem {
+  path: string
+  title: string[]
+  icon: string
+  query?: string
+}
+
 const search = ref('')
-const options = ref([])
-const searchPool = ref([])
+const options = ref<SearchItem[]>([])
+const searchPool = ref<SearchItem[]>([])
 const activeIndex = ref(-1)
 const show = ref(false)
-const fuse = ref(undefined)
+const fuse = ref<Fuse<SearchItem> | undefined>(undefined)
 const headerSearchSelectRef = ref(null)
 const router = useRouter()
 const theme = computed(() => useSettingsStore().theme)
 const routes = computed(() => usePermissionStore().defaultRoutes)
 
-function click() {
+function click(): void {
   show.value = !show.value
   if (show.value) {
     headerSearchSelectRef.value && headerSearchSelectRef.value.focus()
@@ -70,7 +77,7 @@ function click() {
   }
 }
 
-function close() {
+function close(): void {
   headerSearchSelectRef.value && headerSearchSelectRef.value.blur()
   search.value = ''
   options.value = []
@@ -78,7 +85,7 @@ function close() {
   activeIndex.value = -1
 }
 
-function change(val) {
+function change(val: SearchItem): void {
   const path = val.path
   const query = val.query
   if (isHttp(path)) {
@@ -100,41 +107,33 @@ function change(val) {
   })
 }
 
-function initFuse(list) {
+function initFuse(list: SearchItem[]): void {
   fuse.value = new Fuse(list, {
     shouldSort: true,
     threshold: 0.4,
-    location: 0,
-    distance: 100,
     minMatchCharLength: 1,
-    keys: [{
-      name: 'title',
-      weight: 0.7
-    }, {
-      name: 'path',
-      weight: 0.3
-    }]
+    keys: ['title', 'path']
   })
 }
 
 // Filter out the routes that can be displayed in the sidebar
 // And generate the internationalized title
-function generateRoutes(routes, basePath = '', prefixTitle = []) {
-  let res = []
+function generateRoutes(routes :any, basePath = '', prefixTitle: string[] = []): SearchItem[] {
+  let res: SearchItem[] = []
 
   for (const r of routes) {
     // skip hidden router
     if (r.hidden) { continue }
     const p = r.path.length > 0 && r.path[0] === '/' ? r.path : '/' + r.path
-    const data = {
+    const data: SearchItem = {
       path: !isHttp(r.path) ? getNormalPath(basePath + p) : r.path,
       title: [...prefixTitle],
       icon: ''
     }
 
     if (r.meta && r.meta.title) {
-      data.title = [...data.title, r.meta.title]
-      data.icon = r.meta.icon
+      data.title = [...data.title, r.meta.title as string]
+      data.icon = (r.meta.icon as string) || ''
       if (r.redirect !== "noRedirect") {
         // only push the routes with title
         // special case: need to exclude parent router without redirect
@@ -156,16 +155,17 @@ function generateRoutes(routes, basePath = '', prefixTitle = []) {
   return res
 }
 
-function querySearch(query) {
+function querySearch(query: string): void {
   activeIndex.value = -1
   if (query !== '') {
-    options.value = fuse.value.search(query).map((item) => item.item) ?? searchPool.value
+    const results = fuse.value.search(query) as any[]
+    options.value = results.map((item: any) => item.item) ?? searchPool.value
   } else {
     options.value = searchPool.value
   }
 }
 
-function activeStyle(index) {
+function activeStyle(index: number): Record<string, string> {
   if (index !== activeIndex.value) return {}
   return {
     "background-color": theme.value,
@@ -173,7 +173,7 @@ function activeStyle(index) {
   }
 }
 
-function navigateResult(direction) {
+function navigateResult(direction: 'up' | 'down'): void {
   if (direction === "up") {
     activeIndex.value = activeIndex.value <= 0 ? options.value.length - 1 : activeIndex.value - 1
   } else if (direction === "down") {
@@ -181,7 +181,7 @@ function navigateResult(direction) {
   }
 }
 
-function selectActiveResult() {
+function selectActiveResult(): void {
   if (options.value.length > 0 && activeIndex.value >= 0) {
     change(options.value[activeIndex.value])
   }
@@ -191,7 +191,7 @@ onMounted(() => {
   searchPool.value = generateRoutes(routes.value)
 })
 
-watch(searchPool, (list) => {
+watch(searchPool, (list: SearchItem[]) => {
   initFuse(list)
 })
 </script>

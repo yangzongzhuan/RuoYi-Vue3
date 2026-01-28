@@ -199,7 +199,7 @@
               <el-checkbox v-model="upload.updateSupport" />是否更新已经存在的用户数据
             </div>
             <span>仅允许导入xls、xlsx格式文件。</span>
-            <el-link type="primary" :underline="false" style="font-size: 12px; vertical-align: baseline" @click="importTemplate">下载模板</el-link>
+            <el-link type="primary" underline="never" style="font-size: 12px; vertical-align: baseline" @click="importTemplate">下载模板</el-link>
           </div>
         </template>
       </el-upload>
@@ -213,34 +213,38 @@
   </div>
 </template>
 
-<script setup name="User">
+<script setup lang="ts" name="User">
 import { getToken } from "@/utils/auth"
 import useAppStore from '@/store/modules/app'
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user"
 import { Splitpanes, Pane } from "splitpanes"
 import "splitpanes/dist/splitpanes.css"
+import type { SysUser, UserQueryParams, UserFormDataResult } from '@/types/api/system/user'
+import type { SysRole } from '@/types/api/system/role'
+import type { SysPost } from '@/types/api/system/post'
+import type { TreeSelect, TableShowColumns, AjaxResult } from '@/types/api/common'
 
 const router = useRouter()
 const appStore = useAppStore()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex")
 
-const userList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
-const dateRange = ref([])
-const deptName = ref("")
-const deptOptions = ref(undefined)
-const enabledDeptOptions = ref(undefined)
-const initPassword = ref(undefined)
-const postOptions = ref([])
-const roleOptions = ref([])
+const userList = ref<SysUser[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
+const dateRange = ref<string[]>([])
+const deptName = ref<string>("")
+const deptOptions = ref<TreeSelect[] | undefined>(undefined)
+const enabledDeptOptions = ref<TreeSelect[] | undefined>(undefined)
+const initPassword = ref<string | undefined>(undefined)
+const postOptions = ref<SysPost[]>([])
+const roleOptions = ref<SysRole[]>([])
 /*** 用户导入参数 */
 const upload = reactive({
   // 是否显示弹出层（用户导入）
@@ -257,7 +261,7 @@ const upload = reactive({
   url: import.meta.env.VITE_APP_BASE_API + "/system/user/importData"
 })
 // 列显隐信息
-const columns = ref({
+const columns = ref<Record<string, TableShowColumns>>({
   userId: { label: '用户编号', visible: true },
   userName: { label: '用户名称', visible: true },
   nickName: { label: '用户昵称', visible: true },
@@ -268,7 +272,7 @@ const columns = ref({
 })
 
 const data = reactive({
-  form: {},
+  form: {} as SysUser,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -276,7 +280,7 @@ const data = reactive({
     phonenumber: undefined,
     status: undefined,
     deptId: undefined
-  },
+  } as UserQueryParams,
   rules: {
     userName: [{ required: true, message: "用户名称不能为空", trigger: "blur" }, { min: 2, max: 20, message: "用户名称长度必须介于 2 和 20 之间", trigger: "blur" }],
     nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
@@ -289,13 +293,13 @@ const data = reactive({
 const { queryParams, form, rules } = toRefs(data)
 
 /** 通过条件过滤节点  */
-const filterNode = (value, data) => {
+const filterNode = (value: string, data: any): boolean => {
   if (!value) return true
   return data.label.indexOf(value) !== -1
 }
 
 /** 根据名称筛选部门树 */
-watch(deptName, val => {
+watch(deptName, (val: string) => {
   proxy.$refs["deptTreeRef"].filter(val)
 })
 
@@ -318,7 +322,7 @@ function getDeptTree() {
 }
 
 /** 过滤禁用的部门 */
-function filterDisabledDept(deptList) {
+function filterDisabledDept(deptList: TreeSelect[]) {
   return deptList.filter(dept => {
     if (dept.disabled) {
       return false
@@ -331,7 +335,7 @@ function filterDisabledDept(deptList) {
 }
 
 /** 节点单击事件 */
-function handleNodeClick(data) {
+function handleNodeClick(data: any) {
   queryParams.value.deptId = data.id
   handleQuery()
 }
@@ -352,8 +356,8 @@ function resetQuery() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const userIds = row.userId || ids.value
+function handleDelete(row?: SysUser) {
+  const userIds = row?.userId || ids.value
   proxy.$modal.confirm('是否确认删除用户编号为"' + userIds + '"的数据项？').then(function () {
     return delUser(userIds)
   }).then(() => {
@@ -370,10 +374,10 @@ function handleExport() {
 }
 
 /** 用户状态修改  */
-function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用"
+function handleStatusChange(row: SysUser) {
+  const text = row.status === "0" ? "启用" : "停用"
   proxy.$modal.confirm('确认要"' + text + '""' + row.userName + '"用户吗?').then(function () {
-    return changeUserStatus(row.userId, row.status)
+    return changeUserStatus(row.userId!, row.status!)
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功")
   }).catch(function () {
@@ -382,7 +386,7 @@ function handleStatusChange(row) {
 }
 
 /** 更多操作 */
-function handleCommand(command, row) {
+function handleCommand(command: string, row: SysUser) {
   switch (command) {
     case "handleResetPwd":
       handleResetPwd(row)
@@ -396,34 +400,35 @@ function handleCommand(command, row) {
 }
 
 /** 跳转角色分配 */
-function handleAuthRole(row) {
+function handleAuthRole(row: SysUser) {
   const userId = row.userId
   router.push("/system/user-auth/role/" + userId)
 }
 
 /** 重置密码按钮操作 */
-function handleResetPwd(row) {
+function handleResetPwd(row: SysUser) {
   proxy.$prompt('请输入"' + row.userName + '"的新密码', "提示", {
     confirmButtonText: "确定",
     cancelButtonText: "取消",
     closeOnClickModal: false,
     inputPattern: /^.{5,20}$/,
     inputErrorMessage: "用户密码长度必须介于 5 和 20 之间",
-    inputValidator: (value) => {
+    inputValidator: (value: string) => {
       if (/<|>|"|'|\||\\/.test(value)) {
         return "不能包含非法字符：< > \" ' \\\ |"
       }
+      return true
     },
-  }).then(({ value }) => {
-    resetUserPwd(row.userId, value).then(response => {
+  }).then(({ value }: { value: string }) => { 
+    resetUserPwd(row.userId!, value).then(() => {
       proxy.$modal.msgSuccess("修改成功，新密码是：" + value)
     })
   }).catch(() => {})
 }
 
 /** 选择条数  */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.userId)
+function handleSelectionChange(selection: SysUser[]) {
+  ids.value = selection.map(item => item.userId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -442,22 +447,22 @@ function importTemplate() {
 }
 
 /**文件上传中处理 */
-const handleFileUploadProgress = (event, file, fileList) => {
+const handleFileUploadProgress = (event: any, file: any, fileList: any[]) => {
   upload.isUploading = true
 }
 
 /** 文件选择处理 */
-const handleFileChange = (file, fileList) => {
+const handleFileChange = (file: any, fileList: any[]) => {
   upload.selectedFile = file
 }
 
 /** 文件删除处理 */
-const handleFileRemove = (file, fileList) => {
+const handleFileRemove = (file: any, fileList: any[]) => {
   upload.selectedFile = null
 }
 
 /** 文件上传成功处理 */
-const handleFileSuccess = (response, file, fileList) => {
+const handleFileSuccess = (response: AjaxResult, file: any, fileList: any[]) => {
   upload.open = false
   upload.isUploading = false
   proxy.$refs["uploadRef"].handleRemove(file)
@@ -513,33 +518,33 @@ function handleAdd() {
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row?: SysUser) {
   reset()
-  const userId = row.userId || ids.value
+  const userId = row?.userId || ids.value[0]
   getUser(userId).then(response => {
-    form.value = response.data
+    form.value = response.data!
     postOptions.value = response.posts
     roleOptions.value = response.roles
     form.value.postIds = response.postIds
     form.value.roleIds = response.roleIds
     open.value = true
     title.value = "修改用户"
-    form.password = ""
+    form.value.password = ""
   })
 }
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["userRef"].validate(valid => {
+  proxy.$refs["userRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.userId != undefined) {
-        updateUser(form.value).then(response => {
+        updateUser(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addUser(form.value).then(response => {
+        addUser(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -552,7 +557,7 @@ function submitForm() {
 onMounted(() => {
   getDeptTree()
   getList()
-  proxy.getConfigKey("sys.user.initPassword").then(response => {
+  proxy.getConfigKey("sys.user.initPassword").then((response: AjaxResult) => {
     initPassword.value = response.msg
   })
 })

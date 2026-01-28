@@ -50,16 +50,17 @@
   </el-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { listDbTable, importTable } from "@/api/tool/gen"
+import type { GenQueryParams, GenTable } from '@/types/api/tool/gen'
 
-const total = ref(0)
-const visible = ref(false)
-const tables = ref([])
-const dbTableList = ref([])
+const total = ref<number>(0)
+const visible = ref<boolean>(false)
+const tables = ref<string[]>([])
+const dbTableList = ref<GenTable[]>([])
 const { proxy } = getCurrentInstance()
 
-const queryParams = reactive({
+const queryParams = reactive<GenQueryParams>({
   pageNum: 1,
   pageSize: 10,
   tableName: undefined,
@@ -69,18 +70,18 @@ const queryParams = reactive({
 const emit = defineEmits(["ok"])
 
 /** 查询参数列表 */
-function show() {
+function show(): void {
   getList()
   visible.value = true
 }
 
 /** 单击选择行 */
-function clickRow(row) {
+function clickRow(row: GenTable) {
   proxy.$refs.table.toggleRowSelection(row)
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
+function handleSelectionChange(selection: GenTable[]) {
   tables.value = selection.map(item => item.tableName)
 }
 

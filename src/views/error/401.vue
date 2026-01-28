@@ -25,14 +25,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import errImage from "@/assets/401_images/401.gif"
 
-let { proxy } = getCurrentInstance()
+const { proxy } = getCurrentInstance()
 
-const errGif = ref(errImage + "?" + +new Date())
+const errGif = ref<string>(errImage + "?" + +new Date())
 
-function back() {
+function back(): void {
   if (proxy.$route.query.noGoBack) {
     proxy.$router.push({ path: "/" })
   } else {

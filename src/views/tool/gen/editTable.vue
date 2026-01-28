@@ -121,25 +121,26 @@
   </el-card>
 </template>
 
-<script setup name="GenEdit">
+<script setup lang="ts" name="GenEdit">
 import { getGenTable, updateGenTable } from "@/api/tool/gen"
 import { optionselect as getDictOptionselect } from "@/api/system/dict/type"
-import basicInfoForm from "./basicInfoForm"
-import genInfoForm from "./genInfoForm"
+import type { GenTableInfoResult } from '@/types/api/tool/gen'
+import BasicInfoForm from "./basicInfoForm.vue"
+import GenInfoForm from "./genInfoForm.vue"
 import Sortable from 'sortablejs'
 
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 
-const activeName = ref("columnInfo")
-const tableHeight = ref(document.documentElement.scrollHeight - 245 + "px")
-const tables = ref([])
-const columns = ref([])
-const dictOptions = ref([])
-const info = ref({})
+const activeName = ref<string>("columnInfo")
+const tableHeight = ref<string>(document.documentElement.scrollHeight - 245 + "px")
+const tables = ref<any[]>([])
+const columns = ref<any[]>([])
+const dictOptions = ref<any[]>([])
+const info = ref<Record<string, any>>({})
 
 /** 提交按钮 */
-function submitForm() {
+function submitForm(): void {
   const basicForm = proxy.$refs.basicInfo.$refs.basicInfoForm
   const genForm = proxy.$refs.genInfo.$refs.genInfoForm
   Promise.all([basicForm, genForm].map(getFormPromise)).then(res => {
@@ -165,15 +166,15 @@ function submitForm() {
   })
 }
 
-function getFormPromise(form) {
+function getFormPromise(form: any): Promise<boolean> {
   return new Promise(resolve => {
-    form.validate(res => {
+    form.validate((res: boolean) => {
       resolve(res)
     })
   })
 }
 
-function close() {
+function close(): void {
   const obj = { path: "/tool/gen", query: { t: Date.now(), pageNum: route.query.pageNum } }
   proxy.$tab.closeOpenPage(obj)
 }
@@ -182,10 +183,11 @@ function close() {
   const tableId = route.params && route.params.tableId
   if (tableId) {
     // 获取表详细信息
-    getGenTable(tableId).then(res => {
-      columns.value = res.data.rows
-      info.value = res.data.info
-      tables.value = res.data.tables
+    getGenTable(Number(tableId)).then(res => {
+      const data = res.data as GenTableInfoResult
+      columns.value = data.rows
+      info.value = data.info
+      tables.value = data.tables
     })
     /** 查询字典下拉列表 */
     getDictOptionselect().then(response => {
@@ -197,15 +199,18 @@ function close() {
 // 拖动排序
 onMounted(() => {
   const element = document.querySelector('.el-table__body > tbody')
-  Sortable.create(element, {
-    handle: ".allowDrag",
-    onEnd: (evt) => {
-      const targetRow = columns.value.splice(evt.oldIndex, 1)[0]
-      columns.value.splice(evt.newIndex, 0, targetRow)
-      for (const index in columns.value) {
-        columns.value[index].sort = parseInt(index) + 1
+  if (element) {
+    Sortable.create(element as HTMLElement, {
+      //@ts-ignore
+      handle: ".allowDrag",
+      onEnd: (evt) => {
+        const targetRow = columns.value.splice(evt.oldIndex!, 1)[0]
+        columns.value.splice(evt.newIndex!, 0, targetRow)
+        for (const index in columns.value) {
+          columns.value[index].sort = parseInt(index) + 1
+        }
       }
-    }
-  })
+    })
+  }
 })
 </script>

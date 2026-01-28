@@ -10,7 +10,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   src: {
     type: String,
@@ -21,9 +21,9 @@ const props = defineProps({
   }
 })
 
-const loading = ref(true)
-const height = ref(document.documentElement.clientHeight - 94.5 + 'px')
-const iframeRef = ref(null)
+const loading = ref<boolean>(true)
+const height = ref<string>(document.documentElement.clientHeight - 94.5 + 'px')
+const iframeRef = ref<HTMLIFrameElement | null>(null)
 
 onMounted(() => {
   if (iframeRef.value) {

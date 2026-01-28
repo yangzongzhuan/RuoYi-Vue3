@@ -4,7 +4,7 @@
   </svg>
 </template>
 
-<script>
+<script lang="ts">
 export default defineComponent({
   props: {
     iconClass: {
@@ -20,7 +20,7 @@ export default defineComponent({
       default: ''
     },
   },
-  setup(props) {
+  setup(props: any) {
     return {
       iconName: computed(() => `#icon-${props.iconClass}`),
       svgClass: computed(() => {

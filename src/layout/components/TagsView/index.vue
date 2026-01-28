@@ -42,19 +42,19 @@
   </div>
 </template>
 
-<script setup>
-import ScrollPane from './ScrollPane'
+<script setup lang="ts">
+import ScrollPane from './ScrollPane.vue'
 import { getNormalPath } from '@/utils/ruoyi'
 import useTagsViewStore from '@/store/modules/tagsView'
 import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
-const visible = ref(false)
-const top = ref(0)
-const left = ref(0)
-const selectedTag = ref({})
-const affixTags = ref([])
-const scrollPaneRef = ref(null)
+const visible = ref<boolean>(false)
+const top = ref<number>(0)
+const left = ref<number>(0)
+const selectedTag = ref<any>({})
+const affixTags = ref<any[]>([])
+const scrollPaneRef = ref<any>(null)
 
 const { proxy } = getCurrentInstance()
 const route = useRoute()
@@ -70,7 +70,7 @@ watch(route, () => {
   moveToCurrentTag()
 })
 
-watch(visible, (value) => {
+watch(visible, (value: boolean) => {
   if (value) {
     document.body.addEventListener('click', closeMenu)
   } else {
@@ -83,11 +83,11 @@ onMounted(() => {
   addTags()
 })
 
-function isActive(r) {
+function isActive(r: any): boolean {
   return r.path === route.path
 }
 
-function activeStyle(tag) {
+function activeStyle(tag: any): Record<string, string> {
   if (!isActive(tag)) return {}
   return {
     "background-color": theme.value,
@@ -95,11 +95,11 @@ function activeStyle(tag) {
   }
 }
 
-function isAffix(tag) {
+function isAffix(tag: any): boolean {
   return tag.meta && tag.meta.affix
 }
 
-function isFirstView() {
+function isFirstView(): boolean {
   try {
     return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
   } catch (err) {
@@ -107,7 +107,7 @@ function isFirstView() {
   }
 }
 
-function isLastView() {
+function isLastView(): boolean {
   try {
     return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
   } catch (err) {
@@ -115,8 +115,8 @@ function isLastView() {
   }
 }
 
-function filterAffixTags(routes, basePath = '') {
-  let tags = []
+function filterAffixTags(routes: any[], basePath = ''): any[] {
+  const tags: any[] = []
   routes.forEach(route => {
     if (route.meta && route.meta.affix) {
       const tagPath = getNormalPath(basePath + '/' + route.path)
@@ -130,14 +130,14 @@ function filterAffixTags(routes, basePath = '') {
     if (route.children) {
       const tempTags = filterAffixTags(route.children, route.path)
       if (tempTags.length >= 1) {
-        tags = [...tags, ...tempTags]
+        tags.push(...tempTags)
       }
     }
   })
   return tags
 }
 
-function initTags() {
+function initTags(): void {
   const res = filterAffixTags(routes.value)
   affixTags.value = res
   for (const tag of res) {
@@ -148,18 +148,18 @@ function initTags() {
   }
 }
 
-function addTags() {
+function addTags(): void {
   const { name } = route
   if (name) {
     useTagsViewStore().addView(route)
   }
 }
 
-function moveToCurrentTag() {
+function moveToCurrentTag(): void {
   nextTick(() => {
     for (const r of visitedViews.value) {
       if (r.path === route.path) {
-        scrollPaneRef.value.moveToTarget(r)
+        scrollPaneRef.value?.moveToTarget(r)
         // when query is different then update
         if (r.fullPath !== route.fullPath) {
           useTagsViewStore().updateVisitedView(route)
@@ -169,61 +169,61 @@ function moveToCurrentTag() {
   })
 }
 
-function refreshSelectedTag(view) {
+function refreshSelectedTag(view: any): void {
   proxy.$tab.refreshPage(view)
   if (route.meta.link) {
     useTagsViewStore().delIframeView(route)
   }
 }
 
-function closeSelectedTag(view) {
-  proxy.$tab.closePage(view).then(({ visitedViews }) => {
+function closeSelectedTag(view: any): void {
+  proxy.$tab.closePage(view).then(({ visitedViews }: any) => {
     if (isActive(view)) {
       toLastView(visitedViews, view)
     }
   })
 }
 
-function closeRightTags() {
-  proxy.$tab.closeRightPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
+function closeRightTags(): void {
+  proxy.$tab.closeRightPage(selectedTag.value).then((visitedViews: any) => {
+    if (!visitedViews.find((i: any) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 
-function closeLeftTags() {
-  proxy.$tab.closeLeftPage(selectedTag.value).then(visitedViews => {
-    if (!visitedViews.find(i => i.fullPath === route.fullPath)) {
+function closeLeftTags(): void {
+  proxy.$tab.closeLeftPage(selectedTag.value).then((visitedViews: any) => {
+    if (!visitedViews.find((i: any) => i.fullPath === route.fullPath)) {
       toLastView(visitedViews)
     }
   })
 }
 
-function closeOthersTags() {
+function closeOthersTags(): void {
   router.push(selectedTag.value).catch(() => { })
   proxy.$tab.closeOtherPage(selectedTag.value).then(() => {
     moveToCurrentTag()
   })
 }
 
-function closeAllTags(view) {
-  proxy.$tab.closeAllPage().then(({ visitedViews }) => {
-    if (affixTags.value.some(tag => tag.path === route.path)) {
+function closeAllTags(view: any): void {
+  proxy.$tab.closeAllPage().then(({ visitedViews }: any) => {
+    if (affixTags.value.some((tag: any) => tag.path === route.path)) {
       return
     }
     toLastView(visitedViews, view)
   })
 }
 
-function toLastView(visitedViews, view) {
+function toLastView(visitedViews: any[], view?: any): void {
   const latestView = visitedViews.slice(-1)[0]
   if (latestView) {
     router.push(latestView.fullPath)
   } else {
     // now the default is to redirect to the home page if there is no tags-view,
     // you can adjust it according to your needs.
-    if (view.name === 'Dashboard') {
+    if (view && view.name === 'Dashboard') {
       // to reload home page
       router.replace({ path: '/redirect' + view.fullPath })
     } else {
@@ -232,7 +232,7 @@ function toLastView(visitedViews, view) {
   }
 }
 
-function openMenu(tag, e) {
+function openMenu(tag: any, e: MouseEvent): void {
   const menuMinWidth = 105
   const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
   const offsetWidth = proxy.$el.offsetWidth // container width
@@ -250,11 +250,11 @@ function openMenu(tag, e) {
   selectedTag.value = tag
 }
 
-function closeMenu() {
+function closeMenu(): void {
   visible.value = false
 }
 
-function handleScroll() {
+function handleScroll(): void {
   closeMenu()
 }
 </script>

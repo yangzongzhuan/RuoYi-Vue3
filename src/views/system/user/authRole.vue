@@ -45,43 +45,50 @@
    </div>
 </template>
 
-<script setup name="AuthRole">
+<script setup lang="ts" name="AuthRole">
 import { getAuthRole, updateAuthRole } from "@/api/system/user"
+import type { SysRole } from '@/types/api/system/role'
+import type { SysUser } from '@/types/api/system/user'
 
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 
-const loading = ref(true)
-const total = ref(0)
-const pageNum = ref(1)
-const pageSize = ref(10)
-const roleIds = ref([])
-const roles = ref([])
-const form = ref({
+interface SysRoleWithFlag extends SysRole {
+  /** 用户是否存在此角色标识 */
+  flag: boolean;
+}
+
+const loading = ref<boolean>(true)
+const total = ref<number>(0)
+const pageNum = ref<number>(1)
+const pageSize = ref<number>(10)
+const roleIds = ref<number[]>([])
+const roles = ref<SysRoleWithFlag[]>([])
+const form = ref<SysUser>({
   nickName: undefined,
   userName: undefined,
   userId: undefined
 })
 
 /** 单击选中行数据 */
-function clickRow(row) {
+function clickRow(row: SysRole) {
   if (checkSelectable(row)) {
     proxy.$refs["roleRef"].toggleRowSelection(row)
   }
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  roleIds.value = selection.map(item => item.roleId)
+function handleSelectionChange(selection: SysRole[]) {
+  roleIds.value = selection.map(item => item.roleId!)
 }
 
 /** 保存选中的数据编号 */
-function getRowKey(row) {
-  return row.roleId
+function getRowKey(row: SysRole): number {
+  return row.roleId!
 }
 
 // 检查角色状态
-function checkSelectable(row) {
+function checkSelectable(row: SysRole): boolean {
   return row.status === "0" ? true : false
 }
 
@@ -95,14 +102,14 @@ function close() {
 function submitForm() {
   const userId = form.value.userId
   const rIds = roleIds.value.join(",")
-  updateAuthRole({ userId: userId, roleIds: rIds }).then(response => {
+  updateAuthRole({ userId: userId!, roleIds: rIds }).then(() => {
     proxy.$modal.msgSuccess("授权成功")
     close()
   })
 }
 
 (() => {
-  const userId = route.params && route.params.userId
+  const userId = route.params && Number(route.params.userId)
   if (userId) {
     loading.value = true
     getAuthRole(userId).then(response => {
@@ -110,7 +117,7 @@ function submitForm() {
       roles.value = response.roles
       total.value = roles.value.length
       nextTick(() => {
-        roles.value.forEach(row => {
+        roles.value.forEach((row: SysRoleWithFlag) => {
           if (row.flag) {
             proxy.$refs["roleRef"].toggleRowSelection(row)
           }

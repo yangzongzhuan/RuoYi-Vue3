@@ -31,7 +31,7 @@
     </el-dialog>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 const open = defineModel()
 const emit = defineEmits(['confirm'])
 const formData = ref({
@@ -54,8 +54,8 @@ const rules = {
     }
   ]
 }
-const dataType = ref('string')
-const dataTypeOptions = ref([
+const dataType = ref<string>('string')
+const dataTypeOptions = ref<any[]>([
   {
     label: '字符串',
     value: 'string'
@@ -65,25 +65,27 @@ const dataTypeOptions = ref([
     value: 'number'
   }
 ])
-const id = ref(100)
-const treeNodeForm = ref()
+const id = ref<number>(100)
+const treeNodeForm = ref<any>()
 
-function onOpen() {
+function onOpen(): void {
   formData.value = {
     label: undefined,
     value: undefined
   }
 }
 
-function onClose() {
-  open.value = false
+function onClose(): void {
+  if (open.value !== undefined) {
+    open.value = false
+  }
 }
 
-function handelConfirm() {
-  treeNodeForm.value.validate(valid => {
+function handelConfirm(): void {
+  treeNodeForm.value?.validate((valid: boolean) => {
     if (!valid) return
     if (dataType.value === 'number') {
-      formData.value.value = parseFloat(formData.value.value)
+      formData.value.value = parseFloat(String(formData.value.value))
     }
     formData.value.id = id.value++
     emit('commit', formData.value)

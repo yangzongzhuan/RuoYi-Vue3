@@ -60,8 +60,9 @@
    </el-dialog>
 </template>
 
-<script setup name="SelectUser">
+<script setup lang="ts" name="SelectUser">
 import { authUserSelectAll, unallocatedUserList } from "@/api/system/role"
+import type { SysUser, UserQueryParams } from '@/types/api/system/user'
 
 const props = defineProps({
   roleId: {
@@ -72,12 +73,12 @@ const props = defineProps({
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const userList = ref([])
-const visible = ref(false)
-const total = ref(0)
-const userIds = ref([])
+const userList = ref<SysUser[]>([])
+const visible = ref<boolean>(false)
+const total = ref<number>(0)
+const userIds = ref<number[]>([])
 
-const queryParams = reactive({
+const queryParams = reactive<UserQueryParams>({
   pageNum: 1,
   pageSize: 10,
   roleId: undefined,
@@ -93,13 +94,13 @@ function show() {
 }
 
 /**选择行 */
-function clickRow(row) {
+function clickRow(row: SysUser) {
   proxy.$refs["refTable"].toggleRowSelection(row)
 }
 
 // 多选框选中数据
-function handleSelectionChange(selection) {
-  userIds.value = selection.map(item => item.userId)
+function handleSelectionChange(selection: SysUser[]) {
+  userIds.value = selection.map(item => item.userId!)
 }
 
 // 查询表数据
@@ -131,7 +132,7 @@ function handleSelectUser() {
     proxy.$modal.msgError("请选择要分配的用户")
     return
   }
-  authUserSelectAll({ roleId: roleId, userIds: uIds }).then(res => {
+  authUserSelectAll({ roleId: roleId!, userIds: uIds }).then(res => {
     proxy.$modal.msgSuccess(res.msg)
     visible.value = false
     emit("ok")

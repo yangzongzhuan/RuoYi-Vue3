@@ -13,7 +13,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useWindowSize } from '@vueuse/core'
 import Sidebar from './components/Sidebar/index.vue'
 import { AppMain, Navbar, Settings, TagsView } from './components'
@@ -22,7 +22,6 @@ import useSettingsStore from '@/store/modules/settings'
 
 const settingsStore = useSettingsStore()
 const theme = computed(() => settingsStore.theme)
-const sideTheme = computed(() => settingsStore.sideTheme)
 const sidebar = computed(() => useAppStore().sidebar)
 const device = computed(() => useAppStore().device)
 const needTagsView = computed(() => settingsStore.tagsView)
@@ -53,7 +52,7 @@ watchEffect(() => {
   }
 })
 
-function handleClickOutside() {
+function handleClickOutside(): void {
   useAppStore().closeSideBar({ withoutAnimation: false })
 }
 

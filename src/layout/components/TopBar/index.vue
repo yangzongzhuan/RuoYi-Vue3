@@ -11,7 +11,7 @@
   </el-menu>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import SidebarItem from '../Sidebar/SidebarItem'
 import useAppStore from '@/store/modules/app'
 import useSettingsStore from '@/store/modules/settings'
@@ -33,14 +33,14 @@ const activeMenu = computed(() => {
   return path
 })
 
-const visibleNumber = ref(5)
+const visibleNumber = ref<number>(5)
 const topMenus = computed(() => {
   return permissionStore.sidebarRouters.filter((f) => !f.hidden).slice(0, visibleNumber.value)
 })
 const moreRoutes = computed(() => {
   return permissionStore.sidebarRouters.filter((f) => !f.hidden).slice(visibleNumber.value, sidebarRouters.value.length - visibleNumber.value)
 })
-function setVisibleNumber() {
+function setVisibleNumber(): void {
   const width = document.body.getBoundingClientRect().width / 3
   visibleNumber.value = parseInt(width / 85)
 }

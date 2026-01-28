@@ -20,7 +20,7 @@
   </el-dialog>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const open = defineModel()
 const props = defineProps({
   showFileName: Boolean
@@ -53,16 +53,16 @@ const typeOptions = ref([
     value: 'dialog'
   }
 ])
-function onOpen() {
+function onOpen(): void {
   if (props.showFileName) {
     formData.value.fileName = `${+new Date()}.vue`
   }
 }
-function onClose() {
+function onClose(): void {
   open.value = false
 }
-function handelConfirm() {
-  codeTypeForm.value.validate(valid => {
+function handelConfirm(): void {
+  codeTypeForm.value?.validate((valid: boolean) => {
     if (!valid) return
     emit('confirm', { ...formData.value })
     onClose()

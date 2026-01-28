@@ -29,20 +29,27 @@
     <!-- 文件列表 -->
     <transition-group ref="uploadFileList" class="upload-file-list el-upload-list el-upload-list--text" name="el-fade-in-linear" tag="ul">
       <li :key="file.uid" class="el-upload-list__item ele-upload-list__item-content" v-for="(file, index) in fileList">
-        <el-link :href="`${baseUrl}${file.url}`" :underline="false" target="_blank">
+        <el-link :href="`${baseUrl}${file.url}`" underline="never" target="_blank">
           <span class="el-icon-document"> {{ getFileName(file.name) }} </span>
         </el-link>
         <div class="ele-upload-list__item-content-action">
-          <el-link :underline="false" @click="handleDelete(index)" type="danger" v-if="!disabled">&nbsp;删除</el-link>
+          <el-link underline="never" @click="handleDelete(index)" type="danger" v-if="!disabled">&nbsp;删除</el-link>
         </div>
       </li>
     </transition-group>
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getToken } from "@/utils/auth"
 import Sortable from 'sortablejs'
+import type { UploadFileResult } from '@/types/api/common'
+
+interface UploadFileItem {
+  uid?: number | string;
+  name: string;
+  url: string;
+}
 
 const props = defineProps({
   modelValue: [String, Object, Array],
@@ -67,7 +74,7 @@ const props = defineProps({
   },
   // 文件类型, 例如['png', 'jpg', 'jpeg']
   fileType: {
-    type: Array,
+    type: Array as () => string[],
     default: () => ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "txt", "pdf"]
   },
   // 是否显示提示
@@ -90,22 +97,22 @@ const props = defineProps({
 const { proxy } = getCurrentInstance()
 const emit = defineEmits()
 const number = ref(0)
-const uploadList = ref([])
+const uploadList = ref<UploadFileItem[]>([])
 const baseUrl = import.meta.env.VITE_APP_BASE_API
 const uploadFileUrl = ref(import.meta.env.VITE_APP_BASE_API + props.action) // 上传文件服务器地址
 const headers = ref({ Authorization: "Bearer " + getToken() })
-const fileList = ref([])
+const fileList = ref<UploadFileItem[]>([])
 const showTip = computed(
   () => props.isShowTip && (props.fileType || props.fileSize)
 )
 
-watch(() => props.modelValue, val => {
+watch(() => props.modelValue, (val: any) => {
   if (val) {
     let temp = 1
     // 首先将值转为数组
     const list = Array.isArray(val) ? val : props.modelValue.split(',')
     // 然后将数组转为对象数组
-    fileList.value = list.map(item => {
+    fileList.value = list.map((item: any) => {
       if (typeof item === "string") {
         item = { name: item, url: item }
       }
@@ -119,9 +126,9 @@ watch(() => props.modelValue, val => {
 },{ deep: true, immediate: true })
 
 // 上传前校检格式和大小
-function handleBeforeUpload(file) {
+function handleBeforeUpload(file: File): boolean {
   // 校检文件类型
-  if (props.fileType.length) {
+  if (props.fileType.length > 0) {
     const fileName = file.name.split('.')
     const fileExt = fileName[fileName.length - 1]
     const isTypeOk = props.fileType.indexOf(fileExt) >= 0
@@ -149,18 +156,18 @@ function handleBeforeUpload(file) {
 }
 
 // 文件个数超出
-function handleExceed() {
+function handleExceed(): void {
   proxy.$modal.msgError(`上传文件数量不能超过 ${props.limit} 个!`)
 }
 
 // 上传失败
-function handleUploadError(err) {
+function handleUploadError(err: Error): void {
   proxy.$modal.msgError("上传文件失败")
   proxy.$modal.closeLoading()
 }
 
 // 上传成功回调
-function handleUploadSuccess(res, file) {
+function handleUploadSuccess(res: UploadFileResult, file: any): void {
   if (res.code === 200) {
     uploadList.value.push({ name: res.fileName, url: res.fileName })
     uploadedSuccessfully()
@@ -174,15 +181,15 @@ function handleUploadSuccess(res, file) {
 }
 
 // 删除文件
-function handleDelete(index) {
+function handleDelete(index: number): void {
   fileList.value.splice(index, 1)
   emit("update:modelValue", listToString(fileList.value))
 }
 
 // 上传结束处理
-function uploadedSuccessfully() {
+function uploadedSuccessfully(): void {
   if (number.value > 0 && uploadList.value.length === number.value) {
-    fileList.value = fileList.value.filter(f => f.url !== undefined).concat(uploadList.value)
+    fileList.value = fileList.value.filter((f: UploadFileItem) => f.url !== undefined).concat(uploadList.value)
     uploadList.value = []
     number.value = 0
     emit("update:modelValue", listToString(fileList.value))
@@ -191,7 +198,7 @@ function uploadedSuccessfully() {
 }
 
 // 获取文件名称
-function getFileName(name) {
+function getFileName(name: string): string {
   // 如果是url那么取最后的名字 如果不是直接返回
   if (name.lastIndexOf("/") > -1) {
     return name.slice(name.lastIndexOf("/") + 1)
@@ -201,7 +208,7 @@ function getFileName(name) {
 }
 
 // 对象转成指定字符串分隔
-function listToString(list, separator) {
+function listToString(list: UploadFileItem[], separator?: string): string {
   let strs = ""
   separator = separator || ","
   for (let i in list) {
@@ -216,15 +223,17 @@ function listToString(list, separator) {
 onMounted(() => {
   if (props.drag && !props.disabled) {
     nextTick(() => {
-      const element = proxy.$refs.uploadFileList?.$el || proxy.$refs.uploadFileList
-      Sortable.create(element, {
-        ghostClass: 'file-upload-darg',
-        onEnd: (evt) => {
-          const movedItem = fileList.value.splice(evt.oldIndex, 1)[0]
-          fileList.value.splice(evt.newIndex, 0, movedItem)
-          emit('update:modelValue', listToString(fileList.value))
-        }
-      })
+      const element = proxy.$refs.uploadFileList?.$el || proxy.$refs.uploadFileList as HTMLElement
+      if (element) {
+        Sortable.create(element, {
+          ghostClass: 'file-upload-darg',
+          onEnd: (evt) => {
+            const movedItem = fileList.value.splice(evt.oldIndex, 1)[0]
+            fileList.value.splice(evt.newIndex, 0, movedItem)
+            emit('update:modelValue', listToString(fileList.value))
+          }
+        })
+      }
     })
   }
 })

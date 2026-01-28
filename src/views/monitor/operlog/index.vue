@@ -197,26 +197,27 @@
    </div>
 </template>
 
-<script setup name="Operlog">
+<script setup lang="ts" name="Operlog">
 import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog"
+import type { SysOperLog, OperlogQueryParams } from '@/types/api/monitor/operlog'
 
 const { proxy } = getCurrentInstance()
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status")
 
-const operlogList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
-const dateRange = ref([])
+const operlogList = ref<SysOperLog[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
+const dateRange = ref<string[]>([])
 const defaultSort = ref({ prop: "operTime", order: "descending" })
 
 const data = reactive({
-  form: {},
+  form: {} as SysOperLog,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
@@ -225,7 +226,7 @@ const data = reactive({
     operName: undefined,
     businessType: undefined,
     status: undefined
-  }
+  } as OperlogQueryParams
 })
 
 const { queryParams, form } = toRefs(data)
@@ -241,8 +242,8 @@ function getList() {
 }
 
 /** 操作日志类型字典翻译 */
-function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType)
+function typeFormat(row: SysOperLog): string {
+  return proxy.selectDictLabel(sys_oper_type.value, row.businessType!)
 }
 
 /** 搜索按钮操作 */
@@ -260,27 +261,27 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.operId)
+function handleSelectionChange(selection: SysOperLog[]) {
+  ids.value = selection.map(item => item.operId!)
   multiple.value = !selection.length
 }
 
 /** 排序触发事件 */
-function handleSortChange(column, prop, order) {
+function handleSortChange(column: any) {
   queryParams.value.orderByColumn = column.prop
   queryParams.value.isAsc = column.order
   getList()
 }
 
 /** 详细按钮操作 */
-function handleView(row) {
+function handleView(row: SysOperLog) {
   open.value = true
   form.value = row
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const operIds = row.operId || ids.value
+function handleDelete(row?: SysOperLog) {
+  const operIds = row?.operId || ids.value
   proxy.$modal.confirm('是否确认删除日志编号为"' + operIds + '"的数据项?').then(function () {
     return delOperlog(operIds)
   }).then(() => {

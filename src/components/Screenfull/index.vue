@@ -4,10 +4,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { useFullscreen } from '@vueuse/core'
 
-const { isFullscreen, enter, exit, toggle } = useFullscreen()
+const { isFullscreen, toggle } = useFullscreen()
 </script>
 
 <style lang='scss' scoped>

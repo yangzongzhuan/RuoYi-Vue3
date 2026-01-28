@@ -64,12 +64,14 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getCodeImg } from "@/api/login"
 import Cookies from "js-cookie"
 import { encrypt, decrypt } from "@/utils/jsencrypt"
 import useUserStore from '@/store/modules/user'
 import defaultSettings from '@/settings'
+import type { CaptchaInfoResult } from '@/types/api/login'
+import type { LoginForm } from '@/types/api/login'
 
 const title = import.meta.env.VITE_APP_TITLE
 const footerContent = defaultSettings.footerContent
@@ -78,7 +80,7 @@ const route = useRoute()
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
-const loginForm = ref({
+const loginForm = ref<LoginForm>({
   username: "admin",
   password: "admin123",
   rememberMe: false,
@@ -98,14 +100,14 @@ const loading = ref(false)
 const captchaEnabled = ref(true)
 // 注册开关
 const register = ref(false)
-const redirect = ref(undefined)
+const redirect = ref<string | undefined>(undefined)
 
-watch(route, (newRoute) => {
-    redirect.value = newRoute.query && newRoute.query.redirect
+watch(route, (newRoute: any) => {
+    redirect.value = (newRoute.query && newRoute.query.redirect) as string | undefined
 }, { immediate: true })
 
-function handleLogin() {
-  proxy.$refs.loginRef.validate(valid => {
+function handleLogin(): void {
+  proxy.$refs.loginRef.validate((valid: boolean) => {
     if (valid) {
       loading.value = true
       // 勾选了需要记住密码设置在 cookie 中设置记住用户名和密码
@@ -122,7 +124,7 @@ function handleLogin() {
       // 调用action的登录方法
       userStore.login(loginForm.value).then(() => {
         const query = route.query
-        const otherQueryParams = Object.keys(query).reduce((acc, cur) => {
+        const otherQueryParams = Object.keys(query).reduce((acc: Record<string, any>, cur) => {
           if (cur !== "redirect") {
             acc[cur] = query[cur]
           }
@@ -140,7 +142,7 @@ function handleLogin() {
   })
 }
 
-function getCode() {
+function getCode(): void {
   getCodeImg().then(res => {
     captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
     if (captchaEnabled.value) {
@@ -150,7 +152,7 @@ function getCode() {
   })
 }
 
-function getCookie() {
+function getCookie(): void {
   const username = Cookies.get("username")
   const password = Cookies.get("password")
   const rememberMe = Cookies.get("rememberMe")

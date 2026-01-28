@@ -75,17 +75,18 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ElMessageBox } from "element-plus"
 import { getCodeImg, register } from "@/api/login"
 import defaultSettings from '@/settings'
+import type { RegisterForm } from '@/types/api/login'
 
 const title = import.meta.env.VITE_APP_TITLE
 const footerContent = defaultSettings.footerContent
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 
-const registerForm = ref({
+const registerForm = ref<RegisterForm>({
   username: "",
   password: "",
   confirmPassword: "",
@@ -93,7 +94,7 @@ const registerForm = ref({
   uuid: ""
 })
 
-const equalToPassword = (rule, value, callback) => {
+const equalToPassword = (rule: any, value: string, callback: (error?: Error) => void): void => {
   if (registerForm.value.password !== value) {
     callback(new Error("两次输入的密码不一致"))
   } else {
@@ -118,15 +119,15 @@ const registerRules = {
   code: [{ required: true, trigger: "change", message: "请输入验证码" }]
 }
 
-const codeUrl = ref("")
-const loading = ref(false)
-const captchaEnabled = ref(true)
+const codeUrl = ref<string>("")
+const loading = ref<boolean>(false)
+const captchaEnabled = ref<boolean>(true)
 
-function handleRegister() {
-  proxy.$refs.registerRef.validate(valid => {
+function handleRegister(): void {
+  proxy.$refs.registerRef.validate((valid: boolean) => {
     if (valid) {
       loading.value = true
-      register(registerForm.value).then(res => {
+      register(registerForm.value).then(() => {
         const username = registerForm.value.username
         ElMessageBox.alert("<font color='red'>恭喜你，您的账号 " + username + " 注册成功！</font>", "系统提示", {
           dangerouslyUseHTMLString: true,
@@ -144,7 +145,7 @@ function handleRegister() {
   })
 }
 
-function getCode() {
+function getCode(): void {
   getCodeImg().then(res => {
     captchaEnabled.value = res.captchaEnabled === undefined ? true : res.captchaEnabled
     if (captchaEnabled.value) {

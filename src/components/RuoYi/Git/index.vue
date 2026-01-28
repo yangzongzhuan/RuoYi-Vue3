@@ -4,10 +4,10 @@
   </div>
 </template>
 
-<script setup>
-const url = ref('https://gitee.com/y_project/RuoYi-Vue')
+<script setup lang="ts">
+const url = ref<string>('https://gitee.com/y_project/RuoYi-Vue')
 
-function goto() {
+function goto(): void {
   window.open(url.value)
 }
 </script>

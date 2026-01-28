@@ -288,30 +288,31 @@
    </div>
 </template>
 
-<script setup name="Menu">
+<script setup lang="ts" name="Menu">
 import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu"
-import SvgIcon from "@/components/SvgIcon"
-import IconSelect from "@/components/IconSelect"
+import SvgIcon from "@/components/SvgIcon/index.vue"
+import IconSelect from "@/components/IconSelect/index.vue"
+import type { SysMenu, MenuQueryParams } from '@/types/api/system/menu'
 
 const { proxy } = getCurrentInstance()
 const { sys_show_hide, sys_normal_disable } = proxy.useDict("sys_show_hide", "sys_normal_disable")
 
-const menuList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const title = ref("")
-const menuOptions = ref([])
-const isExpandAll = ref(false)
-const refreshTable = ref(true)
-const iconSelectRef = ref(null)
+const menuList = ref<any[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const title = ref<string>("")
+const menuOptions = ref<any[]>([])
+const isExpandAll = ref<boolean>(false)
+const refreshTable = ref<boolean>(true)
+const iconSelectRef = ref<any | null>(null)
 
 const data = reactive({
-  form: {},
+  form: {} as SysMenu,
   queryParams: {
     menuName: undefined,
     visible: undefined
-  },
+  } as MenuQueryParams,
   rules: {
     menuName: [{ required: true, message: "菜单名称不能为空", trigger: "blur" }],
     orderNum: [{ required: true, message: "菜单顺序不能为空", trigger: "blur" }],
@@ -365,11 +366,11 @@ function reset() {
 
 /** 展示下拉图标 */
 function showSelectIcon() {
-  iconSelectRef.value.reset()
+  iconSelectRef.value?.reset()
 }
 
 /** 选择图标 */
-function selected(name) {
+function selected(name: string) {
   form.value.icon = name
 }
 
@@ -385,7 +386,7 @@ function resetQuery() {
 }
 
 /** 新增按钮操作 */
-function handleAdd(row) {
+function handleAdd(row?: SysMenu) {
   reset()
   getTreeselect()
   if (row != null && row.menuId) {
@@ -407,11 +408,11 @@ function toggleExpandAll() {
 }
 
 /** 修改按钮操作 */
-async function handleUpdate(row) {
+async function handleUpdate(row: SysMenu) {
   reset()
   await getTreeselect()
-  getMenu(row.menuId).then(response => {
-    form.value = response.data
+  getMenu(row.menuId!).then(response => {
+    form.value = response.data!
     open.value = true
     title.value = "修改菜单"
   })
@@ -419,16 +420,16 @@ async function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["menuRef"].validate(valid => {
+  proxy.$refs["menuRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.menuId != undefined) {
-        updateMenu(form.value).then(response => {
+        updateMenu(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addMenu(form.value).then(response => {
+        addMenu(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -439,9 +440,9 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: SysMenu) {
   proxy.$modal.confirm('是否确认删除名称为"' + row.menuName + '"的数据项?').then(function() {
-    return delMenu(row.menuId)
+    return delMenu(row.menuId!)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")

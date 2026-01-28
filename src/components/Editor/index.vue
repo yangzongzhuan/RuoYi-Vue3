@@ -19,18 +19,19 @@
       ref="quillEditorRef"
       v-model:content="content"
       contentType="html"
-      @textChange="(e) => $emit('update:modelValue', content)"
+      @textChange="(e: any) => $emit('update:modelValue', content)"
       :options="options"
       :style="styles"
     />
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import axios from 'axios'
 import { QuillEditor } from "@vueup/vue-quill"
 import "@vueup/vue-quill/dist/vue-quill.snow.css"
 import { getToken } from "@/utils/auth"
+import type { UploadFileResult } from '@/types/api/common'
 
 const { proxy } = getCurrentInstance()
 
@@ -96,7 +97,7 @@ const options = ref({
 })
 
 const styles = computed(() => {
-  let style = {}
+  const style: Record<string, string> = {}
   if (props.minHeight) {
     style.minHeight = `${props.minHeight}px`
   }
@@ -107,7 +108,7 @@ const styles = computed(() => {
 })
 
 const content = ref("")
-watch(() => props.modelValue, (v) => {
+watch(() => props.modelValue, (v: string) => {
   if (v !== content.value) {
     content.value = v == undefined ? "<p></p>" : v
   }
@@ -118,7 +119,7 @@ onMounted(() => {
   if (props.type == 'url') {
     let quill = quillEditorRef.value.getQuill()
     let toolbar = quill.getModule("toolbar")
-    toolbar.addHandler("image", (value) => {
+    toolbar.addHandler("image", (value: boolean) => {
       if (value) {
         proxy.$refs.uploadRef.click()
       } else {
@@ -130,7 +131,7 @@ onMounted(() => {
 })
 
 // 上传前校检格式和大小
-function handleBeforeUpload(file) {
+function handleBeforeUpload(file: File) {
   const type = ["image/jpeg", "image/jpg", "image/png", "image/svg"]
   const isJPG = type.includes(file.type)
   //检验文件格式
@@ -150,7 +151,7 @@ function handleBeforeUpload(file) {
 }
 
 // 上传成功处理
-function handleUploadSuccess(res, file) {
+function handleUploadSuccess(res: UploadFileResult, file: File) {
   // 如果上传成功
   if (res.code == 200) {
     // 获取富文本实例
@@ -172,8 +173,8 @@ function handleUploadError() {
 }
 
 // 复制粘贴图片处理
-function handlePasteCapture(e) {
-  const clipboard = e.clipboardData || window.clipboardData
+function handlePasteCapture(e: ClipboardEvent) {
+  const clipboard = e.clipboardData || (window as any).clipboardData
   if (clipboard && clipboard.items) {
     for (let i = 0; i < clipboard.items.length; i++) {
       const item = clipboard.items[i]
@@ -186,11 +187,11 @@ function handlePasteCapture(e) {
   }
 }
 
-function insertImage(file) {
+function insertImage(file: File) {
   const formData = new FormData()
   formData.append("file", file)
-  axios.post(uploadUrl.value, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: headers.value.Authorization } }).then(res => {
-    handleUploadSuccess(res.data)
+  axios.post(uploadUrl.value, formData, { headers: { "Content-Type": "multipart/form-data", Authorization: headers.value.Authorization } }).then((res: { data: UploadFileResult }) => {
+    handleUploadSuccess(res.data as UploadFileResult, file)
   })
 }
 </script>

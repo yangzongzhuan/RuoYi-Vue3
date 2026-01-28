@@ -64,7 +64,7 @@
   </div>
 </template>
 
-<script setup name="Cache">
+<script setup lang="ts" name="Cache">
 import { getCache } from '@/api/monitor/cache'
 import * as echarts from 'echarts'
 
@@ -73,13 +73,13 @@ const commandstats = ref(null)
 const usedmemory = ref(null)
 const { proxy } = getCurrentInstance()
 
-function getList() {
+function getList(): void {
   proxy.$modal.loading("正在加载缓存监控数据，请稍候！")
   getCache().then(response => {
     proxy.$modal.closeLoading()
-    cache.value = response.data
+    cache.value = response.data!
 
-    const commandstatsIntance = echarts.init(commandstats.value, "macarons")
+    const commandstatsIntance = echarts.init(commandstats.value!, "macarons")
     commandstatsIntance.setOption({
       tooltip: {
         trigger: "item",
@@ -92,16 +92,16 @@ function getList() {
           roseType: "radius",
           radius: [15, 95],
           center: ["50%", "38%"],
-          data: response.data.commandStats,
+          data: response.data!.commandStats,
           animationEasing: "cubicInOut",
           animationDuration: 1000
         }
       ]
     })
-    const usedmemoryInstance = echarts.init(usedmemory.value, "macarons")
+    const usedmemoryInstance = echarts.init(usedmemory.value!, "macarons")
     usedmemoryInstance.setOption({
       tooltip: {
-        formatter: "{b} <br/>{a} : " + cache.value.info.used_memory_human
+        formatter: "{b} <br/>{a} : " + cache.value!.info.used_memory_human
       },
       series: [
         {
@@ -110,11 +110,11 @@ function getList() {
           min: 0,
           max: 1000,
           detail: {
-            formatter: cache.value.info.used_memory_human
+            formatter: cache.value!.info.used_memory_human
           },
           data: [
             {
-              value: parseFloat(cache.value.info.used_memory_human),
+              value: parseFloat(cache.value!.info.used_memory_human),
               name: "内存消耗"
             }
           ]

@@ -14,7 +14,7 @@
   </el-image>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { isExternal } from "@/utils/validate"
 
 const props = defineProps({
@@ -34,9 +34,9 @@ const props = defineProps({
 
 const realSrc = computed(() => {
   if (!props.src) {
-    return
+    return undefined
   }
-  let real_src = props.src.split(",")[0]
+  const real_src = props.src.split(",")[0]
   if (isExternal(real_src)) {
     return real_src
   }
@@ -45,15 +45,16 @@ const realSrc = computed(() => {
 
 const realSrcList = computed(() => {
   if (!props.src) {
-    return
+    return undefined
   }
-  let real_src_list = props.src.split(",")
-  let srcList = []
-  real_src_list.forEach(item => {
+  const real_src_list = props.src.split(",")
+  const srcList: string[] = []
+  real_src_list.forEach((item: string) => {
     if (isExternal(item)) {
-      return srcList.push(item)
+      srcList.push(item)
+    } else {
+      srcList.push(import.meta.env.VITE_APP_BASE_API + item)
     }
-    return srcList.push(import.meta.env.VITE_APP_BASE_API + item)
   })
   return srcList
 })

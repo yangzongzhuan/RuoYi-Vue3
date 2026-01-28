@@ -131,11 +131,11 @@
       <el-tabs v-model="preview.activeName">
         <el-tab-pane
           v-for="(value, key) in preview.data"
-          :label="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
-          :name="key.substring(key.lastIndexOf('/')+1,key.indexOf('.vm'))"
+          :label="String(key).substring(String(key).lastIndexOf('/')+1,String(key).indexOf('.vm'))"
+          :name="String(key).substring(String(key).lastIndexOf('/')+1,String(key).indexOf('.vm'))"
           :key="value"
         >
-          <el-link :underline="false" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
+          <el-link underline="never" icon="DocumentCopy" v-copyText="value" v-copyText:callback="copyTextSuccess" style="float:right">&nbsp;复制</el-link>
           <pre>{{ value }}</pre>
         </el-tab-pane>
       </el-tabs>
@@ -145,25 +145,25 @@
   </div>
 </template>
 
-<script setup name="Gen">
+<script setup lang="ts" name="Gen">
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen"
-import router from "@/router"
-import importTable from "./importTable"
-import createTable from "./createTable"
+import importTable from "./importTable.vue"
+import createTable from "./createTable.vue"
+import type { GenTable, GenQueryParams } from '@/types/api/tool/gen'
 
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 
-const tableList = ref([])
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const tableNames = ref([])
-const dateRange = ref([])
-const uniqueId = ref("")
+const tableList = ref<GenTable[]>([])
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const tableNames = ref<string[]>([])
+const dateRange = ref<string[]>([])
+const uniqueId = ref<string>("")
 const defaultSort = ref({ prop: "createTime", order: "descending" })
 
 const data = reactive({
@@ -174,7 +174,7 @@ const data = reactive({
     tableComment: undefined,
     orderByColumn: defaultSort.value.prop,
     isAsc: defaultSort.value.order
-  },
+  } as GenQueryParams,
   preview: {
     open: false,
     title: "代码预览",
@@ -213,14 +213,14 @@ function handleQuery() {
 }
 
 /** 生成代码操作 */
-function handleGenTable(row) {
+function handleGenTable(row: GenTable) {
   const tbNames = row.tableName || tableNames.value
   if (tbNames == "") {
     proxy.$modal.msgError("请选择要生成的数据")
     return
   }
   if (row.genType === "1") {
-    genCode(row.tableName).then(response => {
+    genCode(row.tableName!).then(() => {
       proxy.$modal.msgSuccess("成功生成到自定义路径：" + row.genPath)
     })
   } else {
@@ -230,10 +230,10 @@ function handleGenTable(row) {
 }
 
 /** 同步数据库操作 */
-function handleSynchDb(row) {
+function handleSynchDb(row: GenTable) {
   const tableName = row.tableName
   proxy.$modal.confirm('确认要强制同步"' + tableName + '"表结构吗？').then(function () {
-    return synchDb(tableName)
+    return synchDb(tableName!)
   }).then(() => {
     proxy.$modal.msgSuccess("同步成功")
   }).catch(() => {})
@@ -258,8 +258,8 @@ function resetQuery() {
 }
 
 /** 预览按钮 */
-function handlePreview(row) {
-  previewTable(row.tableId).then(response => {
+function handlePreview(row: GenTable) {
+  previewTable(row.tableId!).then(response => {
     preview.value.data = response.data
     preview.value.open = true
     preview.value.activeName = "domain.java"
@@ -272,7 +272,7 @@ function copyTextSuccess() {
 }
 
 // 多选框选中数据
-function handleSelectionChange(selection) {
+function handleSelectionChange(selection: GenTable[]) {
   ids.value = selection.map(item => item.tableId)
   tableNames.value = selection.map(item => item.tableName)
   single.value = selection.length != 1
@@ -280,23 +280,23 @@ function handleSelectionChange(selection) {
 }
 
 /** 排序触发事件 */
-function handleSortChange(column, prop, order) {
+function handleSortChange(column: any) {
   queryParams.value.orderByColumn = column.prop
   queryParams.value.isAsc = column.order
   getList()
 }
 
 /** 修改按钮操作 */
-function handleEditTable(row) {
-  const tableId = row.tableId || ids.value[0]
-  const tableName = row.tableName || tableNames.value[0]
+function handleEditTable(row?: GenTable) {
+  const tableId = row?.tableId || ids.value[0]
+  const tableName = row?.tableName || tableNames.value[0]
   const params = { pageNum: queryParams.value.pageNum }
   proxy.$tab.openPage("修改[" + tableName + "]生成配置", '/tool/gen-edit/index/' + tableId, params)
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const tableIds = row.tableId || ids.value
+function handleDelete(row?: GenTable) {
+  const tableIds = row?.tableId || ids.value
   proxy.$modal.confirm('是否确认删除表编号为"' + tableIds + '"的数据项？').then(function () {
     return delTable(tableIds)
   }).then(() => {

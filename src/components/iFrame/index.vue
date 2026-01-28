@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 const props = defineProps({
   src: {
     type: String,
@@ -16,15 +16,15 @@ const props = defineProps({
   }
 })
 
-const height = ref(document.documentElement.clientHeight - 94.5 + "px;")
-const loading = ref(true)
+const height = ref<string>(document.documentElement.clientHeight - 94.5 + "px;")
+const loading = ref<boolean>(true)
 const url = computed(() => props.src)
 
 onMounted(() => {
   setTimeout(() => {
     loading.value = false
   }, 300)
-  window.onresize = function temp() {
+  window.onresize = function temp(): void {
     height.value = document.documentElement.clientHeight - 94.5 + "px;"
   }
 })

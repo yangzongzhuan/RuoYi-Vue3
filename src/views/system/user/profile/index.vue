@@ -62,18 +62,26 @@
    </div>
 </template>
 
-<script setup name="Profile">
-import userAvatar from "./userAvatar"
-import userInfo from "./userInfo"
-import resetPwd from "./resetPwd"
+<script setup lang="ts" name="Profile">
+import userAvatar from "./userAvatar.vue"
+import userInfo from "./userInfo.vue"
+import resetPwd from "./resetPwd.vue"
 import { getUserProfile } from "@/api/system/user"
+import type { SysUser } from '@/types/api/system/user'
 
 const route = useRoute()
-const selectedTab = ref("userinfo")
-const state = reactive({
-  user: {},
-  roleGroup: {},
-  postGroup: {}
+const selectedTab = ref<string>("userinfo")
+
+interface UserProfileState {
+  user: SysUser
+  roleGroup: string
+  postGroup: string
+}
+
+const state = reactive<UserProfileState>({
+  user: {} as SysUser,
+  roleGroup: '',
+  postGroup: ''
 })
 
 function getUser() {
@@ -87,7 +95,7 @@ function getUser() {
 onMounted(() => {
   const activeTab = route.params && route.params.activeTab
   if (activeTab) {
-    selectedTab.value = activeTab
+    selectedTab.value = activeTab as string
   }
   getUser()
 })

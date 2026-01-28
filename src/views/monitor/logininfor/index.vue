@@ -124,25 +124,26 @@
    </div>
 </template>
 
-<script setup name="Logininfor">
+<script setup lang="ts" name="Logininfor">
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/monitor/logininfor"
+import type { SysLogininfor, LogininforQueryParams } from '@/types/api/monitor/logininfor'
 
 const { proxy } = getCurrentInstance()
 const { sys_common_status } = proxy.useDict("sys_common_status")
 
-const logininforList = ref([])
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const selectName = ref("")
-const total = ref(0)
-const dateRange = ref([])
+const logininforList = ref<SysLogininfor[]>([])
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const selectName = ref<string[]>([])
+const total = ref<number>(0)
+const dateRange = ref<string[]>([])
 const defaultSort = ref({ prop: "loginTime", order: "descending" })
 
 // 查询参数
-const queryParams = ref({
+const queryParams = ref<LogininforQueryParams>({
   pageNum: 1,
   pageSize: 10,
   ipaddr: undefined,
@@ -177,23 +178,23 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.infoId)
+function handleSelectionChange(selection: SysLogininfor[]) {
+  ids.value = selection.map(item => item.infoId!)
   multiple.value = !selection.length
   single.value = selection.length != 1
-  selectName.value = selection.map(item => item.userName)
+  selectName.value = selection.map(item => item.userName!)
 }
 
 /** 排序触发事件 */
-function handleSortChange(column, prop, order) {
+function handleSortChange(column: any) {
   queryParams.value.orderByColumn = column.prop
   queryParams.value.isAsc = column.order
   getList()
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const infoIds = row.infoId || ids.value
+function handleDelete(row?: SysLogininfor) {
+  const infoIds = row?.infoId || ids.value
   proxy.$modal.confirm('是否确认删除访问编号为"' + infoIds + '"的数据项?').then(function () {
     return delLogininfor(infoIds)
   }).then(() => {

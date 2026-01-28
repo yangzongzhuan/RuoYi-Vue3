@@ -164,32 +164,33 @@
    </div>
 </template>
 
-<script setup name="Config">
+<script setup lang="ts" name="Config">
+import type { SysConfig, ConfigQueryParams } from '@/types/api/system/config'
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config"
 
 const { proxy } = getCurrentInstance()
 const { sys_yes_no } = proxy.useDict("sys_yes_no")
 
-const configList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
-const dateRange = ref([])
+const configList = ref<SysConfig[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
+const dateRange = ref<string[]>([])
 
 const data = reactive({
-  form: {},
+  form: {} as SysConfig,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     configName: undefined,
     configKey: undefined,
     configType: undefined
-  },
+  } as ConfigQueryParams,
   rules: {
     configName: [{ required: true, message: "参数名称不能为空", trigger: "blur" }],
     configKey: [{ required: true, message: "参数键名不能为空", trigger: "blur" }],
@@ -242,8 +243,8 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.configId)
+function handleSelectionChange(selection: SysConfig[]) {
+  ids.value = selection.map(item => item.configId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -256,9 +257,9 @@ function handleAdd() {
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row: SysConfig) {
   reset()
-  const configId = row.configId || ids.value
+  const configId = row.configId || ids.value[0]
   getConfig(configId).then(response => {
     form.value = response.data
     open.value = true
@@ -268,16 +269,16 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["configRef"].validate(valid => {
+  proxy.$refs["configRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.configId != undefined) {
-        updateConfig(form.value).then(response => {
+        updateConfig(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addConfig(form.value).then(response => {
+        addConfig(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -288,7 +289,7 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete(row: SysConfig) {
   const configIds = row.configId || ids.value
   proxy.$modal.confirm('是否确认删除参数编号为"' + configIds + '"的数据项？').then(function () {
     return delConfig(configIds)

@@ -12,9 +12,9 @@
   </section>
 </template>
 
-<script setup>
-import copyright from "./Copyright/index"
-import iframeToggle from "./IframeToggle/index"
+<script setup lang="ts">
+import copyright from "./Copyright/index.vue"
+import iframeToggle from "./IframeToggle/index.vue"
 import useTagsViewStore from '@/store/modules/tagsView'
 
 const route = useRoute()
@@ -28,7 +28,7 @@ watchEffect(() => {
   addIframe()
 })
 
-function addIframe() {
+function addIframe(): void {
   if (route.meta.link) {
     useTagsViewStore().addIframeView(route)
   }

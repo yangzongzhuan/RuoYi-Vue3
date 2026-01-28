@@ -24,7 +24,7 @@
     </span>
   </el-col>
 </template>
-<script setup name="DraggableItem">
+<script setup lang="ts" name="DraggableItem">
 import draggable from "vuedraggable/dist/vuedraggable.common"
 import render from '@/utils/generator/render'
 
@@ -41,17 +41,17 @@ const className = ref('')
 const draggableItemRef = ref(null)
 const emits = defineEmits(['activeItem', 'copyItem', 'deleteItem'])
 
-function activeItem(item) {
+function activeItem(item: Element): void {
   emits('activeItem', item)
 }
-function copyItem(item, parent) {
+function copyItem(item: Element, parent?: Element[]): void {
   emits('copyItem', item, parent ?? props.drawingList)
 }
-function deleteItem(item, parent) {
+function deleteItem(item: number | Element, parent?: Element[]): void {
   emits('deleteItem', item, parent ?? props.drawingList)
 }
 
-function getComponentData() {
+function getComponentData(): Record<string, any> {
   return {
     gutter: props.element.gutter,
     justify: props.element.justify,
@@ -59,7 +59,7 @@ function getComponentData() {
   }
 }
 
-watch(() => props.activeId, (val) => {
+watch(() => props.activeId, (val: string) => {
   className.value = (props.element.layout === 'rowFormItem' ? 'drawing-row-item' : 'drawing-item') + (val === props.element.formId ? ' active-from-item' : '')
   if (props.formConf.unFocusedComponentBorder) {
     className.value += ' unfocus-bordered'

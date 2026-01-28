@@ -22,32 +22,35 @@
    </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { updateUserProfile } from "@/api/system/user"
+import type { SysUser } from '@/types/api/system/user'
 
-const props = defineProps({
-  user: {
-    type: Object
-  }
-})
+interface Props {
+  user?: SysUser
+}
+
+const props = defineProps<Props>()
 
 const { proxy } = getCurrentInstance()
 
-const form = ref({})
-const rules = ref({
+const form = ref<SysUser>({})
+const rules = {
   nickName: [{ required: true, message: "用户昵称不能为空", trigger: "blur" }],
   email: [{ required: true, message: "邮箱地址不能为空", trigger: "blur" }, { type: "email", message: "请输入正确的邮箱地址", trigger: ["blur", "change"] }],
   phonenumber: [{ required: true, message: "手机号码不能为空", trigger: "blur" }, { pattern: /^1[3|4|5|6|7|8|9][0-9]\d{8}$/, message: "请输入正确的手机号码", trigger: "blur" }],
-})
+}
 
 /** 提交按钮 */
 function submit() {
-  proxy.$refs.userRef.validate(valid => {
+  proxy.$refs.userRef.validate((valid: boolean) => {
     if (valid) {
-      updateUserProfile(form.value).then(response => {
+      updateUserProfile(form.value).then(() => {
         proxy.$modal.msgSuccess("修改成功")
-        props.user.phonenumber = form.value.phonenumber
-        props.user.email = form.value.email
+        if (props.user) {
+          props.user.phonenumber = form.value.phonenumber
+          props.user.email = form.value.email
+        }
       })
     }
   })
@@ -59,7 +62,7 @@ function close() {
 }
 
 // 回显当前登录用户信息
-watch(() => props.user, user => {
+watch(() => props.user, (user: SysUser) => {
   if (user) {
     form.value = { nickName: user.nickName, phonenumber: user.phonenumber, email: user.email, sex: user.sex }
   }

@@ -154,90 +154,103 @@
   </div>
 </template>
 
-<script setup name="CacheList">
+<script setup lang="ts" name="CacheList">
 import { listCacheName, listCacheKey, getCacheValue, clearCacheName, clearCacheKey, clearCacheAll } from "@/api/monitor/cache"
+import type { SysCache } from '@/types/api/monitor/cache'
+
+interface CacheName {
+  cacheName: string
+  [key: string]: any
+}
+
+interface CacheForm {
+  cacheName?: string
+  cacheKey?: string
+  cacheValue?: string
+}
 
 const { proxy } = getCurrentInstance()
 
-const cacheNames = ref([])
-const cacheKeys = ref([])
-const cacheForm = ref({})
-const loading = ref(true)
-const subLoading = ref(false)
-const nowCacheName = ref("")
-const tableHeight = ref(window.innerHeight - 200)
+const cacheNames = ref<CacheName[]>([])
+const cacheKeys = ref<string[]>([])
+const cacheForm = ref<CacheForm>({})
+const loading = ref<boolean>(true)
+const subLoading = ref<boolean>(false)
+const nowCacheName = ref<string>("")
+const tableHeight = ref<number>(window.innerHeight - 200)
 
 /** 查询缓存名称列表 */
-function getCacheNames() {
+function getCacheNames(): void {
   loading.value = true
   listCacheName().then(response => {
-    cacheNames.value = response.data
+    cacheNames.value = response.data!
     loading.value = false
   })
 }
 
 /** 刷新缓存名称列表 */
-function refreshCacheNames() {
+function refreshCacheNames(): void {
   getCacheNames()
   proxy.$modal.msgSuccess("刷新缓存列表成功")
 }
 
 /** 清理指定名称缓存 */
-function handleClearCacheName(row) {
-  clearCacheName(row.cacheName).then(response => {
+function handleClearCacheName(row: SysCache): void {
+  clearCacheName(row.cacheName as string).then(() => {
     proxy.$modal.msgSuccess("清理缓存名称[" + row.cacheName + "]成功")
     getCacheKeys()
   })
 }
 
 /** 查询缓存键名列表 */
-function getCacheKeys(row) {
+function getCacheKeys(row?: SysCache): void {
   const cacheName = row !== undefined ? row.cacheName : nowCacheName.value
   if (cacheName === "") {
     return
   }
   subLoading.value = true
   listCacheKey(cacheName).then(response => {
-    cacheKeys.value = response.data
+    cacheKeys.value = response.data!
     subLoading.value = false
     nowCacheName.value = cacheName
   })
 }
 
 /** 刷新缓存键名列表 */
-function refreshCacheKeys() {
+function refreshCacheKeys(): void {
   getCacheKeys()
   proxy.$modal.msgSuccess("刷新键名列表成功")
 }
 
 /** 清理指定键名缓存 */
-function handleClearCacheKey(cacheKey) {
-  clearCacheKey(cacheKey).then(response => {
+function handleClearCacheKey(cacheKey: string): void {
+  clearCacheKey(cacheKey).then(() => {
     proxy.$modal.msgSuccess("清理缓存键名[" + cacheKey + "]成功")
     getCacheKeys()
   })
 }
 
 /** 列表前缀去除 */
-function nameFormatter(row) {
+function nameFormatter(row: SysCache): string {
+  if (!row?.cacheName) return ''
   return row.cacheName.replace(":", "")
 }
 
 /** 键名前缀去除 */
-function keyFormatter(cacheKey) {
+function keyFormatter(cacheKey: string): string {
   return cacheKey.replace(nowCacheName.value, "")
 }
 
 /** 查询缓存内容详细 */
-function handleCacheValue(cacheKey) {
+function handleCacheValue(cacheKey: string): void {
   getCacheValue(nowCacheName.value, cacheKey).then(response => {
-    cacheForm.value = response.data
+    cacheForm.value = response.data!
   })
 }
 
 /** 清理全部缓存 */
-function handleClearCacheAll() {
-  clearCacheAll().then(response => {
+function handleClearCacheAll(): void {
+  clearCacheAll().then(() => {
     proxy.$modal.msgSuccess("清理全部缓存成功")
   })
 }

@@ -158,31 +158,32 @@
    </div>
 </template>
 
-<script setup name="Notice">
+<script setup lang="ts" name="Notice">
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice"
+import type { SysNotice, NoticeQueryParams } from '@/types/api/system/notice'
 
 const { proxy } = getCurrentInstance()
 const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type")
 
-const noticeList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
+const noticeList = ref<SysNotice[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
 
 const data = reactive({
-  form: {},
+  form: {} as SysNotice,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     noticeTitle: undefined,
     createBy: undefined,
     status: undefined
-  },
+  } as NoticeQueryParams,
   rules: {
     noticeTitle: [{ required: true, message: "公告标题不能为空", trigger: "blur" }],
     noticeType: [{ required: true, message: "公告类型不能为空", trigger: "change" }]
@@ -232,8 +233,8 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.noticeId)
+function handleSelectionChange(selection: SysNotice[]) {
+  ids.value = selection.map(item => item.noticeId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
@@ -246,11 +247,11 @@ function handleAdd() {
 }
 
 /**修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row?: SysNotice) {
   reset()
-  const noticeId = row.noticeId || ids.value
+  const noticeId = row?.noticeId || ids.value[0]
   getNotice(noticeId).then(response => {
-    form.value = response.data
+    form.value = response.data!
     open.value = true
     title.value = "修改公告"
   })
@@ -258,16 +259,16 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["noticeRef"].validate(valid => {
+  proxy.$refs["noticeRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.noticeId != undefined) {
-        updateNotice(form.value).then(response => {
+        updateNotice(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addNotice(form.value).then(response => {
+        addNotice(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -278,8 +279,8 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const noticeIds = row.noticeId || ids.value
+function handleDelete(row?: SysNotice) {
+  const noticeIds = row?.noticeId || ids.value
   proxy.$modal.confirm('是否确认删除公告编号为"' + noticeIds + '"的数据项？').then(function() {
     return delNotice(noticeIds)
   }).then(() => {

@@ -171,33 +171,34 @@
    </div>
 </template>
 
-<script setup name="Dict">
+<script setup lang="ts" name="Dict">
 import useDictStore from '@/store/modules/dict'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type"
+import type { SysDictType, DictTypeQueryParams } from '@/types/api/system/dict'
 
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const typeList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
-const dateRange = ref([])
+const typeList = ref<SysDictType[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
+const dateRange = ref<string[]>([])
 
 const data = reactive({
-  form: {},
+  form: {} as SysDictType,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     dictName: undefined,
     dictType: undefined,
     status: undefined
-  },
+  } as DictTypeQueryParams,
   rules: {
     dictName: [{ required: true, message: "字典名称不能为空", trigger: "blur" }],
     dictType: [{ required: true, message: "字典类型不能为空", trigger: "blur" }]
@@ -255,18 +256,18 @@ function handleAdd() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.dictId)
+function handleSelectionChange(selection: SysDictType[]) {
+  ids.value = selection.map(item => item.dictId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
 
 /** 修改按钮操作 */
-function handleUpdate(row) {
+function handleUpdate(row?: SysDictType) {
   reset()
-  const dictId = row.dictId || ids.value
-  getType(dictId).then(response => {
-    form.value = response.data
+  const dictId = row?.dictId || ids.value[0]
+  getType(dictId).then(response=> {
+    form.value = response.data!
     open.value = true
     title.value = "修改字典类型"
   })
@@ -274,16 +275,16 @@ function handleUpdate(row) {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["dictRef"].validate(valid => {
+  proxy.$refs["dictRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.dictId != undefined) {
-        updateType(form.value).then(response => {
+        updateType(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addType(form.value).then(response => {
+        addType(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -294,8 +295,8 @@ function submitForm() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const dictIds = row.dictId || ids.value
+function handleDelete(row?: SysDictType) {
+  const dictIds = row?.dictId || ids.value
   proxy.$modal.confirm('是否确认删除字典编号为"' + dictIds + '"的数据项？').then(function() {
     return delType(dictIds)
   }).then(() => {

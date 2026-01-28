@@ -241,33 +241,37 @@
    </div>
 </template>
 
-<script setup name="Role">
+<script setup lang="ts" name="Role">
 import { addRole, changeRoleStatus, dataScope, delRole, getRole, listRole, updateRole, deptTreeSelect } from "@/api/system/role"
 import { roleMenuTreeselect, treeselect as menuTreeselect } from "@/api/system/menu"
+import type { SysRole, RoleQueryParams } from '@/types/api/system/role'
+import type { TreeSelect } from '@/types/api/common'
+import type { RoleDeptTreeResult } from '@/types/api/system/role'
+import type { RoleMenuTreeselectResult } from '@/types/api/system/menu'
 
 const router = useRouter()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const roleList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const single = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const title = ref("")
-const dateRange = ref([])
-const menuOptions = ref([])
-const menuExpand = ref(false)
-const menuNodeAll = ref(false)
-const deptExpand = ref(true)
-const deptNodeAll = ref(false)
-const deptOptions = ref([])
-const openDataScope = ref(false)
-const menuRef = ref(null)
-const deptRef = ref(null)
+const roleList = ref<SysRole[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const single = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const title = ref<string>("")
+const dateRange = ref<string[]>([])
+const menuOptions = ref<TreeSelect[]>([])
+const menuExpand = ref<boolean>(false)
+const menuNodeAll = ref<boolean>(false)
+const deptExpand = ref<boolean>(true)
+const deptNodeAll = ref<boolean>(false)
+const deptOptions = ref<TreeSelect[]>([])
+const openDataScope = ref<boolean>(false)
+const menuRef = ref<any | null>(null)
+const deptRef = ref<any | null>(null)
 
 /** 数据范围选项*/
 const dataScopeOptions = ref([
@@ -279,14 +283,14 @@ const dataScopeOptions = ref([
 ])
 
 const data = reactive({
-  form: {},
+  form: {} as SysRole,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
     roleName: undefined,
     roleKey: undefined,
     status: undefined
-  },
+  } as RoleQueryParams,
   rules: {
     roleName: [{ required: true, message: "角色名称不能为空", trigger: "blur" }],
     roleKey: [{ required: true, message: "权限字符不能为空", trigger: "blur" }],
@@ -320,8 +324,8 @@ function resetQuery() {
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
-  const roleIds = row.roleId || ids.value
+function handleDelete(row?: SysRole) {
+  const roleIds = row?.roleId || ids.value
   proxy.$modal.confirm('是否确认删除角色编号为"' + roleIds + '"的数据项?').then(function () {
     return delRole(roleIds)
   }).then(() => {
@@ -338,17 +342,17 @@ function handleExport() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.roleId)
+function handleSelectionChange(selection: SysRole[]) {
+  ids.value = selection.map(item => item.roleId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
 }
 
 /** 角色状态修改 */
-function handleStatusChange(row) {
-  let text = row.status === "0" ? "启用" : "停用"
+function handleStatusChange(row: SysRole) {
+  const text = row.status === "0" ? "启用" : "停用"
   proxy.$modal.confirm('确认要"' + text + '""' + row.roleName + '"角色吗?').then(function () {
-    return changeRoleStatus(row.roleId, row.status)
+    return changeRoleStatus(row.roleId!, row.status!)
   }).then(() => {
     proxy.$modal.msgSuccess(text + "成功")
   }).catch(function () {
@@ -357,7 +361,7 @@ function handleStatusChange(row) {
 }
 
 /** 更多操作 */
-function handleCommand(command, row) {
+function handleCommand(command: string, row: SysRole) {
   switch (command) {
     case "handleDataScope":
       handleDataScope(row)
@@ -371,7 +375,7 @@ function handleCommand(command, row) {
 }
 
 /** 分配用户 */
-function handleAuthUser(row) {
+function handleAuthUser(row: SysRole) {
   router.push("/system/role-auth/user/" + row.roleId)
 }
 
@@ -383,7 +387,7 @@ function getMenuTreeselect() {
 }
 
 /** 所有部门节点数据 */
-function getDeptAllCheckedKeys() {
+function getDeptAllCheckedKeys(): number[] {
   // 目前被选中的部门节点
   let checkedKeys = deptRef.value.getCheckedKeys()
   // 半选中的部门节点
@@ -425,20 +429,20 @@ function handleAdd() {
 }
 
 /** 修改角色 */
-function handleUpdate(row) {
+function handleUpdate(row?: SysRole) {
   reset()
-  const roleId = row.roleId || ids.value
+  const roleId = row?.roleId || ids.value[0]
   const roleMenu = getRoleMenuTreeselect(roleId)
   getRole(roleId).then(response => {
-    form.value = response.data
+    form.value = response.data!
     form.value.roleSort = Number(form.value.roleSort)
     open.value = true
     nextTick(() => {
-      roleMenu.then((res) => {
-        let checkedKeys = res.checkedKeys
+      roleMenu.then((res: RoleMenuTreeselectResult) => {
+        const checkedKeys = res.checkedKeys
         checkedKeys.forEach((v) => {
           nextTick(() => {
-            menuRef.value.setChecked(v, true, false)
+            menuRef.value?.setChecked(v, true, false)
           })
         })
       })
@@ -448,7 +452,7 @@ function handleUpdate(row) {
 }
 
 /** 根据角色ID查询菜单树结构 */
-function getRoleMenuTreeselect(roleId) {
+function getRoleMenuTreeselect(roleId: number): Promise<RoleMenuTreeselectResult> {
   return roleMenuTreeselect(roleId).then(response => {
     menuOptions.value = response.menus
     return response
@@ -456,7 +460,7 @@ function getRoleMenuTreeselect(roleId) {
 }
 
 /** 根据角色ID查询部门树结构 */
-function getDeptTree(roleId) {
+function getDeptTree(roleId: number) { Promise<RoleDeptTreeResult>
   return deptTreeSelect(roleId).then(response => {
     deptOptions.value = response.depts
     return response
@@ -464,7 +468,7 @@ function getDeptTree(roleId) {
 }
 
 /** 树权限（展开/折叠）*/
-function handleCheckedTreeExpand(value, type) {
+function handleCheckedTreeExpand(value: boolean, type: string) {
   if (type == "menu") {
     let treeList = menuOptions.value
     for (let i = 0; i < treeList.length; i++) {
@@ -479,7 +483,7 @@ function handleCheckedTreeExpand(value, type) {
 }
 
 /** 树权限（全选/全不选） */
-function handleCheckedTreeNodeAll(value, type) {
+function handleCheckedTreeNodeAll(value: boolean, type: string) {
   if (type == "menu") {
     menuRef.value.setCheckedNodes(value ? menuOptions.value : [])
   } else if (type == "dept") {
@@ -488,7 +492,7 @@ function handleCheckedTreeNodeAll(value, type) {
 }
 
 /** 树权限（父子联动） */
-function handleCheckedTreeConnect(value, type) {
+function handleCheckedTreeConnect(value: boolean, type: string) {
   if (type == "menu") {
     form.value.menuCheckStrictly = value ? true : false
   } else if (type == "dept") {
@@ -497,7 +501,7 @@ function handleCheckedTreeConnect(value, type) {
 }
 
 /** 所有菜单节点数据 */
-function getMenuAllCheckedKeys() {
+function getMenuAllCheckedKeys(): number[] {
   // 目前被选中的菜单节点
   let checkedKeys = menuRef.value.getCheckedKeys()
   // 半选中的菜单节点
@@ -508,18 +512,18 @@ function getMenuAllCheckedKeys() {
 
 /** 提交按钮 */
 function submitForm() {
-  proxy.$refs["roleRef"].validate(valid => {
+  proxy.$refs["roleRef"].validate((valid: boolean) => {
     if (valid) {
       if (form.value.roleId != undefined) {
         form.value.menuIds = getMenuAllCheckedKeys()
-        updateRole(form.value).then(response => {
+        updateRole(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
         form.value.menuIds = getMenuAllCheckedKeys()
-        addRole(form.value).then(response => {
+        addRole(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
@@ -536,18 +540,18 @@ function cancel() {
 }
 
 /** 选择角色权限范围触发 */
-function dataScopeSelectChange(value) {
+function dataScopeSelectChange(value: string) {
   if (value !== "2") {
     deptRef.value.setCheckedKeys([])
   }
 }
 
 /** 分配数据权限操作 */
-function handleDataScope(row) {
+function handleDataScope(row: SysRole) {
   reset()
-  const deptTreeSelect = getDeptTree(row.roleId)
-  getRole(row.roleId).then(response => {
-    form.value = response.data
+  const deptTreeSelect = getDeptTree(row.roleId!)
+  getRole(row.roleId!).then(response => {
+    form.value = response.data!
     openDataScope.value = true
     nextTick(() => {
       deptTreeSelect.then(res => {
@@ -566,7 +570,7 @@ function handleDataScope(row) {
 function submitDataScope() {
   if (form.value.roleId != undefined) {
     form.value.deptIds = getDeptAllCheckedKeys()
-    dataScope(form.value).then(response => {
+    dataScope(form.value).then(() => {
       proxy.$modal.msgSuccess("修改成功")
       openDataScope.value = false
       getList()

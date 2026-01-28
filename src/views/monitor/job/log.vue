@@ -170,35 +170,37 @@
    </div>
 </template>
 
-<script setup name="JobLog">
+<script setup lang="ts" name="JobLog">
 import { getJob } from "@/api/monitor/job"
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/monitor/jobLog"
+import type { SysJobLog, JobLogQueryParams } from '@/types/api/monitor/jobLog'
+import type { SysJob } from '@/types/api/monitor/job'
 
 const { proxy } = getCurrentInstance()
 const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group")
 
-const jobLogList = ref([])
-const open = ref(false)
-const loading = ref(true)
-const showSearch = ref(true)
-const ids = ref([])
-const multiple = ref(true)
-const total = ref(0)
-const dateRange = ref([])
+const jobLogList = ref<SysJobLog[]>([])
+const open = ref<boolean>(false)
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const ids = ref<number[]>([])
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const dateRange = ref<string[]>([])
 const route = useRoute()
 
 const data = reactive({
-  form: {},
+  form: {} as SysJobLog,
   queryParams: {
     pageNum: 1,
     pageSize: 10,
-    dictName: undefined,
-    dictType: undefined,
+    jobName: undefined,
+    jobGroup: undefined,
     status: undefined
-  }
+  } as JobLogQueryParams
 })
 
-const { queryParams, form, rules } = toRefs(data)
+const { queryParams, form } = toRefs(data)
 
 /** 查询调度日志列表 */
 function getList() {
@@ -230,19 +232,19 @@ function resetQuery() {
 }
 
 // 多选框选中数据
-function handleSelectionChange(selection) {
-  ids.value = selection.map(item => item.jobLogId)
+function handleSelectionChange(selection: SysJobLog[]) {
+  ids.value = selection.map(item => item.jobLogId!)
   multiple.value = !selection.length
 }
 
 /** 详细按钮操作 */
-function handleView(row) {
+function handleView(row: SysJobLog) {
   open.value = true
   form.value = row
 }
 
 /** 删除按钮操作 */
-function handleDelete(row) {
+function handleDelete() {
   proxy.$modal.confirm('是否确认删除调度日志编号为"' + ids.value + '"的数据项?').then(function () {
     return delJobLog(ids.value)
   }).then(() => {
@@ -269,11 +271,11 @@ function handleExport() {
 }
 
 (() => {
-  const jobId = route.params && route.params.jobId
+  const jobId = route.params && Number(route.params.jobId)
   if (jobId !== undefined && jobId != 0) {
     getJob(jobId).then(response => {
-      queryParams.value.jobName = response.data.jobName
-      queryParams.value.jobGroup = response.data.jobGroup
+      queryParams.value.jobName = response.data!.jobName
+      queryParams.value.jobGroup = response.data!.jobGroup
       getList()
     })
   } else {

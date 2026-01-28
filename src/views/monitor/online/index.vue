@@ -57,18 +57,19 @@
    </div>
 </template>
 
-<script setup name="Online">
+<script setup lang="ts" name="Online">
 import { forceLogout, list as initData } from "@/api/monitor/online"
+import type { SysUserOnline, OnlineQueryParams } from '@/types/api/monitor/online'
 
 const { proxy } = getCurrentInstance()
 
-const onlineList = ref([])
-const loading = ref(true)
-const total = ref(0)
-const pageNum = ref(1)
-const pageSize = ref(10)
+const onlineList = ref<SysUserOnline[]>([])
+const loading = ref<boolean>(true)
+const total = ref<number>(0)
+const pageNum = ref<number>(1)
+const pageSize = ref<number>(10)
 
-const queryParams = ref({
+const queryParams = ref<OnlineQueryParams>({
   ipaddr: undefined,
   userName: undefined
 })
@@ -96,9 +97,9 @@ function resetQuery() {
 }
 
 /** 强退按钮操作 */
-function handleForceLogout(row) {
-    proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
-  return forceLogout(row.tokenId)
+function handleForceLogout(row: SysUserOnline) {
+  proxy.$modal.confirm('是否确认强退名称为"' + row.userName + '"的用户?').then(function () {
+    return forceLogout(row.tokenId!)
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("删除成功")

@@ -32,7 +32,7 @@
   </el-menu>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { constantRoutes } from "@/router"
 import { isHttp } from '@/utils/validate'
 import useAppStore from '@/store/modules/app'
@@ -40,9 +40,9 @@ import useSettingsStore from '@/store/modules/settings'
 import usePermissionStore from '@/store/modules/permission'
 
 // 顶部栏初始数
-const visibleNumber = ref(null)
+const visibleNumber = ref<number | null>(null)
 // 当前激活菜单的 index
-const currentIndex = ref(null)
+const currentIndex = ref<string | null>(null)
 // 隐藏侧边栏路由
 const hideList = ['/index', '/user/profile']
 
@@ -59,8 +59,8 @@ const routers = computed(() => permissionStore.topbarRouters)
 
 // 顶部显示菜单
 const topMenus = computed(() => {
-  let topMenus = []
-  routers.value.map((menu) => {
+  const topMenus: any[] = []
+  routers.value.map((menu: any) => {
     if (menu.hidden !== true) {
       // 兼容顶部栏一级菜单内部跳转
       if (menu.path === '/' && menu.children) {
@@ -75,9 +75,9 @@ const topMenus = computed(() => {
 
 // 设置子路由
 const childrenMenus = computed(() => {
-  let childrenMenus = []
-  routers.value.map((router) => {
-    for (let item in router.children) {
+  const childrenMenus: any[] = []
+  routers.value.map((router: any) => {
+    for (const item in router.children) {
       if (router.children[item].parentPath === undefined) {
         if(router.path === "/") {
           router.children[item].path = "/" + router.children[item].path
@@ -104,7 +104,7 @@ const activeMenu = computed(() => {
       activePath = "/" + tmpPath.substring(0, tmpPath.indexOf("/"))
       appStore.toggleSideBarHide(false)
     }
-  } else if(!route.children) {
+  } else if(!(route as any).children) {
     activePath = path
     appStore.toggleSideBarHide(true)
   }
@@ -112,22 +112,22 @@ const activeMenu = computed(() => {
   return activePath
 })
 
-function setVisibleNumber() {
+function setVisibleNumber(): void {
   const width = document.body.getBoundingClientRect().width / 3
-  visibleNumber.value = parseInt(width / 85)
+  visibleNumber.value = parseInt(String(width / 85))
 }
 
-function handleSelect(key, keyPath) {
+function handleSelect(key: string, keyPath: string[]): void {
   currentIndex.value = key
-  const route = routers.value.find(item => item.path === key)
+  const route = routers.value.find((item: any) => item.path === key)
   if (isHttp(key)) {
     // http(s):// 路径新窗口打开
     window.open(key, "_blank")
   } else if (!route || !route.children) {
     // 没有子路由路径内部打开
-    const routeMenu = childrenMenus.value.find(item => item.path === key)
+    const routeMenu = childrenMenus.value.find((item: any) => item.path === key)
     if (routeMenu && routeMenu.query) {
-      let query = JSON.parse(routeMenu.query)
+      const query = JSON.parse(routeMenu.query)
       router.push({ path: key, query: query })
     } else {
       router.push({ path: key })
@@ -140,10 +140,10 @@ function handleSelect(key, keyPath) {
   }
 }
 
-function activeRoutes(key) {
-  let routes = []
+function activeRoutes(key: string){
+  const routes: any[] = []
   if (childrenMenus.value && childrenMenus.value.length > 0) {
-    childrenMenus.value.map((item) => {
+    childrenMenus.value.map((item: any) => {
       if (key == item.parentPath || (key == "index" && "" == item.path)) {
         routes.push(item)
       }

@@ -234,7 +234,7 @@
   </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { listMenu } from "@/api/system/menu"
 
 const subColumns = ref([])
@@ -261,29 +261,31 @@ const rules = ref({
   functionName: [{ required: true, message: "请输入生成功能名", trigger: "blur" }]
 })
 
-function subSelectChange(value) {
-  props.info.subTableFkName = ""
+function subSelectChange(value: string): void {
+  if (props.info) {
+    props.info.subTableFkName = ""
+  }
 }
 
-function tplSelectChange(value) {
-  if (value !== "sub") {
+function tplSelectChange(value: string): void {
+  if (value !== "sub" && props.info) {
     props.info.subTableName = ""
     props.info.subTableFkName = ""
   }
 }
 
-function setSubTableColumns(value) {
-  for (var item in props.tables) {
-    const name = props.tables[item].tableName
+function setSubTableColumns(value: string): void {
+  for (const item of props.tables || []) {
+    const name = item.tableName
     if (value === name) {
-      subColumns.value = props.tables[item].columns
+      subColumns.value = item.columns || []
       break
     }
   }
 }
 
 /** 查询菜单下拉树结构 */
-function getMenuTreeselect() {
+function getMenuTreeselect(): void {
   listMenu().then(response => {
     menuOptions.value = proxy.handleTree(response.data, "menuId")
   })
@@ -293,12 +295,14 @@ onMounted(() => {
   getMenuTreeselect()
 })
 
-watch(() => props.info.subTableName, val => {
-  setSubTableColumns(val)
+watch(() => props.info?.subTableName, (val: string) => {
+  if (val) {
+    setSubTableColumns(val)
+  }
 })
 
-watch(() => props.info.tplWebType, val => {
-  if (val === '') {
+watch(() => props.info?.tplWebType, (val: string) => {
+  if (val === '' && props.info) {
     props.info.tplWebType = "element-plus"
   }
 })

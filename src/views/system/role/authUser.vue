@@ -91,22 +91,23 @@
    </div>
 </template>
 
-<script setup name="AuthUser">
-import selectUser from "./selectUser"
+<script setup lang="ts" name="AuthUser">
+import selectUser from "./selectUser.vue"
 import { allocatedUserList, authUserCancel, authUserCancelAll } from "@/api/system/role"
+import type { SysUser, AuthUserQueryParams } from '@/types/api/system/user'
 
 const route = useRoute()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
 
-const userList = ref([])
-const loading = ref(true)
-const showSearch = ref(true)
-const multiple = ref(true)
-const total = ref(0)
-const userIds = ref([])
+const userList = ref<SysUser[]>([])
+const loading = ref<boolean>(true)
+const showSearch = ref<boolean>(true)
+const multiple = ref<boolean>(true)
+const total = ref<number>(0)
+const userIds = ref<number[]>([])
 
-const queryParams = reactive({
+const queryParams = reactive<AuthUserQueryParams>({
   pageNum: 1,
   pageSize: 10,
   roleId: route.params.roleId,
@@ -143,8 +144,8 @@ function resetQuery() {
 }
 
 /** 多选框选中数据 */
-function handleSelectionChange(selection) {
-  userIds.value = selection.map(item => item.userId)
+function handleSelectionChange(selection: SysUser[]) {
+  userIds.value = selection.map(item => item.userId!)
   multiple.value = !selection.length
 }
 
@@ -154,9 +155,9 @@ function openSelectUser() {
 }
 
 /** 取消授权按钮操作 */
-function cancelAuthUser(row) {
+function cancelAuthUser(row: SysUser) {
   proxy.$modal.confirm('确认要取消该用户"' + row.userName + '"角色吗？').then(function () {
-    return authUserCancel({ userId: row.userId, roleId: queryParams.roleId })
+    return authUserCancel({ userId: row.userId!, roleId: queryParams.roleId })
   }).then(() => {
     getList()
     proxy.$modal.msgSuccess("取消授权成功")
@@ -164,7 +165,7 @@ function cancelAuthUser(row) {
 }
 
 /** 批量取消授权按钮操作 */
-function cancelAuthUserAll(row) {
+function cancelAuthUserAll() {
   const roleId = queryParams.roleId
   const uIds = userIds.value.join(",")
   proxy.$modal.confirm("是否取消选中用户授权数据项?").then(function () {

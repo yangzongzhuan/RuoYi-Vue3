@@ -169,10 +169,10 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { getServer } from '@/api/monitor/server'
 
-const server = ref([])
+const server = ref<any>([])
 const { proxy } = getCurrentInstance()
 
 function getList() {

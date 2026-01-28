@@ -25,8 +25,8 @@
   </div>
 </template>
 
-<script setup>
-let message = computed(() => {
+<script setup lang="ts">
+const message = computed(() => {
   return '找不到网页！'
 })
 </script>

@@ -9,36 +9,36 @@
   </el-breadcrumb>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import usePermissionStore from '@/store/modules/permission'
 
 const route = useRoute()
 const router = useRouter()
 const permissionStore = usePermissionStore()
-const levelList = ref([])
+const levelList = ref<any[]>([])
 
-function getBreadcrumb() {
+function getBreadcrumb(): void {
   // only show routes with meta.title
-  let matched = []
+  let matched: any[] = []
   const pathNum = findPathNum(route.path)
   // multi-level menu
   if (pathNum > 2) {
     const reg = /\/\w+/gi
-    const pathList = route.path.match(reg).map((item, index) => {
+    const pathList = route.path.match(reg)?.map((item: string, index: number) => {
       if (index !== 0) item = item.slice(1)
       return item
-    })
+    }) || []
     getMatched(pathList, permissionStore.defaultRoutes, matched)
   } else {
-    matched = route.matched.filter((item) => item.meta && item.meta.title)
+    matched = route.matched.filter((item: any) => item.meta && item.meta.title)
   }
   // 判断是否为首页
   if (!isDashboard(matched[0])) {
     matched = [{ path: "/index", meta: { title: "首页" } }].concat(matched)
   }
-  levelList.value = matched.filter(item => item.meta && item.meta.title && item.meta.breadcrumb !== false)
+  levelList.value = matched.filter(item => item.meta && item.meta.title && (item.meta.breadcrumb as boolean) !== false)
 }
-function findPathNum(str, char = "/") {
+function findPathNum(str: string, char = "/"): number {
   let index = str.indexOf(char)
   let num = 0
   while (index !== -1) {
@@ -47,8 +47,8 @@ function findPathNum(str, char = "/") {
   }
   return num
 }
-function getMatched(pathList, routeList, matched) {
-  let data = routeList.find(item => item.path == pathList[0] || (item.name += '').toLowerCase() == pathList[0])
+function getMatched(pathList: string[], routeList: any[], matched: any[]): void {
+  let data = routeList.find(item => item.path == pathList[0] || (item.name + '').toLowerCase() == pathList[0])
   if (data) {
     matched.push(data)
     if (data.children && pathList.length) {
@@ -57,17 +57,17 @@ function getMatched(pathList, routeList, matched) {
     }
   }
 }
-function isDashboard(route) {
+function isDashboard(route?: any): boolean {
   const name = route && route.name
   if (!name) {
     return false
   }
-  return name.trim() === 'Index'
+  return String(name).trim() === 'Index'
 }
-function handleLink(item) {
+function handleLink(item: any): void {
   const { redirect, path } = item
   if (redirect) {
-    router.push(redirect)
+    router.push(redirect as string)
     return
   }
   router.push(path)

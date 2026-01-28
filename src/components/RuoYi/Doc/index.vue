@@ -4,10 +4,10 @@
   </div>
 </template>
 
-<script setup>
-const url = ref('http://doc.ruoyi.vip/ruoyi-vue')
+<script setup lang="ts">
+const url = ref<string>('http://doc.ruoyi.vip/ruoyi-vue')
 
-function goto() {
+function goto(): void {
   window.open(url.value)
 }
 </script>

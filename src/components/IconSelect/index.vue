@@ -23,7 +23,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import icons from './requireIcons'
 
 const props = defineProps({
@@ -36,19 +36,19 @@ const iconName = ref('')
 const iconList = ref(icons)
 const emit = defineEmits(['selected'])
 
-function filterIcons() {
+function filterIcons(): void {
   iconList.value = icons
   if (iconName.value) {
     iconList.value = icons.filter(item => item.indexOf(iconName.value) !== -1)
   }
 }
 
-function selectedIcon(name) {
+function selectedIcon(name: string): void {
   emit('selected', name)
   document.body.click()
 }
 
-function reset() {
+function reset(): void {
   iconName.value = ''
   iconList.value = icons
 }

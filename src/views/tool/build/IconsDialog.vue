@@ -20,14 +20,13 @@
     </el-dialog>
   </div>
 </template>
-<script setup>
+<script setup lang="ts">
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-import { watch } from 'vue'
 
-const iconList = ref([])
-const originList = []
-const key = ref('')
-const active = ref('')
+const iconList = ref<string[]>([])
+const originList: string[] = []
+const key = ref<string>('')
+const active = ref<string>('')
 const emit = defineEmits(['select'])
 const value = defineModel()
 for (const [key] of Object.entries(ElementPlusIconsVue)) {
@@ -35,15 +34,17 @@ for (const [key] of Object.entries(ElementPlusIconsVue)) {
   originList.push(key)
 }
 
-function onOpen() { }
-function onClose() { }
-function onSelect(icon) {
+function onOpen(): void { }
+function onClose(): void { }
+function onSelect(icon: string): void {
   active.value = icon
   emit('select', icon)
-  value.value = false
+  if (value.value !== undefined) {
+    value.value = false
+  }
 }
 
-watch(key, (val) => {
+watch(key, (val: string) => {
   if (val) {
     iconList.value = originList.filter(name => name.indexOf(val) > -1)
   } else {

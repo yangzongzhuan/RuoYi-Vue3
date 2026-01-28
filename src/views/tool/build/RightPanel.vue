@@ -136,8 +136,8 @@
           </el-form-item>
           <el-form-item v-if="activeData.maxlength !== undefined" label="最多输入">
             <el-input v-model="activeData.maxlength" placeholder="请输入字符长度">
-              <template slot="append">
-                个字符
+              <template #append>
+                <span>个字符</span>
               </template>
             </el-input>
           </el-form-item>
@@ -177,11 +177,13 @@
           </el-form-item>
           <el-form-item v-if="activeData.fileSize !== undefined" label="文件大小">
             <el-input v-model.number="activeData.fileSize" placeholder="请输入文件大小">
-              <el-select slot="append" v-model="activeData.sizeUnit" :style="{ width: '66px' }">
+              <template #append>
+                <el-select v-model="activeData.sizeUnit" :style="{ width: '66px' }">
                 <el-option label="KB" value="KB" />
                 <el-option label="MB" value="MB" />
                 <el-option label="GB" value="GB" />
-              </el-select>
+                </el-select>
+              </template>
             </el-input>
           </el-form-item>
           <el-form-item v-if="activeData.action !== undefined" label="上传地址">
@@ -463,15 +465,15 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import draggable from "vuedraggable/dist/vuedraggable.common"
 import { isNumberStr } from '@/utils/index'
-import IconsDialog from './IconsDialog'
-import TreeNodeDialog from './TreeNodeDialog'
+import IconsDialog from './IconsDialog.vue'
+import TreeNodeDialog from './TreeNodeDialog.vue'
 import { inputComponents, selectComponents } from '@/utils/generator/config'
 
 const { proxy } = getCurrentInstance()
-const dateTimeFormat = {
+const dateTimeFormat: Record<string, string> = {
   date: 'YYYY-MM-DD',
   week: 'YYYY 第 ww 周',
   month: 'YYYY-MM',
@@ -481,11 +483,11 @@ const dateTimeFormat = {
   monthrange: 'YYYY-MM',
   datetimerange: 'YYYY-MM-DD HH:mm:ss'
 }
-const props = defineProps({
-  showField: Boolean,
-  activeData: Object,
-  formConf: Object
-})
+const props = defineProps<{
+  showField: boolean
+  activeData: any
+  formConf: any
+}>()
 
 const data = reactive({
   currentTab: 'field',
@@ -574,7 +576,7 @@ const data = reactive({
     }
   ],
   layoutTreeProps: {
-    label(data, node) {
+    label(data: any, node: any) {
       return data.componentName || `${data.label}: ${data.vModel}`
     }
   }
@@ -582,7 +584,7 @@ const data = reactive({
 
 const { currentTab, currentNode, dialogVisible, iconsVisible, currentIconModel, dateTypeOptions, dateRangeTypeOptions, colorFormatOptions, justifyOptions, layoutTreeProps } = toRefs(data)
 
-const documentLink = computed(() => props.activeData.document || 'https://element-plus.org/zh-CN/guide/installation')
+const documentLink = computed<string>(() => props.activeData.document || 'https://element-plus.org/zh-CN/guide/installation')
 
 const dateOptions = computed(() => {
   if (props.activeData.type !== undefined && props.activeData.tag === 'el-date-picker') {
@@ -607,26 +609,32 @@ const tagList = ref([
 
 const emit = defineEmits(['tag-change'])
 
-function addReg() {
+function addReg(): void {
+  if (!props.activeData.regList) {
+    props.activeData.regList = []
+  }
   props.activeData.regList.push({
     pattern: '',
     message: ''
   })
 }
-function addSelectItem() {
+function addSelectItem(): void {
+  if (!props.activeData.options) {
+    props.activeData.options = []
+  }
   props.activeData.options.push({
     label: '',
     value: ''
   })
 }
 
-function addTreeItem() {
+function addTreeItem(): void {
   ++proxy.idGlobal
   dialogVisible.value = true
   currentNode.value = props.activeData.options
 }
 
-function renderContent(h, { node, data, store }) {
+function renderContent(h: any, { node, data, store }: any): any {
   return h('div', {
     class: "custom-tree-node"
   }, [
@@ -640,7 +648,6 @@ function renderContent(h, { node, data, store }) {
         underline: false,
         onClick: () => {
           append(data)
-
         }
       }),
       h(resolveComponent('el-link'), {
@@ -655,40 +662,42 @@ function renderContent(h, { node, data, store }) {
     ])
   ])
 }
-function append(data) {
+function append(data: any): void {
   if (!data.children) {
     data.children = []
   }
   dialogVisible.value = true
   currentNode.value = data.children
 }
-function remove(node, data) {
+function remove(node: any, data: any): void {
   const { parent } = node
   const children = parent.data.children || parent.data
-  const index = children.findIndex(d => d.id === data.id)
+  const index = children.findIndex((d: any) => d.id === data.id)
   children.splice(index, 1)
 }
-function addNode(data) {
-  currentNode.value.push(data)
+function addNode(data: any): void {
+  if (currentNode.value) {
+    currentNode.value.push(data)
+  }
 }
 
-function setOptionValue(item, val) {
+function setOptionValue(item: { value: any }, val: string): void {
   item.value = isNumberStr(val) ? +val : val
 }
-function setDefaultValue(val) {
+function setDefaultValue(val: any): string {
   if (Array.isArray(val)) {
     return val.join(',')
   }
-  if (['string', 'number'].indexOf(val) > -1) {
-    return val
+  if (['string', 'number'].indexOf(typeof val) > -1) {
+    return String(val)
   }
   if (typeof val === 'boolean') {
     return `${val}`
   }
-  return val
+  return String(val)
 }
 
-function onDefaultValueInput(str) {
+function onDefaultValueInput(str: string): void {
   if (Array.isArray(props.activeData.defaultValue)) {
     // 数组
     props.activeData.defaultValue = str.split(',').map(val => (isNumberStr(val) ? +val : val))
@@ -701,7 +710,7 @@ function onDefaultValueInput(str) {
   }
 }
 
-function onSwitchValueInput(val, name) {
+function onSwitchValueInput(val: string, name: string): void {
   if (['true', 'false'].indexOf(val) > -1) {
     props.activeData[name] = JSON.parse(val)
   } else {
@@ -709,56 +718,63 @@ function onSwitchValueInput(val, name) {
   }
 }
 
-function setTimeValue(val, type) {
+function setTimeValue(val: string, type?: string): void {
   const valueFormat = type === 'week' ? dateTimeFormat.date : val
   props.activeData.defaultValue = null
   props.activeData['value-format'] = valueFormat
   props.activeData.format = val
 }
 
-function spanChange(val) {
+function spanChange(val: number): void {
   props.formConf.span = val
 }
 
-function multipleChange(val) {
+function multipleChange(val: boolean): void {
   props.activeData.defaultValue = val ? [] : ''
 }
 
-function dateTypeChange(val) {
+function dateTypeChange(val: string): void {
   setTimeValue(dateTimeFormat[val], val)
 }
 
-function rangeChange(val) {
+function rangeChange(val: boolean): void {
   props.activeData.defaultValue = val ? [props.activeData.min, props.activeData.max] : props.activeData.min
 }
 
-function rateTextChange(val) {
+function rateTextChange(val: boolean): void {
   if (val) props.activeData['show-score'] = false
 }
 
-function rateScoreChange(val) {
+function rateScoreChange(val: boolean): void {
   if (val) props.activeData['show-text'] = false
 }
 
-function colorFormatChange(val) {
+function colorFormatChange(val: string): void {
   props.activeData.defaultValue = null
   props.activeData['show-alpha'] = val.indexOf('a') > -1
   props.activeData.renderKey = +new Date() // 更新renderKey,重新渲染该组件
 }
 
-function openIconsDialog(model) {
+function openIconsDialog(model: string): void {
   iconsVisible.value = true
   currentIconModel.value = model
 }
 
-function setIcon(val) {
-  props.activeData[currentIconModel.value] = val
+function setIcon(val: string): void {
+  if (currentIconModel.value) {
+    props.activeData[currentIconModel.value] = val
+  }
 }
 
-function tagChange(tagIcon) {
-  let target = inputComponents.find(item => item.tagIcon === tagIcon)
-  if (!target) target = selectComponents.find(item => item.tagIcon === tagIcon)
-  emit('tag-change', target)
+function tagChange(tagIcon: string): void {
+  let target: Record<string, any> | undefined
+  target = inputComponents.find(item => item.tagIcon === tagIcon)
+  if (!target) {
+    target = selectComponents.find(item => item.tagIcon === tagIcon)
+  }
+  if (target) {
+    emit('tag-change', target)
+  }
 }
 </script>
 

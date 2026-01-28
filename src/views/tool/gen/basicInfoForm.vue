@@ -30,7 +30,7 @@
   </el-form>
 </template>
 
-<script setup>
+<script setup lang="ts">
 defineProps({
   info: {
     type: Object,

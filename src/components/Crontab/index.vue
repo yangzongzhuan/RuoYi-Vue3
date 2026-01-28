@@ -124,7 +124,8 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
+// @ts-nocheck
 import CrontabSecond from "./second.vue"
 import CrontabMin from "./min.vue"
 import CrontabHour from "./hour.vue"
@@ -145,11 +146,11 @@ const props = defineProps({
         default: ""
     }
 })
-const tabTitles = ref(["秒", "分钟", "小时", "日", "月", "周", "年"])
-const tabActive = ref(0)
-const hideComponent = ref([])
-const expression = ref('')
-const crontabValueObj = ref({
+const tabTitles = ref<string[]>(["秒", "分钟", "小时", "日", "月", "周", "年"])
+const tabActive = ref<number>(0)
+const hideComponent = ref<string[]>([])
+const expression = ref<string>('')
+const crontabValueObj = ref<any>({
     second: "*",
     min: "*",
     hour: "*",
@@ -174,16 +175,16 @@ const crontabValueString = computed(() => {
         + (obj.year === "" ? "" : " " + obj.year)
 })
 watch(expression, () => resolveExp())
-function shouldHide(key) {
+function shouldHide(key: string): boolean {
     return !(hideComponent.value && hideComponent.value.includes(key))
 }
-function resolveExp() {
+function resolveExp(): void {
     // 反解析 表达式
     if (expression.value) {
         const arr = expression.value.split(/\s+/)
         if (arr.length >= 6) {
             //6 位以上是合法表达式
-            let obj = {
+            const obj: any = {
                 second: arr[0],
                 min: arr[1],
                 hour: arr[2],
@@ -202,15 +203,15 @@ function resolveExp() {
     }
 }
 // tab切换值
-function tabCheck(index) {
+function tabCheck(index: number): void {
     tabActive.value = index
 }
 // 由子组件触发，更改表达式组成的字段值
-function updateCrontabValue(name, value, from) {
+function updateCrontabValue(name: keyof any, value: string, from: string): void {
     crontabValueObj.value[name] = value
 }
 // 表单选项的子组件校验数字格式（通过-props传递）
-function checkNumber(value, minLimit, maxLimit) {
+function checkNumber(value: number, minLimit: number, maxLimit: number): number {
     // 检查必须为整数
     value = Math.floor(value)
     if (value < minLimit) {
@@ -221,15 +222,15 @@ function checkNumber(value, minLimit, maxLimit) {
     return value
 }
 // 隐藏弹窗
-function hidePopup() {
+function hidePopup(): void {
     emit("hide")
 }
 // 填充表达式
-function submitFill() {
+function submitFill(): void {
     emit("fill", crontabValueString.value)
     hidePopup()
 }
-function clearCron() {
+function clearCron(): void {
     // 还原选择项
     crontabValueObj.value = {
         second: "*",
