@@ -34,13 +34,13 @@ RuoYi-Vue 前端项目的三个主要演进版本，方便你直观对比其技�
 
 ```bash
 # 克隆项目
-git clone https://github.com/yangzongzhuan/RuoYi-Vue3.git
+git clone https://gitcode.com/yangzongzhuan/RuoYi-Vue3.git
+
+# 切换typescript分支
+git checkout typescript
 
 # 进入项目目录
 cd RuoYi-Vue3
-
-#切换typescript分支
-git checkout typescript
 
 # 安装依赖
 yarn --registry=https://registry.npmmirror.com
