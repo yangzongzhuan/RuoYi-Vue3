@@ -19,7 +19,7 @@
 
 RuoYi-Vue 前端项目的三个主要演进版本，方便你直观对比其技术栈差异（并行开发维护）。
 
-| 项目名称      | **RuoYi-Vue** | **RuoYi-Vue3** | **RuoYi--Vue3-TypeScript ** |
+| 项目名称      | **RuoYi-Vue** | **RuoYi-Vue3** | **RuoYi-Vue3-TypeScript**   |
 | :---          | :---          | :---           | :---                        |
 | **前端框架**  | Vue 2        | Vue 3          | Vue 3                       |
 | **脚本语言**  | JavaScript   | JavaScript     | TypeScript                  |
@@ -27,7 +27,7 @@ RuoYi-Vue 前端项目的三个主要演进版本，方便你直观对比其技�
 | **UI 组件库** | Element UI   | Element Plus   | Element Plus                |
 | **状态管理**  | Vuex         | Pinia          | Pinia                       |
 | **路由管理**  | Vue Router 3 | Vue Router 4   | Vue Router 4                |
-| **核心特点**  | 1. 技术栈经典稳定<br>2. 社区资料丰富<br>3. 当前维护重已转移 | 1. 现代前端技术栈<br>2. 开发体验与性能更优<br>3. 官方主推的活跃版本 | 1. TypeScript 加持，代码更健壮<br>2. 开发时就有类型提示，效率更高<br>3. 更适合多人协作的中大型项目 |
+| **核心特点**  | 1. 技术栈经典稳定<br>2. 社区资料丰富<br>3. 当前维护重已转移 | 1. 现代前端技术栈<br>2. 开发体验与性能更优<br>3. 官方主推的活跃版本 | 1. 类型加持，减少沟通成本<br>2. 开发时有提示，效率更高<br>3. 多人协作企业级开发项目 |
 | **仓库地址**  | [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) | [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) | [RuoYi-Vue3-TypeScript](https://gitcode.com/yangzongzhuan/RuoYi-Vue3/tree/typescript) |
 
 ## 前端运行
