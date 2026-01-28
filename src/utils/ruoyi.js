@@ -71,7 +71,7 @@ export function selectDictLabel(datas, value) {
   if (value === undefined) {
     return ""
   }
-  var actions = []
+  const actions = []
   Object.keys(datas).some((key) => {
     if (datas[key].value == ('' + value)) {
       actions.push(datas[key].label)
@@ -92,11 +92,11 @@ export function selectDictLabels(datas, value, separator) {
   if (Array.isArray(value)) {
     value = value.join(",")
   }
-  var actions = []
-  var currentSeparator = undefined === separator ? "," : separator
-  var temp = value.split(currentSeparator)
+  const actions = []
+  const currentSeparator = undefined === separator ? "," : separator
+  const temp = value.split(currentSeparator)
   Object.keys(value.split(currentSeparator)).some((val) => {
-    var match = false
+    let match = false
     Object.keys(datas).some((key) => {
       if (datas[key].value == ('' + temp[val])) {
         actions.push(datas[key].label + currentSeparator)
@@ -112,9 +112,9 @@ export function selectDictLabels(datas, value, separator) {
 
 // 字符串格式化(%s )
 export function sprintf(str) {
-  var args = arguments, flag = true, i = 1
+  let flag = true, i = 1
   str = str.replace(/%s/g, function () {
-    var arg = args[i++]
+    const arg = args[i++]
     if (typeof arg === 'undefined') {
       flag = false
       return ''
@@ -134,7 +134,7 @@ export function parseStrEmpty(str) {
 
 // 数据合并
 export function mergeRecursive(source, target) {
-  for (var p in target) {
+  for (const p in target) {
     try {
       if (target[p].constructor == Object) {
         source[p] = mergeRecursive(source[p], target[p])
@@ -156,25 +156,25 @@ export function mergeRecursive(source, target) {
  * @param {*} children 孩子节点字段 默认 'children'
  */
 export function handleTree(data, id, parentId, children) {
-  let config = {
+  const config = {
     id: id || 'id',
     parentId: parentId || 'parentId',
     childrenList: children || 'children'
   }
 
-  var childrenListMap = {}
-  var tree = []
-  for (let d of data) {
-    let id = d[config.id]
+  const childrenListMap = {}
+  const tree = []
+  for (const d of data) {
+    const id = d[config.id]
     childrenListMap[id] = d
     if (!d[config.childrenList]) {
       d[config.childrenList] = []
     }
   }
 
-  for (let d of data) {
-    let parentId = d[config.parentId]
-    let parentObj = childrenListMap[parentId]
+  for (const d of data) {
+    const parentId = d[config.parentId]
+    const parentObj = childrenListMap[parentId]
     if (!parentObj) {
       tree.push(d)
     } else {
@@ -192,13 +192,13 @@ export function tansParams(params) {
   let result = ''
   for (const propName of Object.keys(params)) {
     const value = params[propName]
-    var part = encodeURIComponent(propName) + "="
+    const part = encodeURIComponent(propName) + "="
     if (value !== null && value !== "" && typeof (value) !== "undefined") {
       if (typeof value === 'object') {
         for (const key of Object.keys(value)) {
           if (value[key] !== null && value[key] !== "" && typeof (value[key]) !== 'undefined') {
-            let params = propName + '[' + key + ']'
-            var subPart = encodeURIComponent(params) + "="
+            const params = propName + '[' + key + ']'
+            const subPart = encodeURIComponent(params) + "="
             result += subPart + encodeURIComponent(value[key]) + "&"
           }
         }

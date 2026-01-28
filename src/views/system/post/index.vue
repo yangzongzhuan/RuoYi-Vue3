@@ -249,13 +249,13 @@ function submitForm() {
   proxy.$refs["postRef"].validate(valid => {
     if (valid) {
       if (form.value.postId != undefined) {
-        updatePost(form.value).then(response => {
+        updatePost(form.value).then(() => {
           proxy.$modal.msgSuccess("修改成功")
           open.value = false
           getList()
         })
       } else {
-        addPost(form.value).then(response => {
+        addPost(form.value).then(() => {
           proxy.$modal.msgSuccess("新增成功")
           open.value = false
           getList()
