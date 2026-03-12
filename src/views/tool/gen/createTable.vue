@@ -31,7 +31,7 @@ function handleImportTable(): void {
     proxy.$modal.msgError("请输入建表语句")
     return
   }
-  createTable({ sql: content.value }).then(res => {
+  createTable({ sql: content.value, tplWebType: 'element-plus-typescript' }).then(res => {
     proxy.$modal.msgSuccess(res.msg)
     if (res.code === 200) {
       visible.value = false

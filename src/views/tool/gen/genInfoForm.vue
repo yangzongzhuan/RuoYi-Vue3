@@ -18,6 +18,7 @@
           <el-select v-model="info.tplWebType">
             <el-option label="Vue2 Element UI 模版" value="element-ui" />
             <el-option label="Vue3 Element Plus 模版" value="element-plus" />
+            <el-option label="Vue3 Element Plus TypeScript 模版" value="element-plus-typescript" />
           </el-select>
         </el-form-item>
       </el-col>
@@ -303,7 +304,7 @@ watch(() => props.info?.subTableName, (val: string) => {
 
 watch(() => props.info?.tplWebType, (val: string) => {
   if (val === '' && props.info) {
-    props.info.tplWebType = "element-plus"
+    props.info.tplWebType = "element-plus-typescript"
   }
 })
 </script>
