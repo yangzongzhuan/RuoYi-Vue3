@@ -38,11 +38,11 @@ const topMenus = computed(() => {
   return permissionStore.sidebarRouters.filter((f: any) => !f.hidden).slice(0, visibleNumber.value)
 })
 const moreRoutes = computed(() => {
-  return permissionStore.sidebarRouters.filter((f: any) => !f.hidden).slice(visibleNumber.value, sidebarRouters.value.length - visibleNumber.value)
+  return permissionStore.sidebarRouters.filter((f: any) => !f.hidden).slice(visibleNumber.value)
 })
 function setVisibleNumber(): void {
   const width = document.body.getBoundingClientRect().width / 3
-  visibleNumber.value = parseInt(String(width / 85))
+  visibleNumber.value = Math.max(1, parseInt(String(width / 85)))
 }
 
 onMounted(() => {
