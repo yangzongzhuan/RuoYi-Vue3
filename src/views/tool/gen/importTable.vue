@@ -111,7 +111,7 @@ function handleImportTable() {
     proxy.$modal.msgError("请选择要导入的表")
     return
   }
-  importTable({ tables: tableNames }).then(res => {
+  importTable({ tables: tableNames, tplWebType: 'element-plus' }).then(res => {
     proxy.$modal.msgSuccess(res.msg)
     if (res.code === 200) {
       visible.value = false
