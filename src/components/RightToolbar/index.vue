@@ -96,8 +96,35 @@ const isIndeterminate = computed(() => Array.isArray(props.columns) ? props.colu
 const transferData = computed(() => Array.isArray(props.columns) ? props.columns.map((item: TableShowColumns, index: number) => ({ key: index, label: item.label })) : Object.keys(props.columns).map((key, index) => ({ key: index, label: props.columns[key].label })))
 
 // 搜索
+const { proxy } = getCurrentInstance()!
 function toggleSearch(): void {
-  emits("update:showSearch", !props.showSearch)
+  let el: HTMLElement | null = proxy!.$el
+  let formEl: HTMLElement | null = null
+  while ((el = el!.parentElement) && el !== document.body) {
+    if ((formEl = el.querySelector('.el-form'))) break
+  }
+  if (!formEl) return emits('update:showSearch', !props.showSearch)
+  animateSearch(formEl, props.showSearch)
+}
+function animateSearch(el: HTMLElement, isHide: boolean): void {
+  const DURATION = 260
+  const TRANSITION = 'max-height 0.25s ease, opacity 0.2s ease'
+  const clear = () => Object.assign(el.style, { transition: '', maxHeight: '', opacity: '', overflow: '' })
+  Object.assign(el.style, { overflow: 'hidden', transition: '' })
+  if (isHide) {
+    Object.assign(el.style, { maxHeight: el.scrollHeight + 'px', opacity: '1', transition: TRANSITION })
+    requestAnimationFrame(() => Object.assign(el.style, { maxHeight: '0', opacity: '0' }))
+    setTimeout(() => { emits('update:showSearch', false); clear() }, DURATION)
+  } else {
+    emits('update:showSearch', true)
+    nextTick(() => {
+      Object.assign(el.style, { maxHeight: '0', opacity: '0' })
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        Object.assign(el.style, { transition: TRANSITION, maxHeight: el.scrollHeight + 'px', opacity: '1' })
+      }))
+      setTimeout(clear, DURATION)
+    })
+  }
 }
 
 // 刷新
