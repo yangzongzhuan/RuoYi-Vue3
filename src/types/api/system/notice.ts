@@ -1,4 +1,4 @@
-import type { PageDomain, BaseEntity } from "../common";
+import type { PageDomain, BaseEntity, AjaxResult } from "../common";
 
 /** 通知公告分页查询参数 */
 export interface NoticeQueryParams extends PageDomain  {
@@ -22,4 +22,10 @@ export interface SysNotice extends BaseEntity {
   noticeContent?: string;
   /** 状态（0正常 1停用） */
   status?: '0' | '1';
+  /** 是否已读 */
+  isRead: boolean;
+}
+
+export interface SysNoticeTopResult extends AjaxResult<SysNotice[]> {
+  unreadCount: number
 }

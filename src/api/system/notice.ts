@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { NoticeQueryParams, SysNotice, AjaxResult, TableDataInfo } from '@/types'
+import type { NoticeQueryParams, SysNotice, SysNoticeTopResult, AjaxResult, TableDataInfo } from '@/types'
 
 // 查询公告列表
 export function listNotice(query: NoticeQueryParams): Promise<TableDataInfo<SysNotice[]>> {
@@ -41,5 +41,31 @@ export function delNotice(noticeId: number | number[]): Promise<AjaxResult> {
   return request({
     url: '/system/notice/' + noticeId,
     method: 'delete'
+  })
+}
+
+// 首页顶部公告列表（带已读状态）
+export function listNoticeTop(): Promise<SysNoticeTopResult> {
+  return request({
+    url: '/system/notice/listTop',
+    method: 'get'
+  })
+}
+
+// 标记公告已读
+export function markNoticeRead(noticeId: number): Promise<AjaxResult> {
+  return request({
+    url: '/system/notice/markRead',
+    method: 'post',
+    params: { noticeId }
+  })
+}
+
+// 批量标记已读
+export function markNoticeReadAll(ids: string): Promise<AjaxResult> {
+  return request({
+    url: '/system/notice/markReadAll',
+    method: 'post',
+    params: { ids }
   })
 }
