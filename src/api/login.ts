@@ -40,6 +40,15 @@ export function getInfo(): Promise<UserInfoResult> {
   })
 }
 
+// 解锁屏幕
+export function unlockScreen(password: string) {
+  return request({
+    url: '/unlockscreen',
+    method: 'post',
+    data: { password }
+  })
+}
+
 // 退出方法
 export function logout() {
   return request({

@@ -71,6 +71,12 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/lock',
+    component: () => import('@/views/lock.vue'),
+    hidden: true,
+    meta: { title: '锁定屏幕' }
+  },
+  {
     path: '/user',
     component: Layout,
     hidden: true,
