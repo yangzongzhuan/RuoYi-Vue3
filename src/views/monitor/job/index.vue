@@ -233,58 +233,12 @@
      </el-dialog>
 
       <!-- 任务日志详细 -->
-      <el-dialog title="任务详细" v-model="openView" width="700px" append-to-body>
-         <el-form :model="form" label-width="120px">
-            <el-row>
-               <el-col :span="12">
-                  <el-form-item label="任务编号：">{{ form.jobId }}</el-form-item>
-                  <el-form-item label="任务名称：">{{ form.jobName }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="任务分组：">{{ jobGroupFormat(form) }}</el-form-item>
-                  <el-form-item label="创建时间：">{{ form.createTime }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="cron表达式：">{{ form.cronExpression }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="下次执行时间：">{{ parseTime(form.nextValidTime) }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="调用目标方法：">{{ form.invokeTarget }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="任务状态：">
-                     <div v-if="form.status == 0">正常</div>
-                     <div v-else-if="form.status == 1">暂停</div>
-                  </el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="是否并发：">
-                     <div v-if="form.concurrent == 0">允许</div>
-                     <div v-else-if="form.concurrent == 1">禁止</div>
-                  </el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="执行策略：">
-                     <div v-if="form.misfirePolicy == 0">默认策略</div>
-                     <div v-else-if="form.misfirePolicy == 1">立即执行</div>
-                     <div v-else-if="form.misfirePolicy == 2">执行一次</div>
-                     <div v-else-if="form.misfirePolicy == 3">放弃执行</div>
-                  </el-form-item>
-               </el-col>
-            </el-row>
-         </el-form>
-         <template #footer>
-            <div class="dialog-footer">
-               <el-button @click="openView = false">关 闭</el-button>
-            </div>
-         </template>
-      </el-dialog>
+      <job-detail v-model:visible="openView" :row="form" type="job" />
    </div>
 </template>
 
 <script setup lang="ts" name="Job">
+import JobDetail from './detail'
 import Crontab from '@/components/Crontab/index.vue'
 import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from "@/api/monitor/job"
 import type { JobQueryParams, SysJob } from '@/types/api/monitor/job'
@@ -334,11 +288,6 @@ function getList() {
   })
 }
 
-/** 任务组名字典翻译 */
-function jobGroupFormat(row: SysJob): string {
-  return proxy.selectDictLabel(sys_job_group.value, row.jobGroup!)
-}
-
 /** 取消按钮 */
 function cancel() {
   open.value = false
@@ -377,23 +326,6 @@ function handleSelectionChange(selection: SysJob[]) {
   ids.value = selection.map(item => item.jobId!)
   single.value = selection.length != 1
   multiple.value = !selection.length
-}
-
-// 更多操作触发
-function handleCommand(command: string, row: SysJob) {
-  switch (command) {
-    case "handleRun":
-      handleRun(row)
-      break
-    case "handleView":
-      handleView(row)
-      break
-    case "handleJobLog":
-      handleJobLog(row)
-      break
-    default:
-      break
-  }
 }
 
 // 任务状态修改
