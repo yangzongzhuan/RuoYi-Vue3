@@ -135,7 +135,7 @@
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
-               <el-button link type="primary" icon="View" @click="handleView(scope.row, scope.index)" v-hasPermi="['monitor:operlog:query']">详细</el-button>
+               <el-button link type="primary" icon="View" @click="handleDetail(scope.row, scope.index)" v-hasPermi="['monitor:operlog:query']">详细</el-button>
             </template>
          </el-table-column>
       </el-table>
@@ -148,64 +148,21 @@
          @pagination="getList"
       />
 
-      <!-- 操作日志详细 -->
-      <el-dialog title="操作日志详细" v-model="open" width="800px" append-to-body>
-         <el-form :model="form" label-width="100px">
-            <el-row>
-               <el-col :span="12">
-                  <el-form-item label="操作模块：">{{ form.title }} / {{ typeFormat(form) }}</el-form-item>
-                  <el-form-item
-                    label="登录信息："
-                  >{{ form.operName }} / {{ form.operIp }} / {{ form.operLocation }}</el-form-item>
-               </el-col>
-               <el-col :span="12">
-                  <el-form-item label="请求地址：">{{ form.operUrl }}</el-form-item>
-                  <el-form-item label="请求方式：">{{ form.requestMethod }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="操作方法：">{{ form.method }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="请求参数：" style="word-break: break-all; white-space: pre-wrap;">{{ form.operParam }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="返回参数：">{{ form.jsonResult }}</el-form-item>
-               </el-col>
-               <el-col :span="8">
-                  <el-form-item label="操作状态：">
-                     <div v-if="form.status === 0">正常</div>
-                     <div v-else-if="form.status === 1">失败</div>
-                  </el-form-item>
-               </el-col>
-               <el-col :span="8">
-                  <el-form-item label="消耗时间：">{{ form.costTime }}毫秒</el-form-item>
-               </el-col>
-               <el-col :span="8">
-                  <el-form-item label="操作时间：">{{ parseTime(form.operTime) }}</el-form-item>
-               </el-col>
-               <el-col :span="24">
-                  <el-form-item label="异常信息：" v-if="form.status === 1">{{ form.errorMsg }}</el-form-item>
-               </el-col>
-            </el-row>
-         </el-form>
-         <template #footer>
-            <div class="dialog-footer">
-               <el-button @click="open = false">关 闭</el-button>
-            </div>
-         </template>
-      </el-dialog>
+      <operlog-detail v-model:visible="detailVisible" :row="detailRow" />
    </div>
 </template>
 
 <script setup name="Operlog">
+import OperlogDetail from './detail'
 import { list, delOperlog, cleanOperlog } from "@/api/monitor/operlog"
 
 const { proxy } = getCurrentInstance()
 const { sys_oper_type, sys_common_status } = proxy.useDict("sys_oper_type", "sys_common_status")
 
 const operlogList = ref([])
-const open = ref(false)
+const detailVisible = ref(false)
 const loading = ref(true)
+const detailRow = ref({})
 const showSearch = ref(true)
 const ids = ref([])
 const single = ref(true)
@@ -240,11 +197,6 @@ function getList() {
   })
 }
 
-/** 操作日志类型字典翻译 */
-function typeFormat(row, column) {
-  return proxy.selectDictLabel(sys_oper_type.value, row.businessType)
-}
-
 /** 搜索按钮操作 */
 function handleQuery() {
   queryParams.value.pageNum = 1
@@ -273,9 +225,9 @@ function handleSortChange(column, prop, order) {
 }
 
 /** 详细按钮操作 */
-function handleView(row) {
-  open.value = true
-  form.value = row
+function handleDetail(row) {
+  detailRow.value = row
+  detailVisible.value = true
 }
 
 /** 删除按钮操作 */
