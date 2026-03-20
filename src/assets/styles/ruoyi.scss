@@ -240,6 +240,52 @@
   color: #FFFFFF;
 }
 
+/** 详细卡片样式 */
+.detail-wrap { padding: 0 4px; }
+
+.detail-card {
+  border: 1px solid #ebeef5;
+  border-radius: 6px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.detail-card-title {
+  background: #f7f9fb;
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  border-bottom: 1px solid #ebeef5;
+}
+.detail-card-title i { margin-right: 5px; color: #409EFF; }
+
+.detail-row { padding: 0 8px; }
+
+.detail-item {
+  display: flex;
+  align-items: flex-start;
+  padding: 10px 8px;
+  font-size: 13px;
+  border-bottom: 1px solid #f5f7fa;
+}
+.detail-item:last-child { border-bottom: none; }
+
+.detail-label {
+  flex-shrink: 0;
+  width: 72px;
+  color: #909399;
+  margin-right: 12px;
+}
+.detail-value { color: #303133; flex: 1; word-break: break-all; }
+.detail-location { color: #999; font-size: 12px; }
+
+/* http method */
+.method-GET    { background: #e8f5e9; color: #27ae60; }
+.method-POST   { background: #e3f2fd; color: #1565c0; }
+.method-PUT    { background: #fff3e0; color: #e65100; }
+.method-DELETE { background: #ffebee; color: #c62828; }
+
 /* text color */
 .text-navy {
   color: #1ab394;
