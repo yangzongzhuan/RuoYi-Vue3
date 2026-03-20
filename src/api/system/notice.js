@@ -42,3 +42,29 @@ export function delNotice(noticeId) {
     method: 'delete'
   })
 }
+
+// 首页顶部公告列表（带已读状态）
+export function listNoticeTop() {
+  return request({
+    url: '/system/notice/listTop',
+    method: 'get'
+  })
+}
+
+// 标记公告已读
+export function markNoticeRead(noticeId) {
+  return request({
+    url: '/system/notice/markRead',
+    method: 'post',
+    params: { noticeId }
+  })
+}
+
+// 批量标记已读
+export function markNoticeReadAll(ids) {
+  return request({
+    url: '/system/notice/markReadAll',
+    method: 'post',
+    params: { ids }
+  })
+}

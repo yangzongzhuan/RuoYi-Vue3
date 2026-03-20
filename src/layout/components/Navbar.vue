@@ -32,6 +32,10 @@
         <el-tooltip content="布局大小" effect="dark" placement="bottom">
           <size-select id="size-select" class="right-menu-item hover-effect" />
         </el-tooltip>
+
+        <el-tooltip content="消息通知" effect="dark" placement="bottom">
+          <header-notice id="header-notice" class="right-menu-item hover-effect" />
+        </el-tooltip>
       </template>
 
       <el-dropdown @command="handleCommand" class="avatar-container right-menu-item hover-effect" trigger="hover">
@@ -72,6 +76,7 @@ import RuoYiDoc from '@/components/RuoYi/Doc'
 import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
+import HeaderNotice from './HeaderNotice'
 
 const appStore = useAppStore()
 const userStore = useUserStore()
@@ -202,11 +207,6 @@ async function toggleTheme(event) {
     align-items: center;
     overflow: hidden;
     margin-left: 8px;
-  }
-
-  .errLog-container {
-    display: inline-block;
-    vertical-align: top;
   }
 
   .right-menu {
