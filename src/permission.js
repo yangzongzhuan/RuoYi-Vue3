@@ -33,7 +33,6 @@ router.beforeEach((to, from, next) => {
       next({ path: '/lock' })
       NProgress.done()
     } else if (!isLock && to.path === '/lock') {
-      alert(isLock)
       next({ path: '/' })
       NProgress.done()
     } else {
