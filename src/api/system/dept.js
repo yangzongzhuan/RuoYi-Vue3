@@ -43,6 +43,15 @@ export function updateDept(data) {
   })
 }
 
+// 保存部门排序
+export function updateDeptSort(data) {
+  return request({
+    url: '/system/dept/updateSort',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除部门
 export function delDept(deptId) {
   return request({

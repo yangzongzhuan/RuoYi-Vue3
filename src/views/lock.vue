@@ -34,7 +34,6 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
 import { useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import useLockStore from '@/store/modules/lock'
