@@ -38,6 +38,15 @@
          </el-col>
          <el-col :span="1.5">
             <el-button
+               type="warning"
+               plain
+               icon="Check"
+               @click="handleSaveSort"
+               v-hasPermi="['system:dept:edit']"
+            >保存排序</el-button>
+         </el-col>
+         <el-col :span="1.5">
+            <el-button
                type="info"
                plain
                icon="Sort"
@@ -56,7 +65,11 @@
          :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
          <el-table-column prop="deptName" label="部门名称" width="260"></el-table-column>
-         <el-table-column prop="orderNum" label="排序" width="200"></el-table-column>
+         <el-table-column prop="orderNum" label="排序" width="200">
+            <template #default="scope">
+               <el-input-number v-model="scope.row.orderNum" controls-position="right" :min="0" style="width: 88px" />
+            </template>
+         </el-table-column>
          <el-table-column prop="status" label="状态" width="100">
             <template #default="scope">
                <dict-tag :options="sys_normal_disable" :value="scope.row.status" />
@@ -141,7 +154,7 @@
 </template>
 
 <script setup lang="ts" name="Dept">
-import { listDept, getDept, delDept, addDept, updateDept, listDeptExcludeChild } from "@/api/system/dept"
+import { listDept, getDept, delDept, addDept, updateDept, updateDeptSort, listDeptExcludeChild } from "@/api/system/dept"
 import type { SysDept, DeptQueryParams } from '@/types/api/system/dept'
 import type { TreeSelect } from '@/types/api/common'
 
@@ -156,6 +169,7 @@ const title = ref<string>("")
 const deptOptions = ref<TreeSelect[]>([])
 const isExpandAll = ref<boolean>(true)
 const refreshTable = ref<boolean>(true)
+const originalOrders = ref<Record<number, number>>({})
 
 const data = reactive({
   form: {} as SysDept,
@@ -179,6 +193,7 @@ function getList() {
   loading.value = true
   listDept(queryParams.value).then(response => {
     deptList.value = proxy.handleTree(response.data, "deptId")
+    recordOriginalOrders(deptList.value)
     loading.value = false
   })
 }
@@ -268,6 +283,42 @@ function submitForm() {
         })
       }
     }
+  })
+}
+
+/** 递归记录原始排序 */
+function recordOriginalOrders(list: SysDept[]) {
+  list.forEach(item => {
+    originalOrders.value[item.deptId] = item.orderNum
+    if (item.children && item.children.length) {
+      recordOriginalOrders(item.children)
+    }
+  })
+}
+
+/** 保存排序 */
+function handleSaveSort() {
+  const changedDeptIds: number[] = []
+  const changedOrderNums: number[] = []
+  const collectChanged = (list: SysDept[]) => {
+    list.forEach(item => {
+      if (String(originalOrders.value[item.deptId!]) !== String(item.orderNum)) {
+        changedDeptIds.push(item.deptId!)
+        changedOrderNums.push(item.orderNum!)
+      }
+      if (item.children && item.children.length) {
+        collectChanged(item.children)
+      }
+    })
+  }
+  collectChanged(deptList.value)
+  if (changedDeptIds.length === 0) {
+   proxy.$modal.msgWarning("未检测到排序修改")
+    return
+  }
+  updateDeptSort({ deptIds: changedDeptIds.join(","), orderNums: changedOrderNums.join(",") }).then(() => {
+   proxy.$modal.msgSuccess("排序保存成功")
+    recordOriginalOrders(deptList.value)
   })
 }
 

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { DeptQueryParams, SysDept, AjaxResult } from '@/types'
+import type { DeptQueryParams, SysDept, DeptSortParams, AjaxResult } from '@/types'
 
 // 查询部门列表
 export function listDept(query?: DeptQueryParams): Promise<AjaxResult<SysDept[]>> {
@@ -39,6 +39,15 @@ export function addDept(data: SysDept): Promise<AjaxResult> {
 export function updateDept(data: SysDept): Promise<AjaxResult> {
   return request({
     url: '/system/dept',
+    method: 'put',
+    data: data
+  })
+}
+
+// 保存部门排序
+export function updateDeptSort(data: DeptSortParams): Promise<AjaxResult> {
+  return request({
+    url: '/system/dept/updateSort',
     method: 'put',
     data: data
   })

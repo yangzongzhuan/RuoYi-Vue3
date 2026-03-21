@@ -8,6 +8,12 @@ export interface DeptQueryParams {
   status?: string;
 }
 
+/** 保存部门排序参数 */
+export interface DeptSortParams {
+  deptIds: string
+  orderNums: string
+}
+
 /** 部门信息 */
 export interface SysDept extends BaseEntity {
   /** 部门编号 */
@@ -28,4 +34,6 @@ export interface SysDept extends BaseEntity {
   email?: string;
   /** 状态（0正常 1停用） */
   status?: '0' | '1';
+  /** 子部门 */
+  children?: SysDept[];
 }
