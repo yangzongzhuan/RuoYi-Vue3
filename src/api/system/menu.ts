@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { MenuQueryParams, SysMenu, TreeSelect, AjaxResult, RoleMenuTreeselectResult } from '@/types'
+import type { MenuQueryParams, SysMenu, MenuSortParams, TreeSelect, AjaxResult, RoleMenuTreeselectResult } from '@/types'
 
 // 查询菜单列表
 export function listMenu(query?: MenuQueryParams): Promise<AjaxResult<SysMenu[]>> {
@@ -47,6 +47,15 @@ export function addMenu(data: SysMenu): Promise<AjaxResult> {
 export function updateMenu(data: SysMenu): Promise<AjaxResult> {
   return request({
     url: '/system/menu',
+    method: 'put',
+    data: data
+  })
+}
+
+// 保存菜单排序
+export function updateMenuSort(data: MenuSortParams): Promise<AjaxResult> {
+  return request({
+    url: '/system/menu/updateSort',
     method: 'put',
     data: data
   })

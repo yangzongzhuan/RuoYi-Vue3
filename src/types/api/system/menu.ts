@@ -40,6 +40,14 @@ export interface SysMenu extends BaseEntity {
   visible?: '0' | '1';
   /** 状态（0正常 1停用） */
   status?: '0' | '1';
+  /** 子菜单 */
+  children?: SysMenu[];
+}
+
+/** 保存菜单排序参数 */
+export interface MenuSortParams {
+  menuIds: string
+  orderNums: string
 }
 
 export interface RoleMenuTreeselectResult extends AjaxResult {

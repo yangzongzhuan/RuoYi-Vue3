@@ -37,6 +37,15 @@
             >新增</el-button>
          </el-col>
          <el-col :span="1.5">
+            <el-button
+               type="warning"
+               plain
+               icon="Check"
+               @click="handleSaveSort"
+               v-hasPermi="['system:menu:edit']"
+            >保存排序</el-button>
+         </el-col>
+         <el-col :span="1.5">
             <el-button 
                type="info"
                plain
@@ -61,7 +70,11 @@
                <svg-icon :icon-class="scope.row.icon" />
             </template>
          </el-table-column>
-         <el-table-column prop="orderNum" label="排序" width="60"></el-table-column>
+         <el-table-column prop="orderNum" label="排序" width="200">
+            <template #default="scope">
+               <el-input-number v-model="scope.row.orderNum" controls-position="right" :min="0" style="width: 88px" />
+            </template>
+         </el-table-column>
          <el-table-column prop="perms" label="权限标识" :show-overflow-tooltip="true"></el-table-column>
          <el-table-column prop="component" label="组件路径" :show-overflow-tooltip="true"></el-table-column>
          <el-table-column prop="status" label="状态" width="80">
@@ -289,7 +302,7 @@
 </template>
 
 <script setup lang="ts" name="Menu">
-import { addMenu, delMenu, getMenu, listMenu, updateMenu } from "@/api/system/menu"
+import { addMenu, delMenu, getMenu, listMenu, updateMenu, updateMenuSort, } from "@/api/system/menu"
 import SvgIcon from "@/components/SvgIcon/index.vue"
 import IconSelect from "@/components/IconSelect/index.vue"
 import type { SysMenu, MenuQueryParams } from '@/types/api/system/menu'
@@ -306,6 +319,7 @@ const menuOptions = ref<any[]>([])
 const isExpandAll = ref<boolean>(false)
 const refreshTable = ref<boolean>(true)
 const iconSelectRef = ref<any | null>(null)
+const originalOrders = ref<Record<number, number>>({})
 
 const data = reactive({
   form: {} as SysMenu,
@@ -327,6 +341,7 @@ function getList() {
   loading.value = true
   listMenu(queryParams.value).then(response => {
     menuList.value = proxy.handleTree(response.data, "menuId")
+    recordOriginalOrders(menuList.value)
     loading.value = false
   })
 }
@@ -436,6 +451,42 @@ function submitForm() {
         })
       }
     }
+  })
+}
+
+/** 递归记录原始排序 */
+function recordOriginalOrders(list: SysMenu[]) {
+  list.forEach(item => {
+    originalOrders.value[item.menuId] = item.orderNum
+    if (item.children && item.children.length) {
+      recordOriginalOrders(item.children)
+    }
+  })
+}
+
+/** 保存排序 */
+function handleSaveSort() {
+  const changedMenuIds: number[] = []
+  const changedOrderNums: number[] = []
+  const collectChanged = (list: SysMenu[]) => {
+    list.forEach(item => {
+      if (String(originalOrders.value[item.menuId!]) !== String(item.orderNum)) {
+        changedMenuIds.push(item.menuId!)
+        changedOrderNums.push(item.orderNum!)
+      }
+      if (item.children && item.children.length) {
+        collectChanged(item.children)
+      }
+    })
+  }
+  collectChanged(menuList.value)
+  if (changedMenuIds.length === 0) {
+   proxy.$modal.msgWarning("未检测到排序修改")
+    return
+  }
+  updateMenuSort({ menuIds: changedMenuIds.join(","), orderNums: changedOrderNums.join(",") }).then(() => {
+   proxy.$modal.msgSuccess("排序保存成功")
+    recordOriginalOrders(menuList.value)
   })
 }
 
