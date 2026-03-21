@@ -106,11 +106,9 @@
          <el-table-column label="字典编号" align="center" prop="dictId" />
          <el-table-column label="字典名称" align="center" prop="dictName" :show-overflow-tooltip="true"/>
          <el-table-column label="字典类型" align="center" :show-overflow-tooltip="true">
-         <template #default="scope">
-            <a class="link-type" style="cursor:pointer" @click="handleViewData(scope.row)">
-               {{ scope.row.dictType }}
-            </a>
-         </template>
+            <template #default="scope">
+               <a class="link-type" style="cursor:pointer" @click="handleViewData(scope.row)">{{ scope.row.dictType }}</a>
+            </template>
          </el-table-column>
          <el-table-column label="状态" align="center" prop="status">
             <template #default="scope">
@@ -126,7 +124,7 @@
          <el-table-column label="操作" align="center" width="280" class-name="small-padding fixed-width">
             <template #default="scope">
                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:dict:edit']">修改</el-button>
-               <el-button link type="primary" icon="Fold" @click="handleDataList(scope.row)" v-hasPermi="['system:dict:edit']">列表</el-button>
+               <el-button link type="primary" icon="Operation" @click="handleDataList(scope.row)" v-hasPermi="['system:dict:edit']">列表</el-button>
                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:dict:remove']">删除</el-button>
             </template>
          </el-table-column>
