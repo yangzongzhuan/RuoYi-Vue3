@@ -167,7 +167,7 @@ const title = ref("")
 const deptOptions = ref([])
 const isExpandAll = ref(true)
 const refreshTable = ref(true)
-const originalOrders = ref({});
+const originalOrders = ref({})
 
 const data = reactive({
   form: {},

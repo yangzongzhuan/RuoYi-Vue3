@@ -51,6 +51,15 @@ export function updateMenu(data) {
   })
 }
 
+// 保存菜单排序
+export function updateMenuSort(data) {
+  return request({
+    url: '/system/menu/updateSort',
+    method: 'put',
+    data: data
+  })
+}
+
 // 删除菜单
 export function delMenu(menuId) {
   return request({
