@@ -117,6 +117,7 @@ const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
 const tagsIcon = computed(() => useSettingsStore().tagsIcon)
+const tagsViewPersist = computed(() => useSettingsStore().tagsViewPersist)
 
 // 下拉菜单针对当前激活的 tag
 const selectedDropdownTag = computed(() => visitedViews.value.find((v: any) => isActive(v)) || {})
@@ -207,12 +208,15 @@ function filterAffixTags(routes: any[], basePath = ''): any[] {
 }
 
 function initTags(): void {
+  if (tagsViewPersist) {
+    useTagsViewStore().loadPersistedViews()
+  }
   const res = filterAffixTags(routes.value)
   affixTags.value = res
   for (const tag of res) {
     // Must have tag name
     if (tag.name) {
-       useTagsViewStore().addVisitedView(tag)
+       useTagsViewStore().addAffixView(tag)
     }
   }
 }

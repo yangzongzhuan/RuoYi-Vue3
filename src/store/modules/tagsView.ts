@@ -1,3 +1,26 @@
+import cache from '@/plugins/cache'
+import useSettingsStore from '@/store/modules/settings'
+
+const PERSIST_KEY = 'tags-view-visited'
+
+function isPersistEnabled() {
+  return useSettingsStore().tagsViewPersist
+}
+
+function saveVisitedViews(views: any) {
+  if (!isPersistEnabled()) return
+  const toSave = views.filter((v: any) => !(v.meta && v.meta.affix)).map((v: any) => ({ path: v.path, fullPath: v.fullPath, name: v.name, title: v.title, query: v.query, meta: v.meta }))
+  cache.local.setJSON(PERSIST_KEY, toSave)
+}
+
+function loadVisitedViews() {
+  return cache.local.getJSON(PERSIST_KEY) || []
+}
+
+function clearVisitedViews() {
+  cache.local.remove(PERSIST_KEY)
+}
+
 interface ViewMeta {
   title?: string
   noCache?: boolean
@@ -44,6 +67,16 @@ const useTagsViewStore = defineStore(
             title: view.meta?.title || 'no-name'
           })
         )
+        saveVisitedViews(this.visitedViews)
+      },
+
+      addAffixView(view: any) {
+        if (this.visitedViews.some((v: any) => v.path === view.path)) return
+        this.visitedViews.unshift(
+          Object.assign({}, view, {
+            title: view.meta.title || 'no-name'
+          })
+        )
       },
 
       addCachedView(view: any) {
@@ -73,6 +106,7 @@ const useTagsViewStore = defineStore(
             }
           }
           this.iframeViews = this.iframeViews.filter((item: any) => item.path !== view.path)
+          saveVisitedViews(this.visitedViews)
           resolve([...this.visitedViews])
         })
       },
@@ -109,6 +143,7 @@ const useTagsViewStore = defineStore(
             return v.meta?.affix || v.path === view.path
           })
           this.iframeViews = this.iframeViews.filter((item: any) => item.path === view.path)
+          saveVisitedViews(this.visitedViews)
           resolve([...this.visitedViews])
         })
       },
@@ -141,6 +176,7 @@ const useTagsViewStore = defineStore(
           const affixTags = this.visitedViews.filter((tag: any) => tag.meta?.affix)
           this.visitedViews = affixTags
           this.iframeViews = []
+          clearVisitedViews()
           resolve([...this.visitedViews])
         })
       },
@@ -183,6 +219,7 @@ const useTagsViewStore = defineStore(
             }
             return false
           })
+          saveVisitedViews(this.visitedViews)
           resolve([...this.visitedViews])
         })
       },
@@ -209,7 +246,15 @@ const useTagsViewStore = defineStore(
             }
             return false
           })
+          saveVisitedViews(this.visitedViews)
           resolve([...this.visitedViews])
+        })
+      },
+      // 恢复持久化的 tags
+      loadPersistedViews() {
+        const views = loadVisitedViews()
+        views.forEach((view: any) => {
+          this.addVisitedView(view)
         })
       }
     }

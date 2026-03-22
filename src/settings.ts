@@ -23,7 +23,12 @@ export default {
    * 是否显示 tagsView
    */
   tagsView: true,
-  
+
+  /**
+   * 持久化标签页
+   */
+  tagsViewPersist: false,
+
   /**
    * 显示页签图标
    */
