@@ -64,6 +64,13 @@
     </div>
 
     <div class="drawer-item">
+      <span>持久化标签页</span>
+      <span class="comp-style">
+        <el-switch v-model="settingsStore.tagsViewPersist" :disabled="!settingsStore.tagsView" @change="tagsViewPersistChange" class="drawer-switch" />
+      </span>
+    </div>
+
+    <div class="drawer-item">
       <span>显示页签图标</span>
       <span class="comp-style">
         <el-switch v-model="settingsStore.tagsIcon" :disabled="!settingsStore.tagsView" class="drawer-switch" />
@@ -120,12 +127,18 @@ const showSettings = ref(false)
 const navType = ref(settingsStore.navType)
 const theme = ref(settingsStore.theme)
 const sideTheme = ref(settingsStore.sideTheme)
+const tagsViewPersist = ref(settingsStore.tagsViewPersist)
 const storeSettings = computed(() => settingsStore)
 const predefineColors = ref(["#409EFF", "#ff4500", "#ff8c00", "#ffd700", "#90ee90", "#00ced1", "#1e90ff", "#c71585"])
 
 /** 是否需要dynamicTitle */
 function dynamicTitleChange() {
   useSettingsStore().setTitle(useSettingsStore().title)
+}
+
+function tagsViewPersistChange(val) {
+  settingsStore.tagsViewPersist = val
+  tagsViewPersist.value = val
 }
 
 function themeChange(val) {
@@ -164,10 +177,14 @@ watch(() => navType, val => {
 
 function saveSetting() {
   proxy.$modal.loading("正在保存到本地，请稍候...")
+  if (!tagsViewPersist.value) {
+    proxy.$cache.local.remove('tags-view-visited')
+  }
   let layoutSetting = {
     "navType": storeSettings.value.navType,
     "tagsView": storeSettings.value.tagsView,
     "tagsIcon": storeSettings.value.tagsIcon,
+    "tagsViewPersist": storeSettings.value.tagsViewPersist,
     "fixedHeader": storeSettings.value.fixedHeader,
     "sidebarLogo": storeSettings.value.sidebarLogo,
     "dynamicTitle": storeSettings.value.dynamicTitle,
@@ -180,6 +197,7 @@ function saveSetting() {
 }
 
 function resetSetting() {
+  proxy.$cache.local.remove('tags-view-visited')
   proxy.$modal.loading("正在清除设置缓存并刷新，请稍候...")
   localStorage.removeItem("layout-setting")
   setTimeout("window.location.reload()", 1000)
