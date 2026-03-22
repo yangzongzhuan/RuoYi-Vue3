@@ -1,6 +1,12 @@
 <template>
   <div id="tags-view-container" class="tags-view-container">
-    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll">
+    <!-- 左切换箭头 -->
+    <span class="tags-nav-btn tags-nav-btn--left" :class="{ disabled: !canScrollLeft }" @click="scrollLeft">
+      <el-icon><arrow-left /></el-icon>
+    </span>
+
+    <!-- 标签滚动区 -->
+    <scroll-pane ref="scrollPaneRef" class="tags-view-wrapper" @scroll="handleScroll" @update-arrows="updateArrowState">
       <router-link
         v-for="tag in visitedViews"
         :key="tag.path"
@@ -19,6 +25,50 @@
         </span>
       </router-link>
     </scroll-pane>
+
+    <!-- 右切换箭头 -->
+    <span class="tags-nav-btn tags-nav-btn--right" :class="{ disabled: !canScrollRight }" @click="scrollRight">
+      <el-icon><arrow-right /></el-icon>
+    </span>
+
+    <!-- 下拉操作菜单 -->
+    <el-dropdown class="tags-action-dropdown" trigger="click" placement="bottom-end" @command="handleDropdownCommand">
+      <span class="tags-action-btn">
+        <el-icon><arrow-down /></el-icon>
+      </span>
+      <template #dropdown>
+        <el-dropdown-menu class="tags-dropdown-menu">
+          <el-dropdown-item command="refresh">
+            <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
+          </el-dropdown-item>
+          <el-dropdown-item v-if="!isAffix(selectedDropdownTag)" command="close">
+            <close style="width: 1em; height: 1em;" /> 关闭当前
+          </el-dropdown-item>
+          <el-dropdown-item command="closeOthers">
+            <circle-close style="width: 1em; height: 1em;" /> 关闭其他
+          </el-dropdown-item>
+          <el-dropdown-item command="closeLeft" :disabled="isFirstView()">
+            <back style="width: 1em; height: 1em;" /> 关闭左侧
+          </el-dropdown-item>
+          <el-dropdown-item command="closeRight" :disabled="isLastView()">
+            <right style="width: 1em; height: 1em;" /> 关闭右侧
+          </el-dropdown-item>
+          <el-dropdown-item command="closeAll" divided>
+            <circle-close style="width: 1em; height: 1em;" /> 全部关闭
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+
+    <!-- 全屏按钮 -->
+    <span class="tags-action-btn tags-fullscreen-btn" :title="isFullscreen ? '退出全屏' : '全屏'" @click="toggleFullscreen">
+      <el-icon>
+        <full-screen v-if="!isFullscreen" />
+        <aim v-else />
+      </el-icon>
+    </span>
+
+    <!-- 右键上下文菜单 -->
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
       <li @click="refreshSelectedTag(selectedTag)">
         <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
@@ -55,6 +105,9 @@ const left = ref<number>(0)
 const selectedTag = ref<any>({})
 const affixTags = ref<any[]>([])
 const scrollPaneRef = ref<any>(null)
+const canScrollLeft = ref<boolean>(false)
+const canScrollRight = ref<boolean>(false)
+const isFullscreen = ref<boolean>(false)
 
 const { proxy } = getCurrentInstance()
 const route = useRoute()
@@ -64,6 +117,9 @@ const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
 const tagsIcon = computed(() => useSettingsStore().tagsIcon)
+
+// 下拉菜单针对当前激活的 tag
+const selectedDropdownTag = computed(() => visitedViews.value.find((v: any) => isActive(v)) || {})
 
 watch(route, () => {
   addTags()
@@ -78,9 +134,20 @@ watch(visible, (value: boolean) => {
   }
 })
 
+watch(visitedViews, () => {
+  nextTick(() => updateArrowState())
+})
+
 onMounted(() => {
   initTags()
   addTags()
+  window.addEventListener('resize', updateArrowState)
+  document.addEventListener('fullscreenchange', onFullscreenChange)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('resize', updateArrowState)
+  document.removeEventListener('fullscreenchange', onFullscreenChange)
 })
 
 function isActive(r: any): boolean {
@@ -101,7 +168,8 @@ function isAffix(tag: any): boolean {
 
 function isFirstView(): boolean {
   try {
-    return selectedTag.value.fullPath === '/index' || selectedTag.value.fullPath === visitedViews.value[1].fullPath
+    const tag = selectedTag.value && selectedTag.value.fullPath ? selectedTag.value : selectedDropdownTag.value
+    return tag.fullPath === '/index' || tag.fullPath === visitedViews.value[1].fullPath
   } catch (err) {
     return false
   }
@@ -109,7 +177,8 @@ function isFirstView(): boolean {
 
 function isLastView(): boolean {
   try {
-    return selectedTag.value.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
+    const tag = selectedTag.value && selectedTag.value.fullPath ? selectedTag.value : selectedDropdownTag.value
+    return tag.fullPath === visitedViews.value[visitedViews.value.length - 1].fullPath
   } catch (err) {
     return false
   }
@@ -169,6 +238,51 @@ function moveToCurrentTag(): void {
   })
 }
 
+function scrollLeft(): void {
+  if (!canScrollLeft.value) return
+  scrollPaneRef.value?.scrollToStart()
+}
+
+function scrollRight(): void {
+  if (!canScrollRight.value) return
+  scrollPaneRef.value?.scrollToEnd()
+}
+
+function updateArrowState(): void {
+  nextTick(() => {
+    if (scrollPaneRef.value) {
+      const state = scrollPaneRef.value.getScrollState()
+      canScrollLeft.value = state.canLeft
+      canScrollRight.value = state.canRight
+    }
+  })
+}
+
+function toggleFullscreen(): void {
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen()
+  } else {
+    document.exitFullscreen()
+  }
+}
+
+function onFullscreenChange(): void {
+  isFullscreen.value = !!document.fullscreenElement
+}
+
+function handleDropdownCommand(command: string): void {
+  const tag = selectedDropdownTag.value
+  selectedTag.value = tag
+  switch (command) {
+    case 'refresh':     refreshSelectedTag(tag); break
+    case 'close':       closeSelectedTag(tag); break
+    case 'closeOthers': closeOthersTags(); break
+    case 'closeLeft':   closeLeftTags(); break
+    case 'closeRight':  closeRightTags(); break
+    case 'closeAll':    closeAllTags(tag); break
+  }
+}
+
 function refreshSelectedTag(view: any): void {
   proxy.$tab.refreshPage(view)
   if (route.meta.link) {
@@ -221,10 +335,7 @@ function toLastView(visitedViews: any[], view?: any): void {
   if (latestView) {
     router.push(latestView.fullPath)
   } else {
-    // now the default is to redirect to the home page if there is no tags-view,
-    // you can adjust it according to your needs.
     if (view && view.name === 'Dashboard') {
-      // to reload home page
       router.replace({ path: '/redirect' + view.fullPath })
     } else {
       router.push('/')
@@ -233,18 +344,7 @@ function toLastView(visitedViews: any[], view?: any): void {
 }
 
 function openMenu(tag: any, e: MouseEvent): void {
-  const menuMinWidth = 105
-  const offsetLeft = proxy.$el.getBoundingClientRect().left // container margin left
-  const offsetWidth = proxy.$el.offsetWidth // container width
-  const maxLeft = offsetWidth - menuMinWidth // left boundary
-  const l = e.clientX - offsetLeft + 15 // 15: margin right
-
-  if (l > maxLeft) {
-    left.value = maxLeft
-  } else {
-    left.value = l
-  }
-
+  left.value = e.clientX
   top.value = e.clientY
   visible.value = true
   selectedTag.value = tag
@@ -256,6 +356,7 @@ function closeMenu(): void {
 
 function handleScroll(): void {
   closeMenu()
+  updateArrowState()
 }
 </script>
 
@@ -265,9 +366,49 @@ function handleScroll(): void {
   width: 100%;
   background: var(--tags-bg, #fff);
   border-bottom: 1px solid var(--tags-item-border, #d8dce5);
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .12), 0 0 3px 0 rgba(0, 0, 0, .04);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+
+  $btn-width: 28px;
+  $btn-color: #71717a;
+  $btn-hover-bg: #f0f2f5;
+  $btn-hover-color: #303133;
+  $btn-disabled-color: #c0c4cc;
+  $divider: 1px solid var(--tags-item-border, #d8dce5);
+
+  .tags-nav-btn {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $btn-width;
+    height: 34px;
+    cursor: pointer;
+    color: $btn-color;
+    font-size: 13px;
+    user-select: none;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover:not(.disabled) {
+      background: $btn-hover-bg;
+      color: $btn-hover-color;
+    }
+
+    &.disabled {
+      color: $btn-disabled-color;
+      cursor: not-allowed;
+    }
+
+    &--left  { border-right: $divider; }
+    &--right { border-left: $divider; }
+  }
 
   .tags-view-wrapper {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+
     .tags-view-item {
       display: inline-block;
       position: relative;
@@ -280,15 +421,9 @@ function handleScroll(): void {
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
-      margin-top: 4px;
 
-      &:first-of-type {
-        margin-left: 15px;
-      }
-
-      &:last-of-type {
-        margin-right: 15px;
-      }
+      &:first-of-type { margin-left: 6px; }
+      &:last-of-type  { margin-right: 15px; }
 
       &.active {
         background-color: #42b983;
@@ -313,11 +448,40 @@ function handleScroll(): void {
     content: none !important;
   }
 
+  .tags-action-dropdown {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+
+  .tags-action-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: $btn-width;
+    height: 34px;
+    cursor: pointer;
+    color: $btn-color;
+    font-size: 13px;
+    border-left: $divider;
+    user-select: none;
+    transition: background 0.15s, color 0.15s;
+
+    &:hover {
+      background: $btn-hover-bg;
+      color: $btn-hover-color;
+    }
+  }
+
+  .tags-fullscreen-btn {
+    border-left: $divider;
+  }
+
   .contextmenu {
     margin: 0;
     background: var(--el-bg-color-overlay, #fff);
     z-index: 3000;
-    position: absolute;
+    position: fixed;
     list-style-type: none;
     padding: 5px 0;
     border-radius: 4px;
@@ -341,7 +505,6 @@ function handleScroll(): void {
 </style>
 
 <style lang="scss">
-//reset element css of el-icon-close
 .tags-view-wrapper {
   .tags-view-item {
     .el-icon-close {
