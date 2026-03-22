@@ -208,7 +208,7 @@ function filterAffixTags(routes, basePath = '') {
 }
 
 function initTags() {
-  if (tagsViewPersist) {
+  if (tagsViewPersist.value) {
     useTagsViewStore().loadPersistedViews()
   }
   const res = filterAffixTags(routes.value)
