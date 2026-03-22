@@ -258,16 +258,24 @@ function updateArrowState(): void {
   })
 }
 
-function toggleFullscreen(): void {
+function toggleFullscreen() {
   if (!document.fullscreenElement) {
-    document.documentElement.requestFullscreen()
+    const appMain = document.querySelector('.app-main') as HTMLElement
+    if (appMain) {
+      appMain.requestFullscreen()
+    }
   } else {
     document.exitFullscreen()
   }
 }
 
-function onFullscreenChange(): void {
+function onFullscreenChange() {
   isFullscreen.value = !!document.fullscreenElement
+  const appMain = document.querySelector('.app-main') as HTMLElement
+  if (appMain) {
+    appMain.style.backgroundColor = document.fullscreenElement ? '#fff' : ''
+    appMain.style.overflowY = document.fullscreenElement ? 'auto' : ''
+  }
 }
 
 function handleDropdownCommand(command: string): void {
