@@ -129,7 +129,6 @@ const useTagsViewStore = defineStore(
           } else {
             this.cachedViews = []
           }
-          saveVisitedViews(this.visitedViews)
           resolve([...this.cachedViews])
         })
       },

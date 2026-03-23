@@ -38,56 +38,29 @@
       </span>
       <template #dropdown>
         <el-dropdown-menu class="tags-dropdown-menu">
-          <el-dropdown-item command="refresh">
-            <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
-          </el-dropdown-item>
-          <el-dropdown-item v-if="!isAffix(selectedDropdownTag)" command="close">
-            <close style="width: 1em; height: 1em;" /> 关闭当前
-          </el-dropdown-item>
-          <el-dropdown-item command="closeOthers">
-            <circle-close style="width: 1em; height: 1em;" /> 关闭其他
-          </el-dropdown-item>
-          <el-dropdown-item command="closeLeft" :disabled="isFirstView()">
-            <back style="width: 1em; height: 1em;" /> 关闭左侧
-          </el-dropdown-item>
-          <el-dropdown-item command="closeRight" :disabled="isLastView()">
-            <right style="width: 1em; height: 1em;" /> 关闭右侧
-          </el-dropdown-item>
-          <el-dropdown-item command="closeAll" divided>
-            <circle-close style="width: 1em; height: 1em;" /> 全部关闭
-          </el-dropdown-item>
+          <el-dropdown-item v-if="!isAffix(selectedDropdownTag)" command="close"><close style="width: 1em; height: 1em;" />关闭当前</el-dropdown-item>
+          <el-dropdown-item command="closeOthers"><circle-close style="width: 1em; height: 1em;" />关闭其他</el-dropdown-item>
+          <el-dropdown-item command="closeLeft" :disabled="isFirstView()"><back style="width: 1em; height: 1em;" />关闭左侧</el-dropdown-item>
+          <el-dropdown-item command="closeRight" :disabled="isLastView()"><right style="width: 1em; height: 1em;" />关闭右侧</el-dropdown-item>
+          <el-dropdown-item command="closeAll"><circle-close style="width: 1em; height: 1em;" />全部关闭</el-dropdown-item>
+          <el-dropdown-item command="fullscreen" divided><full-screen style="width: 1em; height: 1em;" />全屏显示</el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
 
-    <!-- 全屏按钮 -->
-    <span class="tags-action-btn tags-fullscreen-btn" :title="isFullscreen ? '退出全屏' : '全屏'" @click="toggleFullscreen">
-      <el-icon>
-        <full-screen v-if="!isFullscreen" />
-        <aim v-else />
-      </el-icon>
+    <!-- 刷新按钮 -->
+    <span class="tags-action-btn tags-refresh-btn" title="刷新页面" @click="refreshSelectedTag(selectedDropdownTag)">
+      <el-icon><refresh-right/></el-icon> 刷新
     </span>
 
     <!-- 右键上下文菜单 -->
     <ul v-show="visible" :style="{ left: left + 'px', top: top + 'px' }" class="contextmenu">
-      <li @click="refreshSelectedTag(selectedTag)">
-        <refresh-right style="width: 1em; height: 1em;" /> 刷新页面
-      </li>
-      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)">
-        <close style="width: 1em; height: 1em;" /> 关闭当前
-      </li>
-      <li @click="closeOthersTags">
-        <circle-close style="width: 1em; height: 1em;" /> 关闭其他
-      </li>
-      <li v-if="!isFirstView()" @click="closeLeftTags">
-        <back style="width: 1em; height: 1em;" /> 关闭左侧
-      </li>
-      <li v-if="!isLastView()" @click="closeRightTags">
-        <right style="width: 1em; height: 1em;" /> 关闭右侧
-      </li>
-      <li @click="closeAllTags(selectedTag)">
-        <circle-close style="width: 1em; height: 1em;" /> 全部关闭
-      </li>
+      <li @click="refreshSelectedTag(selectedTag)"><refresh-right style="width: 1em; height: 1em;" />刷新页面</li>
+      <li v-if="!isAffix(selectedTag)" @click="closeSelectedTag(selectedTag)"><close style="width: 1em; height: 1em;" />关闭当前</li>
+      <li @click="closeOthersTags"><circle-close style="width: 1em; height: 1em;" />关闭其他</li>
+      <li v-if="!isFirstView()" @click="closeLeftTags"><back style="width: 1em; height: 1em;" />关闭左侧</li>
+      <li v-if="!isLastView()" @click="closeRightTags"><right style="width: 1em; height: 1em;" />关闭右侧</li>
+      <li @click="closeAllTags(selectedTag)"><circle-close style="width: 1em; height: 1em;" />全部关闭</li>
     </ul>
   </div>
 </template>
@@ -285,6 +258,7 @@ function handleDropdownCommand(command) {
   selectedTag.value = tag
   switch (command) {
     case 'refresh':     refreshSelectedTag(tag); break
+    case 'fullscreen':  toggleFullscreen(); break
     case 'close':       closeSelectedTag(tag); break
     case 'closeOthers': closeOthersTags(); break
     case 'closeLeft':   closeLeftTags(); break
@@ -431,6 +405,7 @@ function handleScroll() {
       padding: 0 8px;
       font-size: 12px;
       margin-left: 5px;
+      border-radius: 3px;
 
       &:first-of-type { margin-left: 6px; }
       &:last-of-type  { margin-right: 15px; }
@@ -483,8 +458,8 @@ function handleScroll() {
     }
   }
 
-  .tags-fullscreen-btn {
-    border-left: $divider;
+  .tags-refresh-btn {
+    width: 60px;
   }
 
   .contextmenu {
