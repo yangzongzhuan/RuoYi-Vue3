@@ -85,6 +85,7 @@ const isFullscreen = ref<boolean>(false)
 const { proxy } = getCurrentInstance()
 const route = useRoute()
 const router = useRouter()
+const settingsStore = useSettingsStore()
 
 const visitedViews = computed(() => useTagsViewStore().visitedViews)
 const routes = computed(() => usePermissionStore().routes)
@@ -249,7 +250,7 @@ function toggleFullscreen() {
 function onFullscreenChange() {
   isFullscreen.value = !!document.fullscreenElement
   const appMain = document.querySelector('.app-main') as HTMLElement
-  if (appMain) {
+  if (appMain && !settingsStore.isDark) {
     appMain.style.backgroundColor = document.fullscreenElement ? '#fff' : ''
     appMain.style.overflowY = document.fullscreenElement ? 'auto' : ''
   }
