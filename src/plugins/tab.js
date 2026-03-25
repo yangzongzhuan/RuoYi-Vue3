@@ -5,6 +5,10 @@ export default {
   // 刷新当前tab页签
   refreshPage(obj) {
     const { path, query, matched } = router.currentRoute.value
+    // 防止在重定向过程中重复刷新
+    if (path.startsWith('/redirect/')) {
+      return Promise.resolve()
+    }
     if (obj === undefined) {
       matched.forEach((m) => {
         if (m.components && m.components.default && m.components.default.name) {
