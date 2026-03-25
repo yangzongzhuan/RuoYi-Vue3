@@ -86,7 +86,7 @@
     .sub-menu-title-noDropdown,
     .el-sub-menu__title {
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgba(0, 0, 0, 0.06);
       }
     }
 
@@ -99,7 +99,7 @@
       min-width: vars.$base-sidebar-width !important;
 
       &:hover {
-        background-color: rgba(0, 0, 0, 0.06) !important;
+        background-color: rgba(0, 0, 0, 0.06);
       }
     }
 
@@ -188,16 +188,16 @@
       .el-menu-item:not(.is-active):hover,
       .submenu-title-noDropdown:hover,
       .el-sub-menu__title:hover {
-        background-color: #f5f7fa !important;
+        background-color: #f5f7fa;
         color: rgba(0, 0, 0, 0.85) !important;
       }
 
       .nest-menu .el-sub-menu > .el-sub-menu__title,
       .el-sub-menu .el-menu-item {
-        background-color: #fafafa !important;
+        background-color: #fafafa;
 
         &:hover {
-          background-color: #f0f5ff !important;
+          background-color: #f0f5ff;
         }
       }
     }
