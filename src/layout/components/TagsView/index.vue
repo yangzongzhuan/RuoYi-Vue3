@@ -43,7 +43,10 @@
           <el-dropdown-item command="closeLeft" :disabled="isFirstView()"><back style="width: 1em; height: 1em;" />关闭左侧</el-dropdown-item>
           <el-dropdown-item command="closeRight" :disabled="isLastView()"><right style="width: 1em; height: 1em;" />关闭右侧</el-dropdown-item>
           <el-dropdown-item command="closeAll"><circle-close style="width: 1em; height: 1em;" />全部关闭</el-dropdown-item>
-          <el-dropdown-item command="fullscreen" divided><full-screen style="width: 1em; height: 1em;" />全屏显示</el-dropdown-item>
+          <el-dropdown-item command="fullscreen" divided>
+            <template v-if="!isFullscreen"><full-screen style="width: 1em; height: 1em;" />全屏显示</template>
+            <template v-else><close style="width: 1em; height: 1em;" />退出全屏</template>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </template>
     </el-dropdown>
@@ -81,6 +84,7 @@ const scrollPaneRef = ref(null)
 const canScrollLeft = ref(false)
 const canScrollRight = ref(false)
 const isFullscreen = ref(false)
+const hiddenElements = ref([])
 
 const { proxy } = getCurrentInstance()
 const route = useRoute()
@@ -117,13 +121,20 @@ onMounted(() => {
   initTags()
   addTags()
   window.addEventListener('resize', updateArrowState)
-  document.addEventListener('fullscreenchange', onFullscreenChange)
+  window.addEventListener('keydown', handleKeyDown)
 })
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', updateArrowState)
-  document.removeEventListener('fullscreenchange', onFullscreenChange)
+  window.removeEventListener('keydown', handleKeyDown)
 })
+
+function handleKeyDown(event) {
+  // 当按下Esc键且处于全屏状态时，退出全屏
+  if (event.key === 'Escape' && isFullscreen.value) {
+    toggleFullscreen()
+  }
+}
 
 function isActive(r) {
   return r.path === route.path
@@ -235,22 +246,34 @@ function updateArrowState() {
 }
 
 function toggleFullscreen() {
-  if (!document.fullscreenElement) {
-    const appMain = document.querySelector('.app-main')
-    if (appMain) {
-      appMain.requestFullscreen()
-    }
-  } else {
-    document.exitFullscreen()
-  }
-}
+  const mainContainer = document.querySelector('.main-container')
+  const navbar = document.querySelector('.navbar')
+  const sidebar = document.querySelector('.sidebar-container')
+  if (!mainContainer) return
 
-function onFullscreenChange() {
-  isFullscreen.value = !!document.fullscreenElement
-  const appMain = document.querySelector('.app-main')
-  if (appMain && !settingsStore.isDark) {
-    appMain.style.backgroundColor = document.fullscreenElement ? '#fff' : ''
-    appMain.style.overflowY = document.fullscreenElement ? 'auto' : ''
+  if (!isFullscreen.value) {
+    mainContainer.classList.add('fullscreen-mode')
+    document.body.style.overflow = 'hidden'
+    const elementsToHide = [{ el: navbar, originalDisplay: navbar?.style.display || '' }, { el: sidebar, originalDisplay: sidebar?.style.display || '' }]
+    elementsToHide.forEach(item => {
+      if (item.el && item.el.style.display !== 'none') {
+        item.originalDisplay = item.el.style.display
+        item.el.style.display = 'none'
+        hiddenElements.value.push(item)
+      }
+    })
+    isFullscreen.value = true
+  } else {
+    mainContainer.classList.remove('fullscreen-mode')
+    document.body.style.overflow = ''
+    hiddenElements.value.forEach(item => {
+      if (item.el) {
+        item.el.style.display = item.originalDisplay
+      }
+    })
+    hiddenElements.value = []
+    document.querySelector('.tags-action-btn').blur()
+    isFullscreen.value = false
   }
 }
 
@@ -516,5 +539,42 @@ function handleScroll() {
       }
     }
   }
+}
+
+/* 页签全屏模式样式 */
+.main-container.fullscreen-mode {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+.main-container.fullscreen-mode .fixed-header {
+  display: block !important;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100% !important;
+  z-index: 1000;
+}
+
+.main-container.fullscreen-mode .fixed-header .navbar {
+  display: none !important;
+}
+
+.main-container.fullscreen-mode .app-main {
+  position: fixed;
+  top: 34px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: 0 !important;
+  padding: 0 !important;
+  height: calc(100vh - 34px) !important;
+  min-height: calc(100vh - 34px) !important;
+  overflow: auto;
 }
 </style>
