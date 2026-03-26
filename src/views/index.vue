@@ -114,6 +114,41 @@
             </div>
           </template>
           <el-collapse accordion>
+            <el-collapse-item title="v3.9.2 - 2026-03-26">
+              <ol>
+                <li>新增锁定屏幕功能</li>
+                <li>首页新增通知公告消息提醒</li>
+                <li>添加持久化标签页开关功能</li>
+                <li>菜单搜索支持文本高亮&数量提示</li>
+                <li>添加菜单路由地址和名称的校验规则</li>
+                <li>字典类型列表新增抽屉效果详细信息</li>
+                <li>升级axios到最新版本0.30.3</li>
+                <li>使用SpringDoc代替Swagger</li>
+                <li>升级spring-boot到最新版本4.0.3</li>
+                <li>升级yauaa到最新版本8.1.0</li>
+                <li>升级oshi到最新版本6.10.0</li>
+                <li>升级druid到最新版本1.2.28</li>
+                <li>升级fastjson到最新版2.0.61</li>
+                <li>升级pagehelper到最新版2.1.1</li>
+                <li>优化操作日志详细页面</li>
+                <li>更新在线IP地址查询url</li>
+                <li>部门管理支持批量保存排序</li>
+                <li>菜单管理支持批量保存排序</li>
+                <li>菜单管理列表新增类型显示</li>
+                <li>代码生成模板支持TypeScript版本</li>
+                <li>优化菜单主题风格显示</li>
+                <li>优化topbar顶部菜单样式</li>
+                <li>优化点击任务名称查看详细</li>
+                <li>优化字典类型属性提醒说明</li>
+                <li>优化防重提交间隔时间可自定义</li>
+                <li>优化页签功能&支持全屏按钮操作</li>
+                <li>优化RightToolbar搜索栏切换动画</li>
+                <li>修复Excel自定义格式样式污染问题</li>
+                <li>优化isAdmin方法统一到SecurityUtils</li>
+                <li>优化定时任务详情页展示&补充执行时间字段</li>
+                <li>其他细节优化</li>
+              </ol>
+            </el-collapse-item>
             <el-collapse-item title="v3.9.1 - 2025-12-18">
               <ol>
                 <li>支持防盗链功能</li>
@@ -1095,7 +1130,7 @@
 </template>
 
 <script setup name="Index">
-const version = ref('3.9.1')
+const version = ref('3.9.2')
 
 function goTarget(url) {
   window.open(url, '__blank')
