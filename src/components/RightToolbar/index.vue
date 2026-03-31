@@ -40,6 +40,8 @@
 </template>
 
 <script setup>
+import cache from '@/plugins/cache'
+
 const props = defineProps({
   /* 是否显示检索条件 */
   showSearch: {
@@ -66,6 +68,11 @@ const props = defineProps({
     type: Number,
     default: 10
   },
+  /* 列显隐状态记忆的 localStorage key（传入则启用记忆，不传则不记忆） */
+  storageKey: {
+    type: String,
+    default: ""
+  }
 })
 
 const emits = defineEmits(['update:showSearch', 'queryTable'])
@@ -142,6 +149,7 @@ function dataChange(data) {
       props.columns[key].visible = !data.includes(index)
     })
   }
+  saveStorage()
 }
 
 // 打开显隐列dialog
@@ -149,6 +157,23 @@ function showColumn() {
   open.value = true
 }
 
+// 如果传入了 storageKey，从 localStorage 恢复列显隐状态
+if (props.storageKey) {
+  try {
+    const saved = cache.local.getJSON(props.storageKey)
+    if (saved && typeof saved === 'object') {
+      if (Array.isArray(props.columns)) {
+        props.columns.forEach((col, index) => {
+          if (saved[index] !== undefined) col.visible = saved[index]
+        })
+      } else {
+        Object.keys(props.columns).forEach(key => {
+          if (saved[key] !== undefined) props.columns[key].visible = saved[key]
+        })
+      }
+    }
+  } catch (e) {}
+}
 if (props.showColumnsType == "transfer") {
   // transfer穿梭显隐列初始默认隐藏列
   if (Array.isArray(props.columns)) {
@@ -173,6 +198,7 @@ function checkboxChange(event, key) {
   } else {
     props.columns[key].visible = event
   }
+  saveStorage()
 }
 
 // 切换全选/反选
@@ -183,6 +209,21 @@ function toggleCheckAll() {
   } else {
     Object.values(props.columns).forEach((col) => (col.visible = newValue))
   }
+  saveStorage()
+}
+
+// 将当前列显隐状态持久化到 localStorage
+function saveStorage() {
+  if (!props.storageKey) return
+  try {
+    let state = {}
+    if (Array.isArray(props.columns)) {
+      props.columns.forEach((col, index) => { state[index] = col.visible })
+    } else {
+      Object.keys(props.columns).forEach(key => { state[key] = props.columns[key].visible })
+    }
+    cache.local.setJSON(props.storageKey, state)
+  } catch (e) {}
 }
 </script>
 
