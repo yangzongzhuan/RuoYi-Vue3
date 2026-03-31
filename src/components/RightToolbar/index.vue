@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+import cache from '@/plugins/cache'
 import type { TableShowColumns } from '@/types/api/common'
 
 const props = defineProps({
@@ -68,6 +69,11 @@ const props = defineProps({
     type: Number,
     default: 10
   },
+  /* 列显隐状态记忆的 localStorage key（传入则启用记忆，不传则不记忆） */
+  storageKey: {
+    type: String,
+    default: ""
+  }
 })
 
 const emits = defineEmits(['update:showSearch', 'queryTable'])
@@ -144,6 +150,7 @@ function dataChange(data: number[]): void {
       props.columns[key].visible = !data.includes(index)
     })
   }
+  saveStorage()
 }
 
 // 打开显隐列dialog
@@ -151,6 +158,23 @@ function showColumn(): void {
   open.value = true
 }
 
+// 如果传入了 storageKey，从 localStorage 恢复列显隐状态
+if (props.storageKey) {
+  try {
+    const saved = cache.local.getJSON(props.storageKey)
+    if (saved && typeof saved === 'object') {
+      if (Array.isArray(props.columns)) {
+        props.columns.forEach((col: TableShowColumns, index: number) => {
+          if (saved[index] !== undefined) col.visible = saved[index]
+        })
+      } else {
+        Object.keys(props.columns).forEach(key => {
+          if (saved[key] !== undefined) props.columns[key].visible = saved[key]
+        })
+      }
+    }
+  } catch (e) {}
+}
 if (props.showColumnsType == "transfer") {
   // transfer穿梭显隐列初始默认隐藏列
   if (Array.isArray(props.columns)) {
@@ -178,6 +202,7 @@ function checkboxChange(event: boolean, key: string): void {
   } else {
     props.columns[key].visible = event
   }
+  saveStorage()
 }
 
 // 切换全选/反选
@@ -188,6 +213,21 @@ function toggleCheckAll(): void {
   } else {
     Object.values(props.columns).forEach((col) => ((col as TableShowColumns).visible = newValue))
   }
+  saveStorage()
+}
+
+// 将当前列显隐状态持久化到 localStorage
+function saveStorage(): void {
+  if (!props.storageKey) return
+  try {
+    let state: { [key: string]: boolean } = {}
+    if (Array.isArray(props.columns)) {
+      props.columns.forEach((col: TableShowColumns, index: number) => { state[index] = col.visible })
+    } else {
+      Object.keys(props.columns).forEach(key => { state[key] = props.columns[key].visible })
+    }
+    cache.local.setJSON(props.storageKey, state)
+  } catch (e) {}
 }
 </script>
 
