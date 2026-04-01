@@ -194,25 +194,36 @@ html.dark {
   }
 
   /* 分割窗格覆盖 */
-  .splitpanes {
-    background-color: var(--splitpanes-bg);
-
-    .splitpanes__pane {
-      background-color: var(--splitpanes-bg);
-      border-color: var(--splitpanes-border);
+  .tree-sidebar-manage-wrap {
+    .tree-sidebar-content {
+      background: var(--splitpanes-bg);
     }
-
-    .splitpanes__splitter {
-      background-color: var(--splitpanes-splitter-bg);
-      border-color: var(--splitpanes-border);
-
-      &:hover {
-        background-color: var(--splitpanes-splitter-hover-bg);
+    .tree-sidebar {
+      border-right: 1px solid var(--splitpanes-splitter-bg);
+      background: var(--splitpanes-bg);
+      .tree-header {
+        background: var(--splitpanes-bg);
+        border-color: var(--splitpanes-border);
       }
-
-      &:before,
-      &:after {
-        background-color: var(--splitpanes-border);
+      .tree-title {
+        color: var(--el-color-primary-light-2);
+      }
+      .collapse-button-container {
+        background: var(--splitpanes-bg) !important;
+      }
+      .collapse-button {
+        &:hover {
+          color: var(--el-color-primary-light-2);
+          background: var(--splitpanes-bg);
+        }
+      }
+      .resize-handle {
+        &:hover {
+          background: var(--splitpanes-splitter-hover-bg);
+        }
+        &.active {
+          background: var(--splitpanes-splitter-hover-bg);
+        }
       }
     }
   }
