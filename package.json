@@ -30,7 +30,6 @@
     "jsencrypt": "3.3.2",
     "nprogress": "0.2.0",
     "pinia": "3.0.4",
-    "splitpanes": "4.0.4",
     "vue": "3.5.26",
     "vue-cropper": "1.1.1",
     "vue-router": "4.6.4",
