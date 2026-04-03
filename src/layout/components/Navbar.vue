@@ -67,7 +67,7 @@
 <script setup lang="ts">
 import { ElMessageBox } from 'element-plus'
 import Breadcrumb from '@/components/Breadcrumb/index.vue'
-import TopNav from '@/components/TopNav/index.vue'
+import TopNav from './TopNav/index.vue'
 import TopBar from './TopBar/index.vue'
 import Logo from './Sidebar/Logo.vue'
 import Hamburger from '@/components/Hamburger/index.vue'
