@@ -386,7 +386,7 @@ function handleScroll() {
   $divider: 1px solid var(--tags-item-border, #d8dce5);
 
   .tags-nav-btn {
-    flex-shrink: 0; 
+    flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -562,7 +562,6 @@ function handleScroll() {
   overflow: hidden;
   margin-left: 0 !important;
   transition: none !important;
-
 }
 
 .main-container.fullscreen-mode .fixed-header {
