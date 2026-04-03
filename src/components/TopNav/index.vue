@@ -171,6 +171,11 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+.topmenu-container.el-menu--horizontal {
+  height: 50px !important;
+  border-bottom: none;
+}
+
 .topmenu-container.el-menu--horizontal > .el-menu-item {
   float: left;
   height: 50px !important;
