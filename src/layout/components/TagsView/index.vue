@@ -18,10 +18,10 @@
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
-        <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon" />
+        <svg-icon v-if="tagsIcon && tag.meta && tag.meta.icon && tag.meta.icon !== '#'" :icon-class="tag.meta.icon" style="margin-right: 3px;" />
         {{ tag.title }}
-        <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)">
-          <close class="el-icon-close" style="width: 1em; height: 1em;vertical-align: middle;" />
+        <span v-if="!isAffix(tag)" @click.prevent.stop="closeSelectedTag(tag)" class="tags-close-btn">
+          <close class="el-icon-close" />
         </span>
       </router-link>
     </scroll-pane>
@@ -389,7 +389,7 @@ function handleScroll(): void {
   $divider: 1px solid var(--tags-item-border, #d8dce5);
 
   .tags-nav-btn {
-    flex-shrink: 0;
+    flex-shrink: 0; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -421,7 +421,8 @@ function handleScroll(): void {
     height: 100%;
 
     .tags-view-item {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
       position: relative;
       cursor: pointer;
       height: 26px;
@@ -433,6 +434,9 @@ function handleScroll(): void {
       font-size: 12px;
       margin-left: 5px;
       border-radius: 3px;
+      text-decoration: none;
+      vertical-align: middle;
+      padding-top: 2px !important;
 
       &:first-of-type { margin-left: 6px; }
       &:last-of-type  { margin-right: 15px; }
@@ -519,26 +523,33 @@ function handleScroll(): void {
 <style lang="scss">
 .tags-view-wrapper {
   .tags-view-item {
-    .el-icon-close {
+    .tags-close-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       width: 16px;
       height: 16px;
-      vertical-align: 2px;
+      margin-left: 4px;
       border-radius: 50%;
-      text-align: center;
-      transition: all .3s cubic-bezier(.645, .045, .355, 1);
-      transform-origin: 100% 50%;
-
-      &:before {
-        transform: scale(.6);
-        display: inline-block;
-        vertical-align: -3px;
+      transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      cursor: pointer;
+      
+      .el-icon-close {
+        width: 1em;
+        height: 1em;
+        vertical-align: 0;
+        line-height: 1;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
       }
-
+      
       &:hover {
         background-color: var(--tags-close-hover, #b4bccc);
-        color: #fff;
-        width: 12px !important;
-        height: 12px !important;
+        
+        .el-icon-close {
+          color: #fff;
+        }
       }
     }
   }
@@ -552,6 +563,9 @@ function handleScroll(): void {
   width: 100vw;
   height: 100vh;
   overflow: hidden;
+  margin-left: 0 !important;
+  transition: none !important;
+
 }
 
 .main-container.fullscreen-mode .fixed-header {
@@ -562,6 +576,7 @@ function handleScroll(): void {
   right: 0;
   width: 100% !important;
   z-index: 1000;
+  transition: none !important;
 }
 
 .main-container.fullscreen-mode .fixed-header .navbar {
