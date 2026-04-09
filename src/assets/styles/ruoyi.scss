@@ -241,6 +241,58 @@
 }
 
 /** 详细卡片样式 */
+.detail-drawer {
+  .el-drawer__body {
+    padding: 0;
+  }
+  .el-drawer__header {
+    margin-bottom: 6px;
+    padding: 8px 12px 6px;
+    font-size: 15px;
+    color: #303133;
+    background: #f8f8f8;
+  }
+  .section-header {
+    font-size: 15px;
+    color: #6379bb;
+    border-bottom: 1px solid #ddd;
+    margin: 12px 0 16px 0;
+    padding-bottom: 8px;
+  }
+  .drawer-content {
+    padding: 0 20px 20px 20px;
+    .info-item {
+      display: flex;
+      align-items: flex-start;
+      padding: 8px 0;
+      min-height: 40px;
+    }
+    .info-label {
+      flex-shrink: 0;
+      width: 200px;
+      color: #606266;
+      font-size: 13px;
+      line-height: 1.6;
+      padding-top: 4px;
+      text-align: right;
+      margin-right: 14px;
+    }
+    .info-value {
+      flex: 1;
+      color: #303133;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 1.6;
+      word-break: break-all;
+      padding-top: 4px;
+      min-height: 1.6em;
+      &.plaintext {
+        border-bottom: 1px dashed #dde1e6;
+      }
+    }
+  }
+}
+
 .detail-wrap { padding: 0 4px; }
 
 .detail-card {
