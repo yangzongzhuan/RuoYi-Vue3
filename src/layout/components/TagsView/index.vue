@@ -251,14 +251,13 @@ function toggleFullscreen() {
   const mainContainer = document.querySelector('.main-container') as HTMLElement | null
   const navbar = document.querySelector('.navbar') as HTMLElement | null
   const sidebar = document.querySelector('.sidebar-container') as HTMLElement | null
-  const tagsActionBtn = document.querySelector<HTMLElement>('.tags-action-btn')
   if (!mainContainer) return
 
   if (!isFullscreen.value) {
     mainContainer.classList.add('fullscreen-mode')
     document.body.style.overflow = 'hidden'
     const elementsToHide = [{ el: navbar, originalDisplay: navbar?.style.display || '' }, { el: sidebar, originalDisplay: sidebar?.style.display || '' }]
-    elementsToHide.forEach((item :any) => {
+    elementsToHide.forEach(item => {
       if (item.el && item.el.style.display !== 'none') {
         item.originalDisplay = item.el.style.display
         item.el.style.display = 'none'
@@ -269,13 +268,14 @@ function toggleFullscreen() {
   } else {
     mainContainer.classList.remove('fullscreen-mode')
     document.body.style.overflow = ''
-    hiddenElements.value.forEach((item :any) => {
+    hiddenElements.value.forEach((item: any) => {
       if (item.el) {
         item.el.style.display = item.originalDisplay
       }
     })
-    hiddenElements.value = ref<any[]>([])
-    tagsActionBtn?.blur()
+    hiddenElements.value = []
+    const tagsBtn = document.querySelector('.tags-action-btn') as HTMLElement | null
+    tagsBtn?.blur()
     isFullscreen.value = false
   }
 }
