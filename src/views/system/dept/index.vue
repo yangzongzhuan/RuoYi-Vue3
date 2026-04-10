@@ -159,7 +159,7 @@ import type { SysDept, DeptQueryParams } from '@/types/api/system/dept'
 import type { TreeSelect } from '@/types/api/common'
 
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
+const { sys_normal_disable } = useDict("sys_normal_disable")
 
 const deptList = ref<any[]>([])
 const open = ref<boolean>(false)

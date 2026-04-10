@@ -127,10 +127,10 @@ const dialogVisible = computed({
   set: (val: boolean) => emit('update:visible', val)
 })
 
-const { sys_oper_type } = proxy.useDict('sys_oper_type')
+const { sys_oper_type } = useDict('sys_oper_type')
 
 const form = computed<SysOperLog>(() => props.row || {})
-const typeLabel = computed<string>(() => proxy.selectDictLabel(sys_oper_type.value, form.value.businessType) || '-')
+const typeLabel = computed<string>(() => selectDictLabel(sys_oper_type.value, form.value.businessType) || '-')
 
 function formatJson(str?: string): string {
   if (!str) return '（无数据）'

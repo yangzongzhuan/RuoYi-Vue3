@@ -163,7 +163,7 @@ import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api
 import type { SysNotice, NoticeQueryParams } from '@/types/api/system/notice'
 
 const { proxy } = getCurrentInstance()
-const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type")
+const { sys_notice_status, sys_notice_type } = useDict("sys_notice_status", "sys_notice_type")
 
 const noticeList = ref<SysNotice[]>([])
 const open = ref<boolean>(false)

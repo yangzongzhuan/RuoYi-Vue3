@@ -187,7 +187,7 @@ import { listType, getType, delType, addType, updateType, refreshCache } from "@
 import type { SysDictType, DictTypeQueryParams } from '@/types/api/system/dict'
 
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
+const { sys_normal_disable } = useDict("sys_normal_disable")
 
 const typeList = ref<SysDictType[]>([])
 const open = ref<boolean>(false)

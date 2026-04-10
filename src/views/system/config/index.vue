@@ -169,7 +169,7 @@ import type { SysConfig, ConfigQueryParams } from '@/types/api/system/config'
 import { listConfig, getConfig, delConfig, addConfig, updateConfig, refreshCache } from "@/api/system/config"
 
 const { proxy } = getCurrentInstance()
-const { sys_yes_no } = proxy.useDict("sys_yes_no")
+const { sys_yes_no } = useDict("sys_yes_no")
 
 const configList = ref<SysConfig[]>([])
 const open = ref<boolean>(false)

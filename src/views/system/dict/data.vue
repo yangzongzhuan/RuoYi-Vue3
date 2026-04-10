@@ -187,7 +187,7 @@ interface ListClassOption {
 }
 
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
+const { sys_normal_disable } = useDict("sys_normal_disable")
 
 const dataList = ref<SysDictData[]>([])
 const open = ref<boolean>(false)

@@ -198,7 +198,7 @@ import type { TreeSelect, TableShowColumns, AjaxResult } from '@/types/api/commo
 const router = useRouter()
 const appStore = useAppStore()
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable, sys_user_sex } = proxy.useDict("sys_normal_disable", "sys_user_sex")
+const { sys_normal_disable, sys_user_sex } = useDict("sys_normal_disable", "sys_user_sex")
 
 const userList = ref<SysUser[]>([])
 const open = ref<boolean>(false)

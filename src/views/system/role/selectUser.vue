@@ -71,7 +71,7 @@ const props = defineProps({
 })
 
 const { proxy } = getCurrentInstance()
-const { sys_normal_disable } = proxy.useDict("sys_normal_disable")
+const { sys_normal_disable } = useDict("sys_normal_disable")
 
 const userList = ref<SysUser[]>([])
 const visible = ref<boolean>(false)
