@@ -200,7 +200,7 @@ const dialogVisible = computed({
 })
 
 const { proxy } = getCurrentInstance()
-const { sys_job_group } = proxy.useDict('sys_job_group')
+const { sys_job_group } = useDict('sys_job_group')
 
 const form = computed(() => props.row || {})
 

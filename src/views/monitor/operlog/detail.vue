@@ -112,8 +112,6 @@
 </template>
 
 <script setup>
-const { proxy } = getCurrentInstance()
-
 const props = defineProps({
   visible: { type: Boolean, default: false },
   row: { type: Object, default: () => ({}) }
@@ -127,10 +125,10 @@ const dialogVisible = computed({
 })
 
  
-const { sys_oper_type } = proxy.useDict('sys_oper_type')
+const { sys_oper_type } = useDict('sys_oper_type')
 
 const form = computed(() => props.row || {})
-const typeLabel = computed(() => proxy.selectDictLabel(sys_oper_type.value, form.value.businessType) || '-')
+const typeLabel = computed(() => selectDictLabel(sys_oper_type.value, form.value.businessType) || '-')
 
 function formatJson(str) {
   if (!str) return '（无数据）'

@@ -143,7 +143,7 @@ import { getJob } from "@/api/monitor/job"
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/monitor/jobLog"
 
 const { proxy } = getCurrentInstance()
-const { sys_common_status, sys_job_group } = proxy.useDict("sys_common_status", "sys_job_group")
+const { sys_common_status, sys_job_group } = useDict("sys_common_status", "sys_job_group")
 
 const jobLogList = ref([])
 const open = ref(false)

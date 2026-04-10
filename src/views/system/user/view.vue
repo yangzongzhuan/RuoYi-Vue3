@@ -133,11 +133,10 @@ const loading = ref(false)
 const info = reactive({})
 const postOptions = ref([])
 const roleOptions = ref([])
-const { proxy } = getCurrentInstance()
 
-const { sys_user_sex } = proxy.useDict("sys_user_sex")
+const { sys_user_sex } = useDict("sys_user_sex")
 
-const sexLabel = computed(() => proxy.selectDictLabel(sys_user_sex.value, info.sex) || '-')
+const sexLabel = computed(() => selectDictLabel(sys_user_sex.value, info.sex) || '-')
 
 const postNames = computed(() => {
   if (!postOptions.value.length || !info.postIds) return ''

@@ -128,7 +128,7 @@
 import { list, delLogininfor, cleanLogininfor, unlockLogininfor } from "@/api/monitor/logininfor"
 
 const { proxy } = getCurrentInstance()
-const { sys_common_status } = proxy.useDict("sys_common_status")
+const { sys_common_status } = useDict("sys_common_status")
 
 const logininforList = ref([])
 const loading = ref(true)
