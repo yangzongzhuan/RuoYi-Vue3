@@ -479,6 +479,9 @@
 }
 
 /* 拖拽列样式 */
+.allowDrag { cursor: grab; }
+.allowDrag:active { cursor: grabbing; }
+
 .sortable-ghost{
   opacity: .8;
   color: #fff!important;
