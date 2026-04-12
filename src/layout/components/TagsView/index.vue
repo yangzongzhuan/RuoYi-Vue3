@@ -700,14 +700,14 @@ $tags-bar-height: 34px;
 
 .main-container.fullscreen-mode .app-main {
   position: fixed;
-  top: 42px;
+  top: 34px;
   left: 0;
   right: 0;
   bottom: 0;
   margin: 0 !important;
   padding: 0 !important;
-  height: calc(100vh - 42px) !important;
-  min-height: calc(100vh - 42px) !important;
+  height: calc(100vh - 34px) !important;
+  min-height: calc(100vh - 34px) !important;
   overflow: auto;
 }
 </style>
