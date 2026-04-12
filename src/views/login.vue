@@ -230,4 +230,12 @@ getCookie()
   height: 40px;
   padding-left: 12px;
 }
+
+html.dark .login {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../assets/images/login-background.jpg");
+  .login-form {
+    background: var(--el-bg-color-overlay) !important;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+  }
+}
 </style>
