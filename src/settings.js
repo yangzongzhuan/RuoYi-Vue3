@@ -35,6 +35,11 @@ export default {
   tagsIcon: false,
 
   /**
+   * 标签页样式：card 卡片（默认）、chrome 谷歌浏览器风格
+   */
+  tagsViewStyle: 'card',
+
+  /**
    * 是否固定头部
    */
   fixedHeader: true,
