@@ -71,7 +71,7 @@
         </el-form-item>
       </el-col>
 
-      <el-col :span="24">
+      <el-col :span="12">
         <el-form-item prop="formColNum">
           <template #label>
             表单布局
@@ -84,6 +84,13 @@
             <el-option label="双列" :value="2" />
             <el-option label="三列" :value="3" />
           </el-select>
+        </el-form-item>
+      </el-col>
+
+      <el-col :span="12">
+        <el-form-item prop="genView">
+          <template #label>扩展功能</template>
+          <el-checkbox v-model="info.view">生成详情页</el-checkbox>
         </el-form-item>
       </el-col>
 

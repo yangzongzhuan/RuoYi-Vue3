@@ -149,6 +149,7 @@ function submitForm(): void {
       const genTable = Object.assign({}, info.value)
       genTable.columns = columns.value
       genTable.params = {
+        genView: info.value.view ? '1' : '0',
         treeCode: info.value.treeCode,
         treeName: info.value.treeName,
         treeParentCode: info.value.treeParentCode,
