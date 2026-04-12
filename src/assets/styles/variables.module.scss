@@ -193,6 +193,32 @@ html.dark {
     }
   }
 
+  /* 页签样式覆盖 */
+  .navbar {
+    box-shadow: 0 1px 4px rgba(255, 255, 255, 0.08);
+  }
+  .tags-view-container {
+    &.tags-view-container--chrome {
+      --chrome-strip-bg: var(--el-bg-color);
+      --chrome-strip-border: var(--el-border-color);
+      --chrome-tab-active-bg: var(--el-color-primary-light-9);
+      --chrome-tab-text: var(--el-text-color-secondary);
+      --chrome-tab-text-active: var(--el-color-primary);
+      .tags-view-wrapper .tags-view-item:not(.active) + .tags-view-item:not(.active) {
+        border-left-color: var(--el-border-color);
+      }
+      .tags-view-wrapper .tags-view-item {
+        &:hover:not(.active) {
+          background: var(--el-fill-color, #303030) !important;
+          color: var(--el-text-color-primary);
+        }
+        &.active {
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+        }
+      }
+    }
+  }
+
   /* 分割窗格覆盖 */
   .tree-sidebar-manage-wrap {
     .tree-sidebar-content {

@@ -1,5 +1,5 @@
 <template>
-  <div id="tags-view-container" class="tags-view-container">
+  <div id="tags-view-container" class="tags-view-container" :class="{ 'tags-view-container--chrome': tagsViewStyle === 'chrome' }">
     <!-- 左切换箭头 -->
     <span class="tags-nav-btn tags-nav-btn--left" :class="{ disabled: !canScrollLeft }" @click="scrollLeft">
       <el-icon><arrow-left /></el-icon>
@@ -14,7 +14,7 @@
         :class="{ 'active': isActive(tag), 'has-icon': tagsIcon }"
         :to="{ path: tag.path, query: tag.query, fullPath: tag.fullPath }"
         class="tags-view-item"
-        :style="activeStyle(tag)"
+        :style="tagActiveStyle(tag)"
         @click.middle="!isAffix(tag) ? closeSelectedTag(tag) : ''"
         @contextmenu.prevent="openMenu(tag, $event)"
       >
@@ -96,6 +96,7 @@ const routes = computed(() => usePermissionStore().routes)
 const theme = computed(() => useSettingsStore().theme)
 const tagsIcon = computed(() => useSettingsStore().tagsIcon)
 const tagsViewPersist = computed(() => useSettingsStore().tagsViewPersist)
+const tagsViewStyle = computed(() => useSettingsStore().tagsViewStyle)
 
 // 下拉菜单针对当前激活的 tag
 const selectedDropdownTag = computed(() => visitedViews.value.find((v: any) => isActive(v)) || {})
@@ -140,8 +141,8 @@ function isActive(r: any): boolean {
   return r.path === route.path
 }
 
-function activeStyle(tag: any): Record<string, string> {
-  if (!isActive(tag)) return {}
+function tagActiveStyle(tag: any): Record<string, string> {
+  if (!isActive(tag) || tagsViewStyle.value !== 'card') return {}
   return {
     "background-color": theme.value,
     "border-color": theme.value
@@ -149,7 +150,7 @@ function activeStyle(tag: any): Record<string, string> {
 }
 
 function isAffix(tag: any): boolean {
-  return tag.meta && tag.meta.affix
+  return tag && tag.meta && tag.meta.affix
 }
 
 function isFirstView(): boolean {
@@ -199,7 +200,6 @@ function initTags(): void {
   const res = filterAffixTags(routes.value)
   affixTags.value = res
   for (const tag of res) {
-    // Must have tag name
     if (tag.name) {
        useTagsViewStore().addAffixView(tag)
     }
@@ -218,7 +218,6 @@ function moveToCurrentTag(): void {
     for (const r of visitedViews.value) {
       if (r.path === route.path) {
         scrollPaneRef.value?.moveToTarget(r)
-        // when query is different then update
         if (r.fullPath !== route.fullPath) {
           useTagsViewStore().updateVisitedView(route)
         }
@@ -372,8 +371,10 @@ function handleScroll(): void {
 </script>
 
 <style lang="scss" scoped>
+$tags-bar-height: 34px;
+
 .tags-view-container {
-  height: 34px;
+  height: $tags-bar-height;
   width: 100%;
   background: var(--tags-bg, #fff);
   border-bottom: 1px solid var(--tags-item-border, #d8dce5);
@@ -394,7 +395,7 @@ function handleScroll(): void {
     align-items: center;
     justify-content: center;
     width: $btn-width;
-    height: 34px;
+    height: $tags-bar-height;
     cursor: pointer;
     color: $btn-color;
     font-size: 13px;
@@ -440,27 +441,27 @@ function handleScroll(): void {
 
       &:first-of-type { margin-left: 6px; }
       &:last-of-type  { margin-right: 15px; }
-
-      &.active {
-        background-color: #42b983;
-        color: #fff;
-        border-color: #42b983;
-
-        &::before {
-          content: '';
-          background: #fff;
-          display: inline-block;
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
-          position: relative;
-          margin-right: 5px;
-        }
-      }
     }
   }
 
-  .tags-view-item.active.has-icon::before {
+  &:not(.tags-view-container--chrome) .tags-view-wrapper .tags-view-item.active {
+    background-color: #42b983;
+    color: #fff;
+    border-color: #42b983;
+
+    &::before {
+      content: '';
+      background: #fff;
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      position: relative;
+      margin-right: 5px;
+    }
+  }
+
+  &:not(.tags-view-container--chrome) .tags-view-wrapper .tags-view-item.active.has-icon::before {
     content: none !important;
   }
 
@@ -475,7 +476,7 @@ function handleScroll(): void {
     align-items: center;
     justify-content: center;
     width: $btn-width;
-    height: 34px;
+    height: $tags-bar-height;
     cursor: pointer;
     color: $btn-color;
     font-size: 13px;
@@ -514,6 +515,121 @@ function handleScroll(): void {
 
       &:hover {
         background: var(--tags-item-hover, #eee);
+      }
+    }
+  }
+
+  &.tags-view-container--chrome {
+    --chrome-strip-bg: #ffffff;
+    --chrome-strip-border: var(--el-border-color-lighter, #e4e7ed);
+    --chrome-tab-active-bg: var(--el-color-primary-light-9);
+    --chrome-tab-text: var(--el-text-color-regular, #606266);
+    --chrome-tab-text-active: var(--el-color-primary);
+    --chrome-wing-r: 10px;
+
+    overflow: visible;
+    background: var(--chrome-strip-bg);
+    border-bottom: 1px solid var(--chrome-strip-border);
+    align-items: flex-end;
+
+    .tags-nav-btn {
+      align-self: stretch;
+      height: auto;
+      min-height: $tags-bar-height;
+      border-color: var(--chrome-strip-border);
+    }
+
+    .tags-action-btn {
+      border-color: var(--chrome-strip-border);
+    }
+
+    .tags-view-wrapper {
+      .tags-view-item {
+        display: inline-flex !important;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        height: 30px;
+        min-height: 30px;
+        margin: 0 0 -1px;
+        padding: 0 12px;
+        font-size: 13px;
+        font-weight: 400;
+        line-height: 1.2;
+        border: none !important;
+        border-radius: 0;
+        background: transparent !important;
+        color: var(--chrome-tab-text);
+        padding-top: 0 !important;
+        box-shadow: none !important;
+        transition: background 0.12s ease, color 0.12s ease, border-radius 0.12s ease;
+
+        &::before,
+        &::after {
+          content: '' !important;
+          display: block !important;
+          position: absolute;
+          bottom: 0;
+          width: var(--chrome-wing-r);
+          height: var(--chrome-wing-r);
+          margin: 0 !important;
+          pointer-events: none;
+          background: transparent !important;
+          border-radius: 0 !important;
+          transition: box-shadow 0.12s ease;
+        }
+
+        &::before {
+          left: calc(-1 * var(--chrome-wing-r));
+          border-bottom-right-radius: var(--chrome-wing-r) !important;
+          box-shadow: none;
+        }
+
+        &::after {
+          right: calc(-1 * var(--chrome-wing-r));
+          border-bottom-left-radius: var(--chrome-wing-r) !important;
+          box-shadow: none;
+        }
+
+        &:first-of-type {
+          margin-left: 6px;
+        }
+
+        &:last-of-type {
+          margin-right: 10px;
+        }
+
+        &:not(.active) + .tags-view-item:not(.active) {
+          border-left: 1px solid var(--el-border-color-lighter, #e4e7ed);
+          padding-left: 11px;
+        }
+
+        &:hover:not(.active) {
+          background: var(--el-fill-color-light, #f5f7fa) !important;
+          border-radius: 6px 6px 0 0;
+          color: var(--el-text-color-primary, #303133);
+        }
+
+        &.active {
+          height: 31px;
+          min-height: 31px;
+          padding: 0 14px;
+          color: var(--chrome-tab-text-active) !important;
+          font-weight: 500;
+          background: var(--chrome-tab-active-bg) !important;
+          border: none !important;
+          border-radius: var(--chrome-wing-r) var(--chrome-wing-r) 0 0;
+          box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+
+          &::before {
+            box-shadow: calc(var(--chrome-wing-r) * 0.5) calc(var(--chrome-wing-r) * 0.5) 0 calc(var(--chrome-wing-r) * 0.5) var(--chrome-tab-active-bg);
+          }
+
+          &::after {
+            box-shadow: calc(var(--chrome-wing-r) * -0.5) calc(var(--chrome-wing-r) * 0.5) 0 calc(var(--chrome-wing-r) * 0.5) var(--chrome-tab-active-bg);
+          }
+        }
       }
     }
   }
@@ -584,14 +700,14 @@ function handleScroll(): void {
 
 .main-container.fullscreen-mode .app-main {
   position: fixed;
-  top: 34px;
+  top: 42px;
   left: 0;
   right: 0;
   bottom: 0;
   margin: 0 !important;
   padding: 0 !important;
-  height: calc(100vh - 34px) !important;
-  min-height: calc(100vh - 34px) !important;
+  height: calc(100vh - 42px) !important;
+  min-height: calc(100vh - 42px) !important;
   overflow: auto;
 }
 </style>
