@@ -29,3 +29,21 @@ export interface SysNotice extends BaseEntity {
 export interface SysNoticeTopResult extends AjaxResult<SysNotice[]> {
   unreadCount: number
 }
+
+/** 公告已读用户查询参数 */
+export interface NoticeReadUserQueryParams extends PageDomain {
+  /** 公告编号 */
+  noticeId?: number
+  /** 关键字（登录名/用户名） */
+  searchValue?: string
+}
+
+/** 公告已读用户 */
+export interface NoticeReadUser {
+  userId?: number
+  userName?: string
+  nickName?: string
+  deptName?: string
+  phonenumber?: string
+  readTime?: string
+}

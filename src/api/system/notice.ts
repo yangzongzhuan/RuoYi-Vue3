@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-import type { NoticeQueryParams, SysNotice, SysNoticeTopResult, AjaxResult, TableDataInfo } from '@/types'
+import type { NoticeQueryParams, NoticeReadUserQueryParams, SysNotice, NoticeReadUser, SysNoticeTopResult, AjaxResult, TableDataInfo } from '@/types'
 
 // 查询公告列表
 export function listNotice(query: NoticeQueryParams): Promise<TableDataInfo<SysNotice[]>> {
@@ -67,5 +67,14 @@ export function markNoticeReadAll(ids: string): Promise<AjaxResult> {
     url: '/system/notice/markReadAll',
     method: 'post',
     params: { ids }
+  })
+}
+
+// 查询公告已读用户列表
+export function listNoticeReadUsers(query: NoticeReadUserQueryParams): Promise<TableDataInfo<NoticeReadUser[]>> {
+  return request({
+    url: '/system/notice/readUsers/list',
+    method: 'get',
+    params: query
   })
 }
