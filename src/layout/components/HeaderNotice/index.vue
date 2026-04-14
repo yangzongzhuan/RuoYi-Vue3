@@ -33,26 +33,13 @@
     </el-popover>
 
     <!-- 预览弹窗 -->
-    <el-dialog v-model="previewVisible" :title="previewTitle" width="680px" append-to-body class="notice-preview-dialog">
-      <div class="notice-preview-meta">
-        <el-tag size="small" :type="previewNoticeType === '1' ? 'warning' : 'success'">
-          {{ previewNoticeType === '1' ? '通知' : '公告' }}
-        </el-tag>
-        <span class="notice-preview-info">
-          <el-icon><User /></el-icon> {{ previewCreateBy }}
-        </span>
-        <span class="notice-preview-info">
-          <el-icon><Timer /></el-icon> {{ previewCreateTime }}
-        </span>
-      </div>
-      <div class="notice-preview-divider"></div>
-      <div class="notice-preview-content" v-html="previewContent"></div>
-    </el-dialog>
+    <notice-detail-view ref="noticeViewRef" />
   </div>
 </template>
 
 <script setup>
-import { listNoticeTop, markNoticeRead, markNoticeReadAll, getNotice } from '@/api/system/notice'
+import NoticeDetailView from './DetailView'
+import { listNoticeTop, markNoticeRead, markNoticeReadAll } from '@/api/system/notice'
 
 const noticePopover = ref(null)
 const noticeList = ref([])
@@ -60,12 +47,7 @@ const unreadCount = ref(0)
 const noticeLoading = ref(false)
 const noticeVisible = ref(false)
 const noticeLeaveTimer = ref(null)
-const previewVisible = ref(false)
-const previewTitle = ref('')
-const previewContent = ref('')
-const previewNoticeType = ref('')
-const previewCreateBy = ref('')
-const previewCreateTime = ref('')
+const { proxy } = getCurrentInstance()
 
 // 加载顶部公告列表
 function loadNoticeTop() {
@@ -109,15 +91,7 @@ function previewNotice(item) {
     if (idx !== -1) noticeList.value[idx] = { ...item, isRead: true }
     unreadCount.value = Math.max(0, unreadCount.value - 1)
   }
-  getNotice(item.noticeId).then(res => {
-    const notice = res.data
-    previewTitle.value = notice.noticeTitle
-    previewContent.value = notice.noticeContent
-    previewNoticeType.value = notice.noticeType
-    previewCreateBy.value = notice.createBy
-    previewCreateTime.value = notice.createTime
-    previewVisible.value = true
-  })
+  proxy.$refs["noticeViewRef"].open(item.noticeId)
 }
 
 // 全部已读
@@ -207,31 +181,4 @@ function markAllRead() {
   font-size: 11px;
   color: #bbb;
 }
-</style>
-
-<style>
-.notice-preview-dialog .el-dialog__body { padding: 0 10px 10px; }
-.notice-preview-dialog .notice-preview-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  padding: 12px 0;
-  font-size: 12px;
-  color: #888;
-}
-.notice-preview-dialog .notice-preview-info { display: flex; align-items: center; gap: 4px; }
-.notice-preview-dialog .notice-preview-divider {
-  height: 1px;
-  background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-  margin-bottom: 16px;
-}
-.notice-preview-dialog .notice-preview-content {
-  font-size: 14px;
-  line-height: 1.85;
-  color: #2d3748;
-  word-break: break-word;
-}
-.notice-preview-dialog .notice-preview-content img { max-width: 100%; border-radius: 4px; }
-.notice-preview-dialog .notice-preview-content p { margin: 0 0 1em; }
-.notice-preview-dialog .notice-preview-content a { color: var(--el-color-primary); text-decoration: underline; }
 </style>

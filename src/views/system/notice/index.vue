@@ -71,12 +71,11 @@
       <el-table v-loading="loading" :data="noticeList" @selection-change="handleSelectionChange">
          <el-table-column type="selection" width="55" align="center" />
          <el-table-column label="序号" align="center" prop="noticeId" width="100" />
-         <el-table-column
-            label="公告标题"
-            align="center"
-            prop="noticeTitle"
-            :show-overflow-tooltip="true"
-         />
+         <el-table-column label="公告标题" align="center" :show-overflow-tooltip="true">
+            <template #default="scope">
+               <a class="link-type" style="cursor:pointer" @click="handleViewData(scope.row)">{{ scope.row.noticeTitle }}</a>
+            </template>
+         </el-table-column>
          <el-table-column label="公告类型" align="center" prop="noticeType" width="100">
             <template #default="scope">
                <dict-tag :options="sys_notice_type" :value="scope.row.noticeType" />
@@ -155,10 +154,12 @@
             </div>
          </template>
       </el-dialog>
+      <notice-detail-view ref="noticeViewRef" />
    </div>
 </template>
 
 <script setup name="Notice">
+import NoticeDetailView from "@/layout/components/HeaderNotice/DetailView"
 import { listNotice, getNotice, delNotice, addNotice, updateNotice } from "@/api/system/notice"
 
 const { proxy } = getCurrentInstance()
@@ -275,6 +276,11 @@ function submitForm() {
       }
     }
   })
+}
+
+/** 查看公告详情 */
+function handleViewData(row) {
+  proxy.$refs["noticeViewRef"].open(row)
 }
 
 /** 删除按钮操作 */
