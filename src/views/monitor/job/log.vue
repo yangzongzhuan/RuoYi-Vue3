@@ -138,7 +138,7 @@
 </template>
 
 <script setup lang="ts" name="JobLog">
-import JobDetail from './detail'
+import JobDetail from './detail.vue'
 import { getJob } from "@/api/monitor/job"
 import { listJobLog, delJobLog, cleanJobLog } from "@/api/monitor/jobLog"
 import type { SysJobLog, JobLogQueryParams } from '@/types/api/monitor/jobLog'

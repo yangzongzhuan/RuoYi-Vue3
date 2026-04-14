@@ -136,7 +136,6 @@ const loading = ref<boolean>(false)
 const info = reactive<SysUser>({})
 const postOptions = ref<SysPost[]>([])
 const roleOptions = ref<SysRole[]>([])
-const { proxy } = getCurrentInstance()
 
 const { sys_user_sex } = useDict("sys_user_sex")
 

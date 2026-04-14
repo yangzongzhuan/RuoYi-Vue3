@@ -181,7 +181,7 @@
 </template>
 
 <script setup lang="ts" name="Dict">
-import DictDataDrawer from './detail'
+import DictDataDrawer from './detail.vue'
 import useDictStore from '@/store/modules/dict'
 import { listType, getType, delType, addType, updateType, refreshCache } from "@/api/system/dict/type"
 import type { SysDictType, DictTypeQueryParams } from '@/types/api/system/dict'

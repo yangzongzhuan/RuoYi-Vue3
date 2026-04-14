@@ -239,7 +239,7 @@
 </template>
 
 <script setup lang="ts" name="Job">
-import JobDetail from './detail'
+import JobDetail from './detail.vue'
 import Crontab from '@/components/Crontab/index.vue'
 import { listJob, getJob, delJob, addJob, updateJob, runJob, changeJobStatus } from "@/api/monitor/job"
 import type { JobQueryParams, SysJob } from '@/types/api/monitor/job'
