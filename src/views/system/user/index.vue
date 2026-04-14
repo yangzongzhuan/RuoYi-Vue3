@@ -185,14 +185,12 @@
 </template>
 
 <script setup name="User">
-import useAppStore from '@/store/modules/app'
 import TreePanel from "@/components/TreePanel"
 import ExcelImportDialog from "@/components/ExcelImportDialog"
 import UserViewDrawer from "./view"
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user"
 
 const router = useRouter()
-const appStore = useAppStore()
 const { proxy } = getCurrentInstance()
 const { sys_normal_disable, sys_user_sex } = useDict("sys_normal_disable", "sys_user_sex")
 
