@@ -5,7 +5,12 @@
  * @returns {Boolean}
  */
 export function isPathMatch(pattern, path) {
-  const regexPattern = pattern.replace(/\//g, '\\/').replace(/\*\*/g, '.*').replace(/\*/g, '[^\\/]*')
+  const regexPattern = pattern
+    .replace(/([.+^${}()|\[\]\\])/g, '\\$1')
+    .replace(/\*\*/g, '__DOUBLE_STAR__')
+    .replace(/\*/g, '[^/]*')
+    .replace(/__DOUBLE_STAR__/g, '.*')
+    .replace(/\?/g, '[^/]')
   const regex = new RegExp(`^${regexPattern}$`)
   return regex.test(path)
 }
