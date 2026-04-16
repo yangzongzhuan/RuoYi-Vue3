@@ -18,57 +18,56 @@ const isWhiteList = (path: string): boolean => {
   return whiteList.some((pattern: string) => isPathMatch(pattern, path))
 }
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from) => {
   NProgress.start()
   if (getToken()) {
     to.meta.title && useSettingsStore().setTitle(to.meta.title as string)
     const isLock = useLockStore().isLock
-    /* has token*/
     if (to.path === '/login') {
-      next({ path: '/' })
       NProgress.done()
-    } else if (isWhiteList(to.path)) {
-      next()
-    } else if (isLock && to.path !== '/lock') {
-      next({ path: '/lock' })
+      return { path: '/' }
+    }
+    if (isWhiteList(to.path)) {
+      return true
+    }
+    if (isLock && to.path !== '/lock') {
       NProgress.done()
-    } else if (!isLock && to.path === '/lock') {
-      next({ path: '/' })
+      return { path: '/lock' }
+    }
+    if (!isLock && to.path === '/lock') {
       NProgress.done()
-    } else {
-      if (useUserStore().roles.length === 0) {
-        isRelogin.show = true
-        // 判断当前用户是否已拉取完user_info信息
-        useUserStore().getInfo().then(() => {
-          isRelogin.show = false
-          usePermissionStore().generateRoutes().then((accessRoutes: any[]) => {
-            // 根据roles权限生成可访问的路由表
-            accessRoutes.forEach((route: any) => {
-              if (!isHttp(route.path)) {
-                router.addRoute(route) // 动态添加可访问路由表
-              }
-            })
-            next({ ...to, replace: true }) // hack方法 确保addRoutes已完成
-          })
-        }).catch((err: any) => {
-          useUserStore().logOut().then(() => {
-            ElMessage.error(err as string)
-            next({ path: '/' })
-          })
+      return { path: '/' }
+    }
+    if (useUserStore().roles.length === 0) {
+      isRelogin.show = true
+      try {
+        // 拉取user_info信息
+        await useUserStore().getInfo()
+        isRelogin.show = false
+        // 根据roles权限生成可访问的路由
+        const accessRoutes = await usePermissionStore().generateRoutes()
+        accessRoutes.forEach((route: any) => {
+          if (!isHttp(route.path)) {
+            router.addRoute(route)
+          }
         })
-      } else {
-        next()
+        // 重新导航到目标路由，确保动态路由已注册
+        return { ...to, replace: true }
+      } catch (err) {
+        await useUserStore().logOut()
+        ElMessage.error(err)
+        return { path: '/' }
       }
     }
+    return true
   } else {
     // 没有token
     if (isWhiteList(to.path)) {
       // 在免登录白名单，直接进入
-      next()
-    } else {
-      next(`/login?redirect=${to.fullPath}`) // 否则全部重定向到登录页
-      NProgress.done()
+      return true
     }
+    NProgress.done()
+    return `/login?redirect=${to.fullPath}` // 否则全部重定向到登录页
   }
 })
 
