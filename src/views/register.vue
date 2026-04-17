@@ -13,7 +13,7 @@
           <template #prefix><svg-icon icon-class="user" class="el-input__icon input-icon" /></template>
         </el-input>
       </el-form-item>
-      <el-form-item prop="password">
+      <el-form-item prop="password" :rules="registerPwdValidator">
         <el-input
           v-model="registerForm.password"
           type="password"
@@ -79,12 +79,14 @@
 import { ElMessageBox } from "element-plus"
 import { getCodeImg, register } from "@/api/login"
 import defaultSettings from '@/settings'
+import { usePasswordRule } from "@/utils/passwordRule"
 import type { RegisterForm } from '@/types/api/login'
 
 const title = import.meta.env.VITE_APP_TITLE
 const footerContent = defaultSettings.footerContent
 const router = useRouter()
 const { proxy } = getCurrentInstance()
+const { registerPwdValidator } = usePasswordRule()
 
 const registerForm = ref<RegisterForm>({
   username: "",
@@ -106,11 +108,6 @@ const registerRules = {
   username: [
     { required: true, trigger: "blur", message: "请输入您的账号" },
     { min: 2, max: 20, message: "用户账号长度必须介于 2 和 20 之间", trigger: "blur" }
-  ],
-  password: [
-    { required: true, trigger: "blur", message: "请输入您的密码" },
-    { min: 5, max: 20, message: "用户密码长度必须介于 5 和 20 之间", trigger: "blur" },
-    { pattern: /^[^<>"'|\\]+$/, message: "不能包含非法字符：< > \" ' \\\ |", trigger: "blur" }
   ],
   confirmPassword: [
     { required: true, trigger: "blur", message: "请再次输入您的密码" },
