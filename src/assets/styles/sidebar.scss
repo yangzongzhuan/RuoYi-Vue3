@@ -125,7 +125,6 @@
           position: absolute;
           inset: 0;
           background-color: var(--current-color-dark-bg, rgba(64, 158, 255, 0.2));
-          border-right: 3px solid var(--current-color, #409eff);
           pointer-events: none;
           z-index: 1;
         }
@@ -175,7 +174,6 @@
           position: absolute;
           inset: 0;
           background-color: var(--current-color-light, #ecf5ff);
-          border-right: 3px solid var(--current-color, #409eff);
           pointer-events: none;
           z-index: 1;
         }

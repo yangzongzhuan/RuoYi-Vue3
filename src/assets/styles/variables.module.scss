@@ -89,6 +89,8 @@ html.dark {
   --el-text-color-regular: #d0d0d0;
   --el-border-color: #434343;
   --el-border-color-light: #434343;
+  --el-menu-text-color: #d0d0d0;
+  --sidebar-logo-text: #d0d0d0;
   
   /* primary */
   --primary-bg: #18212b;
@@ -111,6 +113,10 @@ html.dark {
   --tags-item-text: #d0d0d0;
   --tags-item-hover: #2d2d2d;
   --tags-close-hover: #64666a;
+  /* 卡片模式激活页签 */
+  --tags-card-active-bg: var(--el-bg-color-overlay);
+  --tags-card-active-bg: color-mix(in srgb, var(--el-color-primary) 22%, var(--el-bg-color-overlay) 78%);
+  --tags-card-active-border: var(--tags-card-active-bg);
 
   /* splitpanes 组件暗黑模式变量 */
   --splitpanes-bg: #141414;
@@ -201,7 +207,8 @@ html.dark {
     &.tags-view-container--chrome {
       --chrome-strip-bg: var(--el-bg-color);
       --chrome-strip-border: var(--el-border-color);
-      --chrome-tab-active-bg: var(--el-color-primary-light-9);
+      --chrome-tab-active-bg: var(--el-bg-color-overlay);
+      --chrome-tab-active-bg: color-mix(in srgb, var(--el-color-primary) 22%, var(--el-bg-color-overlay) 78%);
       --chrome-tab-text: var(--el-text-color-secondary);
       --chrome-tab-text-active: var(--el-color-primary);
       .tags-view-wrapper .tags-view-item:not(.active) + .tags-view-item:not(.active) {
@@ -213,8 +220,18 @@ html.dark {
           color: var(--el-text-color-primary);
         }
         &.active {
-          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.28);
+          box-shadow: 0 1px 6px rgba(0, 0, 0, 0.45);
         }
+      }
+    }
+    &:not(.tags-view-container--chrome) .tags-view-wrapper .tags-view-item.active {
+      background-color: var(--tags-card-active-bg) !important;
+      border-color: var(--tags-card-active-border) !important;
+      color: var(--current-color, #409eff) !important;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.35);
+
+      &::before {
+        background: var(--current-color, #409eff) !important;
       }
     }
   }
