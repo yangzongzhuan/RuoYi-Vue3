@@ -1,6 +1,7 @@
 import defaultSettings from '@/settings'
 import { useDark, useToggle } from '@vueuse/core'
 import { useDynamicTitle } from '@/utils/dynamicTitle'
+import { handleThemeStyle } from '@/utils/theme'
 
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
@@ -46,6 +47,9 @@ const useSettingsStore = defineStore(
       toggleTheme() {
         this.isDark = !this.isDark
         toggleDark()
+        nextTick(() => {
+          handleThemeStyle(this.theme)
+        })
       }
     }
   })
