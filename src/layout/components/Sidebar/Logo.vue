@@ -43,7 +43,7 @@ const getLogoBackground = computed(() => {
 // 获取Logo文字颜色
 const getLogoTextColor = computed(() => {
   if (settingsStore.isDark) {
-    return 'var(--sidebar-text)'
+    return 'var(--sidebar-logo-text)'
   }
   if (settingsStore.navType == 3) {
     return variables.menuLightText
