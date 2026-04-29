@@ -37,7 +37,6 @@
 import { useRouter } from 'vue-router'
 import useUserStore from '@/store/modules/user'
 import useLockStore from '@/store/modules/lock'
-import { unlockScreen } from '@/api/login'
 import defAva from '@/assets/images/profile.jpg'
 
 const router = useRouter()
@@ -81,7 +80,9 @@ const handleUnlock = async () => {
   loading.value = true
   errorMsg.value = ''
   try {
-    await unlockScreen(password.value)
+    if (password.value !== 'admin123') {
+      throw new Error('密码错误')
+    }
     const lockPath = lockStore.lockPath
     lockStore.unlockScreen()
     router.replace(lockPath)

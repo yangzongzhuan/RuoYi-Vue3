@@ -60,7 +60,7 @@ function loadNoticeTop() {
   })
 }
 
-onMounted(() => loadNoticeTop())
+// onMounted(() => loadNoticeTop())
 
 // 鼠标移入铃铛区域
 function onNoticeEnter() {

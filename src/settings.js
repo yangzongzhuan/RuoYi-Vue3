@@ -64,4 +64,3 @@ export default {
    */
   footerContent: 'Copyright © 2018-2026 RuoYi. All Rights Reserved.'
 }
-
