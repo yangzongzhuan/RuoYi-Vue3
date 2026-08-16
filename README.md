@@ -28,7 +28,7 @@ RuoYi-Vue 前端项目的三个主要演进版本，方便你直观对比其技�
 | **状态管理**  | Vuex         | Pinia          | Pinia                       |
 | **路由管理**  | Vue Router 3 | Vue Router 4   | Vue Router 4                |
 | **核心特点**  | 1. 技术栈经典稳定<br>2. 社区资料丰富<br>3. 当前维护重心已转移 | 1. 现代前端技术栈<br>2. 开发体验与性能更优<br>3. 官方主推的活跃版本 | 1. 类型加持，减少沟通成本<br>2. 开发时有提示，效率更高<br>3. 多人协作企业级开发项目 |
-| **仓库地址**  | [RuoYi-Vue](https://gitee.com/y_project/RuoYi-Vue) | [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) | [RuoYi-Vue3-TypeScript](https://gitcode.com/yangzongzhuan/RuoYi-Vue3/tree/typescript) |
+| **仓库地址**  | [RuoYi-Vue2](https://gitcode.com/yangzongzhuan/RuoYi-Vue2) | [RuoYi-Vue3](https://gitcode.com/yangzongzhuan/RuoYi-Vue3) | [RuoYi-Vue3-TypeScript](https://gitcode.com/yangzongzhuan/RuoYi-Vue3/tree/typescript) |
 
 ## 前端运行
 
