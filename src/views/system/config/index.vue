@@ -222,7 +222,7 @@ function reset() {
     configName: undefined,
     configKey: undefined,
     configValue: undefined,
-    configType: "Y",
+    configType: "N",
     remark: undefined
   }
   proxy.resetForm("configRef")
