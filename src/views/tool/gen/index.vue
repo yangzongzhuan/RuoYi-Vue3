@@ -48,15 +48,6 @@
       </el-col>
       <el-col :span="1.5">
         <el-button
-          type="primary"
-          plain
-          icon="Plus"
-          @click="openCreateTable"
-          v-hasRole="['admin']"
-        >创建</el-button>
-      </el-col>
-      <el-col :span="1.5">
-        <el-button
           type="info"
           plain
           icon="Upload"
@@ -141,14 +132,12 @@
       </el-tabs>
     </el-dialog>
     <import-table ref="importRef" @ok="handleQuery" />
-    <create-table ref="createRef" @ok="handleQuery" />
   </div>
 </template>
 
 <script setup lang="ts" name="Gen">
 import { listTable, previewTable, delTable, genCode, synchDb } from "@/api/tool/gen"
 import importTable from "./importTable.vue"
-import createTable from "./createTable.vue"
 import type { GenTable, GenQueryParams } from '@/types/api/tool/gen'
 
 const route = useRoute()
@@ -242,11 +231,6 @@ function handleSynchDb(row: GenTable) {
 /** 打开导入表弹窗 */
 function openImportTable() {
   proxy.$refs["importRef"].show()
-}
-
-/** 打开创建表弹窗 */
-function openCreateTable() {
-  proxy.$refs["createRef"].show()
 }
 
 /** 重置按钮操作 */
