@@ -353,8 +353,27 @@ function getList() {
 function getTreeselect() {
   menuOptions.value = []
   listMenu().then(response => {
+    // 编辑时上级菜单不能选择自己或自己的子孙：从数据源剔除，避免形成环
+    let data = response.data
+    if (form.value.menuId) {
+      const childrenMap = {}
+      for (const m of data) {
+        ;(childrenMap[m.parentId] || (childrenMap[m.parentId] = [])).push(m.menuId)
+      }
+      const excluded = new Set([form.value.menuId])
+      const stack = [form.value.menuId]
+      while (stack.length) {
+        for (const child of childrenMap[stack.pop()] || []) {
+          if (!excluded.has(child)) {
+            excluded.add(child)
+            stack.push(child)
+          }
+        }
+      }
+      data = data.filter(m => !excluded.has(m.menuId))
+    }
     const menu = { menuId: 0, menuName: "主类目", children: [] }
-    menu.children = proxy.handleTree(response.data, "menuId")
+    menu.children = proxy.handleTree(data, "menuId")
     menuOptions.value.push(menu)
   })
 }
@@ -428,12 +447,13 @@ function toggleExpandAll() {
 /** 修改按钮操作 */
 async function handleUpdate(row) {
   reset()
+  // 先取被编辑菜单再构建下拉树：树数据源需按 menuId 剔除自身与子孙
+  const menuInfo = await getMenu(row.menuId)
+  form.value.menuId = menuInfo.data.menuId
   await getTreeselect()
-  getMenu(row.menuId).then(response => {
-    form.value = response.data
-    open.value = true
-    title.value = "修改菜单"
-  })
+  form.value = menuInfo.data
+  open.value = true
+  title.value = "修改菜单"
 }
 
 /** 提交按钮 */
