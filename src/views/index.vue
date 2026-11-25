@@ -51,9 +51,9 @@
           <el-col :span="6">
             <h4>前端技术</h4>
             <ul>
-              <li>Vue</li>
-              <li>Vuex</li>
-              <li>Element-ui</li>
+              <li>Vue 3</li>
+              <li>Pinia</li>
+              <li>Element Plus</li>
               <li>Axios</li>
               <li>Sass</li>
               <li>Quill</li>
@@ -74,14 +74,14 @@
           </template>
           <div class="body">
             <p>
-              <i class="el-icon-s-promotion"></i> 官网：<el-link
+              <el-icon><Promotion /></el-icon> 官网：<el-link
                 href="http://www.ruoyi.vip"
                 target="_blank"
                 >http://www.ruoyi.vip</el-link
               >
             </p>
             <p>
-              <i class="el-icon-user-solid"></i> QQ群：<s> 满937441 </s> <s> 满887144332 </s>
+              <el-icon><UserFilled /></el-icon> QQ群：<s> 满937441 </s> <s> 满887144332 </s>
               <s> 满180251782 </s> <s> 满104180207 </s> <s> 满186866453 </s> <s> 满201396349 </s>
               <s> 满101456076 </s> <s> 满101539465 </s> <s> 满264312783 </s> <s> 满167385320 </s> 
               <s> 满104748341 </s> <s> 满160110482 </s> <s> 满170801498 </s> <s> 满108482800 </s> 
@@ -91,13 +91,13 @@
               <s> 满174569686 </s> <s> 满127358632 </s> <a href="http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=EQz10zmHf6ga7Zv2U5kWNrpkBlnknJE-&authKey=65C4sdiKSSyJFEtartvUfLEHQiPYoysBoVkNuLP1AxpKdV4nQR%2FEvobGCI9jvDpQ&noverify=0&group_code=113071109" target="_blank">113071109</a>
             </p>
             <p>
-              <i class="el-icon-chat-dot-round"></i> 微信：<a
+              <el-icon><ChatDotRound /></el-icon> 微信：<a
                 href="javascript:;"
                 >/ *若依</a
               >
             </p>
             <p>
-              <i class="el-icon-money"></i> 支付宝：<a
+              <el-icon><Money /></el-icon> 支付宝：<a
                 href="javascript:;"
                 class="支付宝信息"
                 >/ *若依</a

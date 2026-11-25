@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="type == 'url'">
     <el-upload
       :action="uploadUrl"
       :before-upload="handleBeforeUpload"
@@ -19,7 +19,9 @@
       ref="quillEditorRef"
       v-model:content="content"
       contentType="html"
-      @textChange="(e: any) => $emit('update:modelValue', content)"
+      @textChange="() => $emit('update:modelValue', content)"
+      @ready="onQuillReady"
+      :toolbar="showToolbar ? toolbarOptions : false"
       :options="options"
       :style="styles"
     />
@@ -44,54 +46,59 @@ const headers = ref({
 const props = defineProps({
   /* 编辑器的内容 */
   modelValue: {
-    type: String,
+    type: String
   },
   /* 高度 */
   height: {
     type: Number,
-    default: null,
+    default: null
   },
   /* 最小高度 */
   minHeight: {
     type: Number,
-    default: null,
+    default: null
   },
   /* 只读 */
   readOnly: {
     type: Boolean,
-    default: false,
+    default: false
   },
   /* 上传文件大小限制(MB) */
   fileSize: {
     type: Number,
-    default: 5,
+    default: 5
   },
   /* 类型（base64格式、url格式） */
   type: {
     type: String,
-    default: "url",
+    default: "url"
+  },
+  // 是否显示工具栏
+  showToolbar: {
+    type: Boolean,
+    default: true
   }
 })
+
+// 工具栏配置
+const toolbarOptions = [
+  ['bold', 'italic', 'underline', 'strike'],
+  ['blockquote', 'code-block'],
+  [{ list: 'ordered' }, { list: 'bullet' }],
+  [{ indent: '-1' }, { indent: '+1' }],
+  [{ size: ['small', false, 'large', 'huge'] }],
+  [{ header: [1, 2, 3, 4, 5, 6, false] }],
+  [{ color: [] }, { background: [] }],
+  [{ align: [] }],
+  ['clean'],
+  ['link', 'image', 'video']
+]
 
 const options = ref({
   theme: "snow",
   bounds: document.body,
   debug: "warn",
-  modules: {
-    // 工具栏配置
-    toolbar: [
-      ["bold", "italic", "underline", "strike"],      // 加粗 斜体 下划线 删除线
-      ["blockquote", "code-block"],                   // 引用  代码块
-      [{ list: "ordered" }, { list: "bullet" }],      // 有序、无序列表
-      [{ indent: "-1" }, { indent: "+1" }],           // 缩进
-      [{ size: ["small", false, "large", "huge"] }],  // 字体大小
-      [{ header: [1, 2, 3, 4, 5, 6, false] }],        // 标题
-      [{ color: [] }, { background: [] }],            // 字体颜色、字体背景颜色
-      [{ align: [] }],                                // 对齐方式
-      ["clean"],                                      // 清除文本格式
-      ["link", "image", "video"]                      // 链接、图片、视频
-    ],
-  },
+  modules: {},
   placeholder: "请输入内容",
   readOnly: props.readOnly
 })
@@ -115,18 +122,31 @@ watch(() => props.modelValue, (v: string) => {
 }, { immediate: true })
 
 // 如果设置了上传地址则自定义图片上传事件
-onMounted(() => {
-  if (props.type == 'url') {
-    let quill = quillEditorRef.value.getQuill()
-    let toolbar = quill.getModule("toolbar")
-    toolbar.addHandler("image", (value: boolean) => {
-      if (value) {
-        proxy.$refs.uploadRef.click()
-      } else {
-        quill.format("image", false)
-      }
-    })
-    quill.root.addEventListener('paste', handlePasteCapture, true)
+let quillInstance: any = null
+let quillRoot: any = null
+function onQuillReady(quill: any) {
+  if (!quill) return
+  quillInstance = quill
+  if (props.showToolbar && props.type === 'url') {
+    const toolbar = quill.getModule('toolbar')
+    if (toolbar) {
+      toolbar.addHandler('image', (value: any) => {
+        if (value) {
+          proxy.$refs.uploadRef?.click()
+        } else {
+          quill.format('image', false)
+        }
+      })
+    }
+    quillRoot = quill.root
+    quillRoot.addEventListener('paste', handlePasteCapture, true)
+  }
+}
+
+onBeforeUnmount(() => {
+  if (quillRoot) {
+    quillRoot.removeEventListener('paste', handlePasteCapture, true)
+    quillRoot = null
   }
 })
 
@@ -155,7 +175,8 @@ function handleUploadSuccess(res: UploadFileResult, file: File) {
   // 如果上传成功
   if (res.code == 200) {
     // 获取富文本实例
-    let quill = toRaw(quillEditorRef.value).getQuill()
+    const quill = quillInstance || toRaw(quillEditorRef.value)?.getQuill()
+    if (!quill) return
     // 获取光标位置
     let length = quill.selection.savedRange.index
     // 插入图片，res.url为服务器返回的图片链接地址

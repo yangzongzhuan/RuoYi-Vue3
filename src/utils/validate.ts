@@ -21,10 +21,7 @@ export function isPathMatch(pattern: string, path: string): boolean {
  * @returns {Boolean}
  */
 export function isEmpty(value: any): boolean {
-  if (value == null || value == "" || value == undefined || value == "undefined") {
-    return true
-  }
-  return false
+  return value == null || value == "" || value == undefined || value == "undefined"
 }
 
 /**
